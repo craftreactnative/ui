@@ -1,6 +1,6 @@
-# CraftReactNative UI Components
+<img src="https://github.com/craftreactnative/craftrn-ui/raw/main/demo-app/assets/images/craftrn-light.png" alt="CraftReactNative Logo" style="width: 200px;">
 
-![CraftReactNative Logo](https://github.com/craftreactnative/craftrn-ui/raw/main/demo-app/assets/images/craftrn-light.png)
+# CraftReactNative UI Components
 
 This repository provides reusable UI components for React Native projects. These components are designed to simplify mobile app development and can be easily copied and pasted into your projects. A demo app is included to showcase how to use these components, but the primary focus of this repository is to provide the components themselves.
 
