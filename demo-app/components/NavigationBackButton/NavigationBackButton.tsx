@@ -11,8 +11,8 @@ export const NavigationBackButton = (
   return (
     <View style={styles.container}>
       <ButtonRound
-        renderIcon={size => (
-          <ChevronLeft size={size} color={theme.colors.contentPrimary} />
+        renderContent={({ iconSize }) => (
+          <ChevronLeft size={iconSize} color={theme.colors.contentPrimary} />
         )}
         {...props}
       />

@@ -8,8 +8,8 @@ const config = {
   buttonMinWidth: 44,
   buttonMinHeightSmall: 30,
   buttonMinHeightRegular: 40,
-  hitslopSmall: 5,
-  hitslopRegular: 2,
+  hitSlopSmall: 5,
+  hitSlopRegular: 2,
 };
 
 type Size = 'regular' | 'small';
@@ -61,8 +61,8 @@ export const Button = ({
       onPress={onPress}
       hitSlop={
         size === 'small'
-          ? { top: config.hitslopSmall, bottom: config.hitslopSmall }
-          : { top: config.hitslopRegular, bottom: config.hitslopRegular }
+          ? { top: config.hitSlopSmall, bottom: config.hitSlopSmall }
+          : { top: config.hitSlopRegular, bottom: config.hitSlopRegular }
       }
       disabled={disabled}
     >

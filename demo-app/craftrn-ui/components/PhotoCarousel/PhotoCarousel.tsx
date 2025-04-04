@@ -1,10 +1,9 @@
 import React, { useRef, useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View, ViewProps } from 'react-native';
 import Animated, {
   useAnimatedScrollHandler,
   useSharedValue,
 } from 'react-native-reanimated';
-import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { AnimatedDot } from './AnimatedDot';
 

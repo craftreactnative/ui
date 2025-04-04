@@ -4,9 +4,11 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 const config = {
   buttonSizeSmall: 24,
-  buttonSizeRegular: 32,
+  buttonSizeMedium: 32,
+  buttonSizeLarge: 40,
   iconSizeSmall: 14,
-  iconSizeRegular: 18,
+  iconSizeMedium: 18,
+  iconSizeLarge: 24,
 };
 
 /**
@@ -23,15 +25,15 @@ export type Props = {
    */
   disabled?: boolean;
   /**
-   * Function that renders the icon inside the button.
-   * @param size - The size of the icon in pixels.
+   * Function that renders an icon or other content inside the button.
+   * @param props.iconSize - The suggested size of the icon in pixels, depending on the button size.
    */
-  renderIcon: (size: number) => ReactElement;
+  renderContent: (props: { iconSize: number }) => ReactElement;
   /**
    * The size of the button.
-   * @default 'regular'
+   * @default 'medium'
    */
-  size?: 'regular' | 'small';
+  size?: 'large' | 'medium' | 'small';
   /**
    * The visual style variant of the button.
    * @default 'primary'
@@ -41,20 +43,24 @@ export type Props = {
 
 export const ButtonRound = ({
   onPress,
-  size = 'regular',
+  size = 'medium',
   disabled = false,
-  renderIcon,
+  renderContent,
   variant = 'primary',
 }: Props) => {
   const { styles } = useStyles(stylesheet, { variant, size });
   const iconSize =
-    size === 'small' ? config.iconSizeSmall : config.iconSizeRegular;
+    size === 'small'
+      ? config.iconSizeSmall
+      : size === 'large'
+        ? config.iconSizeLarge
+        : config.iconSizeMedium;
 
   return (
     <Pressable onPress={onPress} disabled={disabled} hitSlop={4}>
       {({ pressed }) => (
         <View style={styles.button({ pressed, disabled })}>
-          {renderIcon(iconSize)}
+          {renderContent({ iconSize })}
         </View>
       )}
     </Pressable>
@@ -95,9 +101,13 @@ const stylesheet = createStyleSheet(({ borderRadius, colors }) => ({
           width: config.buttonSizeSmall,
           height: config.buttonSizeSmall,
         },
-        regular: {
-          width: config.buttonSizeRegular,
-          height: config.buttonSizeRegular,
+        medium: {
+          width: config.buttonSizeMedium,
+          height: config.buttonSizeMedium,
+        },
+        large: {
+          width: config.buttonSizeLarge,
+          height: config.buttonSizeLarge,
         },
       },
     },

@@ -108,7 +108,8 @@ export const lightTheme = {
     sunshineStrong: colors.sunshine200,
   },
   borderRadius: {
-    small: 4,
+    xsmall: 4,
+    small: 8,
     medium: 12,
     large: 16,
     xlarge: 24,
@@ -123,7 +124,6 @@ export const lightTheme = {
     large: 16,
     xlarge: 24,
     xxlarge: 32,
-    horizontalScreen: 16,
   },
   textVariants: {
     heading1: {

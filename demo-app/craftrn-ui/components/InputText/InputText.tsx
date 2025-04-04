@@ -1,15 +1,10 @@
-import React, {
-  ComponentProps,
-  forwardRef,
-  useCallback,
-  useRef,
-  useState,
-} from 'react';
+import React, { forwardRef, useCallback, useRef, useState } from 'react';
 import {
   NativeSyntheticEvent,
   Pressable,
   TextInput,
   TextInputFocusEventData,
+  TextInputProps,
   View,
 } from 'react-native';
 import Animated, {
@@ -34,7 +29,7 @@ const animationConfig = {
 /**
  * Props for the InputText component.
  */
-export type Props = ComponentProps<typeof TextInput> & {
+export type Props = {
   /**
    * The label to display above the input.
    */
@@ -62,111 +57,113 @@ export type Props = ComponentProps<typeof TextInput> & {
   error?: string;
 };
 
-export const InputText = forwardRef<TextInput, Props>(function InputText(
-  {
-    size = 'medium',
-    label,
-    onPress,
-    onChangeText,
-    value,
-    leftAccessory,
-    rightAccessory,
-    onFocus,
-    error,
-    style,
-    ...restProps
-  },
-  ref,
-) {
-  const { styles, theme } = useStyles(stylesheet, { size });
-  const [isFocused, setIsFocused] = useState(false);
-  const [internalValue, setInternalValue] = useState(value ?? '');
-  const inputRef = useRef<TextInput>(null);
-  const isActive = isFocused || !!internalValue;
-
-  const handleChangeText = useCallback(
-    (text: string) => {
-      setInternalValue(text);
-      onChangeText?.(text);
+export const InputText = forwardRef<TextInput, Props & TextInputProps>(
+  function InputText(
+    {
+      size = 'medium',
+      label,
+      onPress,
+      onChangeText,
+      value,
+      leftAccessory,
+      rightAccessory,
+      onFocus,
+      error,
+      style,
+      ...restProps
     },
-    [onChangeText],
-  );
+    ref,
+  ) {
+    const { styles, theme } = useStyles(stylesheet, { size });
+    const [isFocused, setIsFocused] = useState(false);
+    const [internalValue, setInternalValue] = useState(value ?? '');
+    const inputRef = useRef<TextInput>(null);
+    const isActive = isFocused || !!internalValue;
 
-  const labelAnimatedStyle = useAnimatedStyle(
-    () => ({
-      transform: [
-        { translateY: withTiming(isActive ? -10 : 0, animationConfig) },
-        { scale: withTiming(isActive ? 0.85 : 1, animationConfig) },
-      ],
-    }),
-    [isActive],
-  );
+    const handleChangeText = useCallback(
+      (text: string) => {
+        setInternalValue(text);
+        onChangeText?.(text);
+      },
+      [onChangeText],
+    );
 
-  const handlePress = useCallback(() => {
-    inputRef.current?.focus();
-    onPress?.();
-  }, [inputRef, onPress]);
+    const labelAnimatedStyle = useAnimatedStyle(
+      () => ({
+        transform: [
+          { translateY: withTiming(isActive ? -10 : 0, animationConfig) },
+          { scale: withTiming(isActive ? 0.85 : 1, animationConfig) },
+        ],
+      }),
+      [isActive],
+    );
 
-  const handleFocus = useCallback(
-    (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-      setIsFocused(true);
-      onFocus?.(e);
-    },
-    [onFocus],
-  );
+    const handlePress = useCallback(() => {
+      inputRef.current?.focus();
+      onPress?.();
+    }, [inputRef, onPress]);
 
-  return (
-    <View>
-      <Pressable onPress={handlePress}>
-        {({ pressed }) => (
-          <View
-            style={styles.container({
-              active: pressed || isFocused,
-              error: !!error,
-            })}
-          >
-            {leftAccessory && (
-              <View style={styles.accessory}>{leftAccessory}</View>
-            )}
-            <View style={styles.textInputContainer}>
-              {label && (
-                <View style={styles.labelContainer}>
-                  <Animated.Text style={[styles.label, labelAnimatedStyle]}>
-                    {label}
-                  </Animated.Text>
-                </View>
+    const handleFocus = useCallback(
+      (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+        setIsFocused(true);
+        onFocus?.(e);
+      },
+      [onFocus],
+    );
+
+    return (
+      <View>
+        <Pressable onPress={handlePress}>
+          {({ pressed }) => (
+            <View
+              style={styles.container({
+                active: pressed || isFocused,
+                error: !!error,
+              })}
+            >
+              {leftAccessory && (
+                <View style={styles.accessory}>{leftAccessory}</View>
               )}
-              <TextInput
-                {...restProps}
-                ref={ref ?? inputRef}
-                style={[
-                  styles.textInput,
-                  !!label && styles.textInputWithLabel,
-                  style,
-                ]}
-                value={value}
-                onChangeText={handleChangeText}
-                onFocus={handleFocus}
-                onBlur={() => setIsFocused(false)}
-                placeholderTextColor={theme.colors.contentTertiary}
-                selectionColor={theme.colors.accentPrimary}
-                pointerEvents="none"
-              />
+              <View style={styles.textInputContainer}>
+                {label && (
+                  <View style={styles.labelContainer}>
+                    <Animated.Text style={[styles.label, labelAnimatedStyle]}>
+                      {label}
+                    </Animated.Text>
+                  </View>
+                )}
+                <TextInput
+                  {...restProps}
+                  ref={ref ?? inputRef}
+                  style={[
+                    styles.textInput,
+                    !!label && styles.textInputWithLabel,
+                    style,
+                  ]}
+                  value={value}
+                  onChangeText={handleChangeText}
+                  onFocus={handleFocus}
+                  onBlur={() => setIsFocused(false)}
+                  placeholderTextColor={theme.colors.contentTertiary}
+                  selectionColor={theme.colors.accentPrimary}
+                  pointerEvents="none"
+                />
+              </View>
+              {rightAccessory && (
+                <View style={styles.accessory}>{rightAccessory}</View>
+              )}
             </View>
-            {rightAccessory && (
-              <View style={styles.accessory}>{rightAccessory}</View>
-            )}
-          </View>
+          )}
+        </Pressable>
+        {error && (
+          <Text variant="body3" color="contentError" style={styles.error}>
+            {error}
+          </Text>
         )}
-      </Pressable>
-      {error && (
-        <Text variant="body3" color="contentError" style={styles.error}>
-          {error}
-        </Text>
-      )}
-    </View>
-  );
-});
+      </View>
+    );
+  },
+);
 
 const stylesheet = createStyleSheet(
   ({ colors, borderRadius, spacing, textVariants }) => ({

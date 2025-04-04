@@ -22,22 +22,22 @@ const config = {
  */
 export type Props = {
   /**
-   * Minimum value of the slider.
+   * Lowest value the left knob can reach.
    * @default 0
    */
   min: number;
   /**
-   * Maximum value of the slider.
+   * Highest value the right knob can reach.
    * @default 100
    */
   max: number;
   /**
-   * Initial value of the minimum knob.
+   * Initial value of the left knob.
    * @default min
    */
   minInitialValue?: number;
   /**
-   * Initial value of the maximum knob.
+   * Initial value of the right knob.
    * @default max
    */
   maxInitialValue?: number;

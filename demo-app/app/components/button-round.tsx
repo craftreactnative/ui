@@ -25,15 +25,21 @@ export default function ButtonRoundScreen() {
           <ButtonRound
             onPress={() => {}}
             variant="primary"
-            renderIcon={size => (
-              <ChevronRight color={theme.colors.contentPrimary} size={size} />
+            renderContent={({ iconSize }) => (
+              <ChevronRight
+                color={theme.colors.contentPrimary}
+                size={iconSize}
+              />
             )}
           />
           <ButtonRound
             onPress={() => {}}
             variant="secondary"
-            renderIcon={size => (
-              <ChevronRight color={theme.colors.contentPrimary} size={size} />
+            renderContent={({ iconSize }) => (
+              <ChevronRight
+                color={theme.colors.contentPrimary}
+                size={iconSize}
+              />
             )}
           />
         </Card>
@@ -46,15 +52,31 @@ export default function ButtonRoundScreen() {
           <ButtonRound
             onPress={() => {}}
             size="small"
-            renderIcon={size => (
-              <ChevronRight color={theme.colors.contentPrimary} size={size} />
+            renderContent={({ iconSize }) => (
+              <ChevronRight
+                color={theme.colors.contentPrimary}
+                size={iconSize}
+              />
             )}
           />
           <ButtonRound
             onPress={() => {}}
-            size="regular"
-            renderIcon={size => (
-              <ChevronRight color={theme.colors.contentPrimary} size={size} />
+            size="medium"
+            renderContent={({ iconSize }) => (
+              <ChevronRight
+                color={theme.colors.contentPrimary}
+                size={iconSize}
+              />
+            )}
+          />
+          <ButtonRound
+            onPress={() => {}}
+            size="large"
+            renderContent={({ iconSize }) => (
+              <ChevronRight
+                color={theme.colors.contentPrimary}
+                size={iconSize}
+              />
             )}
           />
         </Card>
@@ -66,10 +88,13 @@ export default function ButtonRoundScreen() {
         <Card style={styles.componentContainer}>
           <ButtonRound
             onPress={() => {}}
-            size="regular"
+            size="medium"
             disabled
-            renderIcon={size => (
-              <ChevronRight color={theme.colors.contentPrimary} size={size} />
+            renderContent={({ iconSize }) => (
+              <ChevronRight
+                color={theme.colors.contentPrimary}
+                size={iconSize}
+              />
             )}
           />
         </Card>

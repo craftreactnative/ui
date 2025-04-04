@@ -6,7 +6,7 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
  * Props for the Text component.
  * @see TextProps
  */
-export type Props = TextProps & {
+export type Props = {
   /**
    * Variant of the text.
    * @default 'body1'
@@ -29,7 +29,7 @@ export const Text = ({
   variant = 'body1',
   style,
   ...props
-}: Props) => {
+}: Props & TextProps) => {
   const { styles } = useStyles(stylesheet, { color, variant });
   return <RNText style={[styles.text, StyleSheet.flatten(style)]} {...props} />;
 };
