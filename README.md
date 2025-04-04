@@ -1,6 +1,6 @@
 <img src="https://github.com/craftreactnative/craftrn-ui/raw/main/demo-app/assets/images/craftrn-light.png" alt="CraftReactNative Logo" style="width: 200px;">
 
-## Welcome to CraftReactNative!
+## CraftReactNative UI components
 
 Ever felt trapped by rigid development solutions that limit your creativity? **CraftReactNative** breaks that mold.
 
