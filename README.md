@@ -1,15 +1,22 @@
 <img src="https://github.com/craftreactnative/craftrn-ui/raw/main/demo-app/assets/images/craftrn-light.png" alt="CraftReactNative Logo" style="width: 200px;">
 
-# CraftReactNative UI Components
+## CraftReactNative UI components
 
-This repository provides reusable UI components for React Native projects. These components are designed to simplify mobile app development and can be easily copied and pasted into your projects. A demo app is included to showcase how to use these components, but the primary focus of this repository is to provide the components themselves.
+Ever felt trapped by rigid development solutions that limit your creativity? **CraftReactNative** breaks that mold.
 
-## Features
+This isn't just another component library, it's an ecosystem that puts _you_ in control of your mobile app development. Written in TypeScript and built on carefully selected core libraries, CraftReactNative empowers you to build exactly what you envision.
 
-- **Ready-to-use Components**: A wide range of UI components built with React Native and TypeScript.
-- **Demo App**: A fully functional app to explore and test all components.
-- **Copy & Paste**: Easily integrate components into your project by copying the code.
-- **Customizable**: Tailor components to fit your app's design and functionality.
+## Why CraftReactNative is Different
+
+Traditional solutions force you to adapt your vision to their constraints. You install a package, import pre-built elements, and then fight against their limitations when customizing.
+
+CraftReactNative flips this model on its head:
+
+- **Copy, paste, customize** - Take only what you need and make it truly yours
+- **No dependency lock-in** - Your code, your rules
+- **Full creative control** - Modify anything without worrying about breaking updates
+
+Built around [Unistyles](https://github.com/jpudysz/react-native-unistyles) (a superset of StyleSheet similar to how TypeScript enhances JavaScript), CraftReactNative feels instantly familiar to React Native developers while offering powerful new capabilities.
 
 ## Documentation
 
