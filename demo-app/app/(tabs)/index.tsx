@@ -135,7 +135,7 @@ const stylesheet = createStyleSheet(theme => ({
   },
   scrollViewContent: {
     backgroundColor: theme.colors.backgroundSecondary,
-    paddingHorizontal: theme.spacing.horizontalScreen,
+    paddingHorizontal: theme.spacing.large,
     paddingVertical: theme.spacing.large,
   },
   listItem: {
@@ -144,7 +144,7 @@ const stylesheet = createStyleSheet(theme => ({
   },
   parallaxHeader: {
     bottom: theme.spacing.large,
-    paddingHorizontal: theme.spacing.horizontalScreen,
+    paddingHorizontal: theme.spacing.large,
     position: 'absolute',
     width: '100%',
   },

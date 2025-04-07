@@ -56,7 +56,7 @@ export default function TextScreen() {
 
 const stylesheet = createStyleSheet(theme => ({
   container: {
-    paddingHorizontal: theme.spacing.horizontalScreen,
+    paddingHorizontal: theme.spacing.large,
     paddingVertical: theme.spacing.medium,
   },
   content: {

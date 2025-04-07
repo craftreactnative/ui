@@ -52,7 +52,7 @@ const stylesheet = createStyleSheet(({ colors, spacing }) => ({
   },
   scrollViewContent: {
     backgroundColor: colors.backgroundSecondary,
-    paddingHorizontal: spacing.horizontalScreen,
+    paddingHorizontal: spacing.large,
     paddingVertical: spacing.large,
     gap: spacing.small,
   },

@@ -6,9 +6,11 @@ import { Stack } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function BottomSheetScreen() {
   const { styles } = useStyles(stylesheet);
+  const insets = useSafeAreaInsets();
   const [bottomSheetVisible1, setBottomSheetVisible1] = useState(false);
   const [bottomSheetVisible2, setBottomSheetVisible2] = useState(false);
   const [bottomSheetVisible3, setBottomSheetVisible3] = useState(false);
@@ -62,7 +64,7 @@ export default function BottomSheetScreen() {
         visible={bottomSheetVisible1}
         onRequestClose={() => setBottomSheetVisible1(false)}
       >
-        <View style={styles.bottomSheetContent}>
+        <View style={styles.bottomSheetContent({ paddingBottom: insets.bottom })}>
           <View style={styles.bottomSheetHeading}>
             <Text variant="heading3">Now close me</Text>
             <Text variant="body2">
@@ -77,7 +79,7 @@ export default function BottomSheetScreen() {
         onRequestClose={() => setBottomSheetVisible2(false)}
         enableSwipeToClose
       >
-        <View style={styles.bottomSheetContent}>
+        <View style={styles.bottomSheetContent({ paddingBottom: insets.bottom })}>
           <View style={styles.bottomSheetHeading}>
             <Text variant="heading3">Now close me</Text>
             <Text variant="body2">Swipe down to close the bottom sheet</Text>
@@ -89,7 +91,7 @@ export default function BottomSheetScreen() {
         onRequestClose={() => setBottomSheetVisible3(false)}
         enableOverlayTapToClose
       >
-        <View style={styles.bottomSheetContent}>
+        <View style={styles.bottomSheetContent({ paddingBottom: insets.bottom })}>
           <View style={styles.bottomSheetHeading}>
             <Text variant="heading3">Now close me</Text>
             <Text variant="body2">
@@ -104,7 +106,7 @@ export default function BottomSheetScreen() {
 
 const stylesheet = createStyleSheet(theme => ({
   container: {
-    paddingHorizontal: theme.spacing.horizontalScreen,
+    paddingHorizontal: theme.spacing.large,
     paddingVertical: theme.spacing.medium,
   },
   content: {
@@ -118,11 +120,12 @@ const stylesheet = createStyleSheet(theme => ({
     gap: theme.spacing.xxsmall,
     padding: theme.spacing.medium,
   },
-  bottomSheetContent: {
+  bottomSheetContent: ({ paddingBottom }) => ({
     paddingHorizontal: theme.spacing.large,
     paddingTop: theme.spacing.small,
     gap: theme.spacing.large,
-  },
+    paddingBottom,
+  }),
   bottomSheetHeading: {
     paddingBottom: theme.spacing.large,
   },

@@ -45,6 +45,6 @@ export default function TemplatesLayout() {
 const stylesheet = createStyleSheet(theme => ({
   safeArea: {
     backgroundColor: theme.colors.backgroundQuaternary,
-    paddingHorizontal: theme.spacing.horizontalScreen,
+    paddingHorizontal: theme.spacing.large,
   },
 }));

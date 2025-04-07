@@ -32,7 +32,7 @@ export default function TemplateScreen() {
 const stylesheet = createStyleSheet(({ borderRadius, colors, spacing }) => ({
   container: {
     flex: 1,
-    marginHorizontal: spacing.horizontalScreen,
+    marginHorizontal: spacing.large,
     marginVertical: spacing.large,
   },
   video: {

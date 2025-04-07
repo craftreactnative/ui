@@ -22,7 +22,6 @@ import Animated, {
   withTiming,
   WithTimingConfig,
 } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 /**
@@ -75,7 +74,6 @@ export const BottomSheet = ({
   enableSwipeToClose = false,
   enableOverlayTapToClose = false,
 }: Props) => {
-  const insets = useSafeAreaInsets();
   const { styles } = useStyles(stylesheet);
   const [showModal, setShowModal] = useState(visible);
   const [contentHeight, setContentHeight] = useState<number | undefined>();
@@ -193,9 +191,8 @@ export const BottomSheet = ({
           </Animated.View>
           <Animated.View
             style={[
-              styles.sheet,
+              styles.sheet({ maxHeight: bottomSheetMaxHeight }),
               bottomSheetAnimatedStyle,
-              { paddingBottom: insets.bottom, maxHeight: bottomSheetMaxHeight },
             ]}
             onLayout={handleLayout}
           >
@@ -218,7 +215,7 @@ const stylesheet = createStyleSheet(({ colors, borderRadius, spacing }) => ({
   overlayContent: {
     flex: 1,
   },
-  sheet: {
+  sheet: ({ maxHeight }) => ({
     backgroundColor: colors.backgroundPrimary,
     zIndex: 2,
     borderTopLeftRadius: borderRadius.large,
@@ -227,7 +224,8 @@ const stylesheet = createStyleSheet(({ colors, borderRadius, spacing }) => ({
     bottom: 0,
     left: 0,
     right: 0,
-  },
+    maxHeight,
+  }),
   content: {
     paddingTop: spacing.large,
   },

@@ -22,7 +22,7 @@ export const NavigationBackButton = (
 
 const stylesheet = createStyleSheet(theme => ({
   container: {
-    marginLeft: theme.spacing.horizontalScreen,
+    marginLeft: theme.spacing.large,
     marginRight:
       Platform.OS === 'ios' ? theme.spacing.xsmall : theme.spacing.medium,
   },

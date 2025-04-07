@@ -79,7 +79,7 @@ const stylesheet = createStyleSheet(theme => ({
   },
   parallaxHeader: {
     bottom: theme.spacing.large,
-    paddingHorizontal: theme.spacing.horizontalScreen,
+    paddingHorizontal: theme.spacing.large,
     position: 'absolute',
     width: '100%',
   },
