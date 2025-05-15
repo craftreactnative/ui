@@ -4,7 +4,7 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { Text } from '../Text/Text';
 
 // The minimum target size for mobile devices is 44 x 44 pixels according to WCAG guidelines
-const config = {
+export const config = {
   buttonMinWidth: 44,
   buttonMinHeightSmall: 30,
   buttonMinHeightRegular: 40,

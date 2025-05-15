@@ -11,7 +11,7 @@ import Animated, {
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { CheckLarge } from './CheckLarge';
 
-const config = {
+export const config = {
   size: 24,
 };
 

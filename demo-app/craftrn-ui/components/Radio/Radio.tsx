@@ -10,7 +10,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
-const config = {
+export const config = {
   size: 24,
   dotSize: 8,
 };
@@ -23,10 +23,6 @@ export type Props = {
    * Whether the radio button is checked.
    */
   checked: boolean;
-  /**
-   * Callback function triggered when the radio button's state changes.
-   */
-  onChange: (checked: boolean) => void;
   /**
    * Whether the radio button is disabled.
    */

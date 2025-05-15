@@ -43,7 +43,7 @@ export type Props = {
   /**
    * The content to display inside the bottom sheet.
    */
-  children: ReactElement;
+  children: ReactElement | ReactElement[];
   /**
    * The maximum height of the bottom sheet.
    */

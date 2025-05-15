@@ -3,7 +3,7 @@ import { Image, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { Text } from '../Text/Text';
 
-const config = {
+export const config = {
   avatarSmall: 32,
   avatarMedium: 38,
   avatarLarge: 44,
@@ -64,7 +64,12 @@ export const Avatar = ({
       : config.avatarIndicatorLarge;
 
   return (
-    <View style={[styles.container, imageError && styles.containerFallback]}>
+    <View
+      style={[
+        styles.container,
+        (!uri || imageError) && styles.containerFallback,
+      ]}
+    >
       {uri && !imageError ? (
         <Image
           source={{ uri }}
@@ -93,20 +98,22 @@ const stylesheet = createStyleSheet(({ borderRadius, colors, spacing }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-    borderRadius: borderRadius.medium,
     variants: {
       size: {
         small: {
           width: config.avatarSmall,
           height: config.avatarSmall,
+          borderRadius: borderRadius.small,
         },
         medium: {
           width: config.avatarMedium,
           height: config.avatarMedium,
+          borderRadius: borderRadius.medium,
         },
         large: {
           width: config.avatarLarge,
           height: config.avatarLarge,
+          borderRadius: borderRadius.medium,
         },
       },
     },

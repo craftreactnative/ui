@@ -9,7 +9,9 @@ import {
 } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
-const SIZE = 48;
+export const config = {
+  medium: 48,
+} as const;
 
 /**
  * Props for the InputSearch component.
@@ -34,9 +36,10 @@ export const InputSearch = forwardRef<TextInput, Props>(function InputSearch(
   { onPress, onFocus, onBlur, value, leftAccessory, rightAccessory, ...props },
   ref,
 ) {
-  const { styles } = useStyles(stylesheet);
+  const { styles, theme } = useStyles(stylesheet);
   const [isFocused, setIsFocused] = useState(false);
   const isActive = isFocused || !!value;
+  const isReadOnly = !props.editable && !!props.readOnly;
   const inputRef = useRef<TextInput>(null);
 
   const handlePress = useCallback(() => {
@@ -62,14 +65,20 @@ export const InputSearch = forwardRef<TextInput, Props>(function InputSearch(
 
   return (
     <Pressable onPress={handlePress} style={styles.container}>
-      <View style={styles.inputContainer({ active: isActive })}>
+      <View
+        style={styles.inputContainer({
+          active: isActive,
+        })}
+      >
         {leftAccessory}
         <TextInput
-          style={styles.input}
+          style={styles.textInput({ readOnly: isReadOnly })}
           onFocus={handleFocus}
           onBlur={handleBlur}
           value={value}
           ref={ref}
+          placeholderTextColor={theme.colors.contentTertiary}
+          textAlignVertical="center"
           {...props}
         />
         {rightAccessory}
@@ -80,11 +89,11 @@ export const InputSearch = forwardRef<TextInput, Props>(function InputSearch(
 
 const stylesheet = createStyleSheet(({ colors, borderRadius, spacing }) => ({
   container: {
-    flex: 1,
     shadowColor: colors.contentTertiary,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 1,
     shadowOpacity: 0.05,
+    width: '100%',
   },
   inputContainer: ({ active }) => ({
     flexDirection: 'row',
@@ -95,10 +104,14 @@ const stylesheet = createStyleSheet(({ colors, borderRadius, spacing }) => ({
     borderColor: active ? colors.accentPrimary : colors.borderPrimary,
     paddingHorizontal: spacing.small,
     paddingVertical: spacing.xsmall,
-    height: SIZE,
+    height: heightConfig.medium,
   }),
-  input: {
-    flex: 1,
+  textInput: ({ readOnly }) => ({
+    flexGrow: 1,
+    padding: 0,
+    lineHeight: 0,
     marginHorizontal: spacing.small,
-  },
+    height: heightConfig.medium - 2,
+    pointerEvents: readOnly ? 'none' : 'auto',
+  }),
 }));

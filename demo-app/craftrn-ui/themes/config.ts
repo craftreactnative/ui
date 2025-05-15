@@ -11,7 +11,7 @@ export const colors = {
   stone900: '#1c1917',
   stone950: '#0c0a09',
 
-  teal150: '#d6e6f6',
+  teal150: '#d5f2f5',
   teal300: '#0bb6cb',
   teal600: '#007884',
   teal700: '#006771',
@@ -82,6 +82,7 @@ export const lightTheme = {
     contentError: colors.red700,
 
     borderPrimary: colors.stone300,
+    borderSecondary: colors.stone200,
 
     shadowPrimary: colors.stone800,
 
@@ -174,6 +175,7 @@ export const darkTheme = {
     contentAccent: colors.teal300,
 
     borderPrimary: colors.stone800,
+    borderSecondary: colors.stone900,
 
     shadowPrimary: colors.stone600,
 
