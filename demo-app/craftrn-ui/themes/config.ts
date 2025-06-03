@@ -68,7 +68,7 @@ export const lightTheme = {
     backgroundPrimary: colors.stone100,
     backgroundSecondary: colors.stone200,
     backgroundTertiary: colors.stone300,
-    backgroundQuaternary: colors.stone400,
+    backgroundQuaternary: colors.stone500,
 
     accentPrimary: colors.teal700,
     accentSecondary: colors.teal800,
@@ -163,11 +163,12 @@ export const darkTheme = {
     backgroundPrimary: colors.stone900,
     backgroundSecondary: colors.stone950,
     backgroundTertiary: colors.stone800,
-    backgroundQuaternary: colors.stone700,
+    backgroundQuaternary: colors.stone600,
 
     accentPrimary: colors.teal700,
     accentSecondary: colors.teal600,
     accentTertiary: colors.teal800,
+    accentQuaternary: colors.teal800,
 
     contentPrimary: colors.stone50,
     contentSecondary: colors.stone300,

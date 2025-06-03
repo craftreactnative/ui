@@ -104,14 +104,14 @@ const stylesheet = createStyleSheet(({ colors, borderRadius, spacing }) => ({
     borderColor: active ? colors.accentPrimary : colors.borderPrimary,
     paddingHorizontal: spacing.small,
     paddingVertical: spacing.xsmall,
-    height: heightConfig.medium,
+    height: config.medium,
   }),
   textInput: ({ readOnly }) => ({
     flexGrow: 1,
     padding: 0,
-    lineHeight: 0,
     marginHorizontal: spacing.small,
-    height: heightConfig.medium - 2,
+    height: config.medium - 2,
     pointerEvents: readOnly ? 'none' : 'auto',
+    color: colors.contentPrimary,
   }),
 }));

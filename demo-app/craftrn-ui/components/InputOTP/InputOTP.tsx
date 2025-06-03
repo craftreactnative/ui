@@ -86,7 +86,11 @@ export const InputOTP = ({ onChange }: Props) => {
             key={index}
             keyboardType="numeric"
             autoFocus={index === 0}
-            ref={ref => ref && (inputRefs.current[index] = ref)}
+            ref={ref => {
+              if (ref) {
+                inputRefs.current[index] = ref;
+              }
+            }}
             onKeyPress={e => handleKeyPress(e.nativeEvent.key, index)}
             onPress={resetCode}
             onFocus={() => handleFocus(index)}

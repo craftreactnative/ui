@@ -101,6 +101,7 @@ const stylesheet = createStyleSheet(({ spacing }) => ({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative',
   },
   carouselContainer: (width: number, height: number) => ({
     width,

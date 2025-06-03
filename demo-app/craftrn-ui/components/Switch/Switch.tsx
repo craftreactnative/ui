@@ -13,7 +13,10 @@ export const Switch = ({ ...props }: Props) => {
   return (
     <RNSwitch
       trackColor={{
-        false: theme.colors.backgroundTertiary,
+        false:
+          Platform.OS === 'android'
+            ? theme.colors.backgroundSecondary
+            : theme.colors.backgroundTertiary,
         true:
           Platform.OS === 'android'
             ? theme.colors.accentTertiary
@@ -23,7 +26,7 @@ export const Switch = ({ ...props }: Props) => {
         Platform.OS === 'android'
           ? props.value
             ? theme.colors.accentPrimary
-            : theme.colors.backgroundPrimary
+            : theme.colors.backgroundQuaternary
           : undefined
       }
       style={styles.switch}
