@@ -40,6 +40,16 @@ export default function InputTextScreen() {
         </View>
         <View style={styles.content}>
           <Text variant="body2" style={styles.heading}>
+            Prefilled
+          </Text>
+          <Card style={styles.componentContainer}>
+            <InputText label="First name" size="small" value="Thomas" />
+            <InputText label="First name" size="medium" value="Charlotte" />
+            <InputText label="First name" size="large" value="Hugo" />
+          </Card>
+        </View>
+        <View style={styles.content}>
+          <Text variant="body2" style={styles.heading}>
             With left accessory
           </Text>
           <Card style={styles.componentContainer}>

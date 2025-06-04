@@ -1,6 +1,7 @@
 import React, { forwardRef, useCallback, useRef, useState } from 'react';
 import {
   NativeSyntheticEvent,
+  Platform,
   Pressable,
   TextInput,
   TextInputFocusEventData,
@@ -10,6 +11,7 @@ import {
 import Animated, {
   Easing,
   useAnimatedStyle,
+  useReducedMotion,
   withTiming,
 } from 'react-native-reanimated';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
@@ -19,11 +21,6 @@ const heightConfig = {
   small: 40,
   medium: 48,
   large: 56,
-} as const;
-
-const animationConfig = {
-  easing: Easing.inOut(Easing.cubic),
-  duration: 200,
 } as const;
 
 /**
@@ -70,33 +67,31 @@ export const InputText = forwardRef<TextInput, Props & TextInputProps>(
       onFocus,
       error,
       style,
+      editable = true,
+      readOnly = false,
       ...restProps
     },
     ref,
   ) {
     const { styles, theme } = useStyles(stylesheet, { size });
     const [isFocused, setIsFocused] = useState(false);
-    const [internalValue, setInternalValue] = useState(value ?? '');
     const inputRef = useRef<TextInput>(null);
-    const isActive = isFocused || !!internalValue;
+    const reduceMotion = useReducedMotion();
+    const isActive = isFocused || !!value;
 
-    const handleChangeText = useCallback(
-      (text: string) => {
-        setInternalValue(text);
-        onChangeText?.(text);
-      },
-      [onChangeText],
-    );
+    const labelAnimatedStyle = useAnimatedStyle(() => {
+      const animationConfig = {
+        easing: Easing.inOut(Easing.cubic),
+        duration: reduceMotion ? 0 : 200,
+      };
 
-    const labelAnimatedStyle = useAnimatedStyle(
-      () => ({
+      return {
         transform: [
-          { translateY: withTiming(isActive ? -10 : 0, animationConfig) },
+          { translateY: withTiming(isActive ? -12 : 0, animationConfig) },
           { scale: withTiming(isActive ? 0.85 : 1, animationConfig) },
         ],
-      }),
-      [isActive],
-    );
+      };
+    }, [isActive]);
 
     const handlePress = useCallback(() => {
       inputRef.current?.focus();
@@ -126,11 +121,9 @@ export const InputText = forwardRef<TextInput, Props & TextInputProps>(
               )}
               <View style={styles.textInputContainer}>
                 {label && (
-                  <View style={styles.labelContainer}>
-                    <Animated.Text style={[styles.label, labelAnimatedStyle]}>
-                      {label}
-                    </Animated.Text>
-                  </View>
+                  <Animated.Text style={[styles.label, labelAnimatedStyle]}>
+                    {label}
+                  </Animated.Text>
                 )}
                 <TextInput
                   {...restProps}
@@ -141,12 +134,13 @@ export const InputText = forwardRef<TextInput, Props & TextInputProps>(
                     style,
                   ]}
                   value={value}
-                  onChangeText={handleChangeText}
                   onFocus={handleFocus}
                   onBlur={() => setIsFocused(false)}
                   placeholderTextColor={theme.colors.contentTertiary}
                   selectionColor={theme.colors.accentPrimary}
-                  pointerEvents="none"
+                  pointerEvents={!editable || readOnly ? 'none' : undefined}
+                  editable={editable}
+                  readOnly={readOnly}
                 />
               </View>
               {rightAccessory && (
@@ -193,29 +187,37 @@ const stylesheet = createStyleSheet(
       flexGrow: 1,
       position: 'relative',
     },
-    labelContainer: {
+    label: {
+      zIndex: 1,
       position: 'absolute',
       top: 0,
       bottom: 0,
-      zIndex: 1,
-      justifyContent: 'center',
-    },
-    label: {
       color: colors.contentSecondary,
       textAlign: 'left',
       transformOrigin: 'left',
       variants: {
         size: {
-          small: textVariants.body3,
-          medium: textVariants.body2,
-          large: textVariants.body1,
+          small: {
+            ...textVariants.body3,
+            lineHeight: heightConfig.small - spacing.xsmall * 2,
+          },
+          medium: {
+            ...textVariants.body2,
+            lineHeight: heightConfig.medium - spacing.xsmall * 2,
+          },
+          large: {
+            ...textVariants.body1,
+            lineHeight: heightConfig.large - spacing.xsmall * 2,
+          },
         },
       },
     },
     textInput: {
       flexGrow: 1,
-      padding: 0,
-      lineHeight: 0,
+      lineHeight: Platform.OS === 'ios' ? 0 : undefined,
+      paddingVertical: 0,
+      paddingLeft: 0,
+      minWidth: 0,
       color: colors.contentPrimary,
       variants: {
         size: {
