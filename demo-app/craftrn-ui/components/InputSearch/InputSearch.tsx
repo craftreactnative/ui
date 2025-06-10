@@ -64,7 +64,12 @@ export const InputSearch = forwardRef<TextInput, Props>(function InputSearch(
   );
 
   return (
-    <Pressable onPress={handlePress} style={styles.container}>
+    <Pressable
+      onPress={handlePress}
+      style={styles.container}
+      accessible={!!handlePress ? true : undefined}
+      role={!!handlePress ? 'button' : undefined}
+    >
       <View
         style={styles.inputContainer({
           active: isActive,
@@ -79,6 +84,7 @@ export const InputSearch = forwardRef<TextInput, Props>(function InputSearch(
           ref={ref}
           placeholderTextColor={theme.colors.contentTertiary}
           textAlignVertical="center"
+          role="searchbox"
           {...props}
         />
         {rightAccessory}

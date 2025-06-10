@@ -1,11 +1,7 @@
-import React, {
-  ReactElement,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import {
+  AccessibilityInfo,
+  AccessibilityProps,
   LayoutChangeEvent,
   Modal,
   StyleSheet,
@@ -27,7 +23,7 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 /**
  * Props for the BottomSheet component.
  */
-export type Props = {
+export type Props = AccessibilityProps & {
   /**
    * Whether the bottom sheet is visible.
    */
@@ -73,10 +69,12 @@ export const BottomSheet = ({
   maxHeight,
   enableSwipeToClose = false,
   enableOverlayTapToClose = false,
+  ...accessibilityProps
 }: Props) => {
   const { styles } = useStyles(stylesheet);
   const [showModal, setShowModal] = useState(visible);
   const [contentHeight, setContentHeight] = useState<number | undefined>();
+  const [isScreenReaderEnabled, setIsScreenReaderEnabled] = useState(false);
   const { height: windowHeight } = useWindowDimensions();
   const translateY = useSharedValue(windowHeight);
   const overlayOpacity = useSharedValue(0);
@@ -92,6 +90,15 @@ export const BottomSheet = ({
       setShowModal(true);
     }
   }, [visible]);
+
+  useEffect(() => {
+    const checkScreenReaderStatus = async () => {
+      const enabled = await AccessibilityInfo.isScreenReaderEnabled();
+      setIsScreenReaderEnabled(enabled);
+    };
+
+    checkScreenReaderStatus();
+  }, []);
 
   useEffect(() => {
     if (contentHeight) {
@@ -116,7 +123,7 @@ export const BottomSheet = ({
   }, [visible, translateY, overlayOpacity, contentHeight, onClose]);
 
   const gesture = Gesture.Pan()
-    .enabled(enableSwipeToClose)
+    .enabled(enableSwipeToClose && !isScreenReaderEnabled)
     .onStart(() => {
       startY.value = translateY.value;
       gestureActive.value = true;
@@ -169,6 +176,7 @@ export const BottomSheet = ({
 
   return (
     <Modal
+      accessible={false}
       transparent={true}
       visible={showModal}
       onRequestClose={onRequestClose}
@@ -195,6 +203,12 @@ export const BottomSheet = ({
               bottomSheetAnimatedStyle,
             ]}
             onLayout={handleLayout}
+            role="dialog"
+            accessible
+            accessibilityLiveRegion="polite"
+            accessibilityViewIsModal
+            onAccessibilityEscape={onRequestClose}
+            {...accessibilityProps}
           >
             <View style={styles.content}>{children}</View>
           </Animated.View>

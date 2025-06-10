@@ -3,7 +3,7 @@ import { Radio } from '@/craftrn-ui/components/Radio';
 import { Text } from '@/craftrn-ui/components/Text';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export default function RadioScreen() {
@@ -28,12 +28,8 @@ export default function RadioScreen() {
           Default
         </Text>
         <Card style={styles.componentContainer}>
-          <Pressable onPress={handlePress}>
-            <Radio checked={checked1} />
-          </Pressable>
-          <Pressable onPress={handlePress}>
-            <Radio checked={checked2} />
-          </Pressable>
+          <Radio checked={checked1} onPress={handlePress} />
+          <Radio checked={checked2} onPress={handlePress} />
         </Card>
       </View>
       <View style={styles.content}>

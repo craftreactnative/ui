@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
@@ -105,6 +105,12 @@ export const SliderDual = ({
 
   const leftKnobScale = useSharedValue(1);
   const rightKnobScale = useSharedValue(1);
+
+  // States for accessibility values to avoid reading shared values during render
+  const [leftAccessibilityValue, setLeftAccessibilityValue] =
+    useState(minInitialValue);
+  const [rightAccessibilityValue, setRightAccessibilityValue] =
+    useState(maxInitialValue);
   const getSliderValue = useCallback(
     (pos: number) => {
       'worklet';
@@ -118,12 +124,16 @@ export const SliderDual = ({
 
   const notifyValueChange = useCallback(() => {
     'worklet';
+    const leftValue = getSliderValue(leftPosition.value);
+    const rightValue = getSliderValue(rightPosition.value);
     const values = {
-      min: getSliderValue(leftPosition.value),
-      max: getSliderValue(rightPosition.value),
+      min: leftValue,
+      max: rightValue,
     };
     runOnJS(onValuesChange)(values);
-  }, [getSliderValue, leftPosition.value, onValuesChange, rightPosition.value]);
+    runOnJS(setLeftAccessibilityValue)(leftValue);
+    runOnJS(setRightAccessibilityValue)(rightValue);
+  }, [getSliderValue, onValuesChange]);
 
   const createKnobGesture = useCallback(
     ({
@@ -161,16 +171,13 @@ export const SliderDual = ({
     [notifyValueChange],
   );
 
-  const getLeftConstrainedPosition = useCallback(
-    (newPos: number) => {
-      'worklet';
-      return Math.max(
-        0,
-        Math.min(newPos, rightPosition.value - config.knobSize / 2),
-      );
-    },
-    [rightPosition.value],
-  );
+  const getLeftConstrainedPosition = useCallback((newPos: number) => {
+    'worklet';
+    return Math.max(
+      0,
+      Math.min(newPos, rightPosition.value - config.knobSize / 2),
+    );
+  }, []);
 
   const getRightConstrainedPosition = useCallback(
     (newPos: number) => {
@@ -180,7 +187,7 @@ export const SliderDual = ({
         Math.min(newPos, sliderWidth),
       );
     },
-    [leftPosition.value, sliderWidth],
+    [sliderWidth],
   );
 
   const leftGesture = createKnobGesture({
@@ -206,14 +213,28 @@ export const SliderDual = ({
   }));
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} accessible>
       <View style={styles.slider(sliderWidth)}>
         <Animated.View style={[styles.fill, fillStyle]} />
         <GestureDetector gesture={leftGesture}>
-          <Animated.View style={[styles.knob, leftKnobStyle]} />
+          <Animated.View
+            style={[styles.knob, leftKnobStyle]}
+            role="slider"
+            aria-valuemin={min}
+            aria-valuemax={rightAccessibilityValue}
+            aria-valuenow={leftAccessibilityValue}
+            aria-valuetext={`${leftAccessibilityValue}`}
+          />
         </GestureDetector>
         <GestureDetector gesture={rightGesture}>
-          <Animated.View style={[styles.knob, rightKnobStyle]} />
+          <Animated.View
+            style={[styles.knob, rightKnobStyle]}
+            role="slider"
+            aria-valuemin={leftAccessibilityValue}
+            aria-valuemax={max}
+            aria-valuenow={rightAccessibilityValue}
+            aria-valuetext={`${rightAccessibilityValue}`}
+          />
         </GestureDetector>
       </View>
     </View>

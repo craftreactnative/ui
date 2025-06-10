@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import {
+  AccessibilityActionEvent,
+  AccessibilityProps,
+  View,
+} from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { ButtonRound } from '../ButtonRound/ButtonRound';
 import { Text } from '../Text/Text';
@@ -9,21 +13,32 @@ import { Plus } from './Plus';
 /**
  * Props for the Counter component.
  */
-export type Props = {
+export type Props = AccessibilityProps & {
   /**
    * Callback function triggered when the counter value changes.
    */
   onValueChange: (value: number) => void;
   /**
-   * The initial value of the counter.
+   * The maximum value of the counter.
    * @default 0
    */
-  initialValue?: number;
+  minValue?: number;
   /**
    * The maximum value of the counter.
    * @default 10
    */
   maxValue?: number;
+  /**
+   * The initial value of the counter.
+   * Must be between minValue and maxValue
+   * @default 0
+   */
+  initialValue?: number;
+  /**
+   * The increment value of the counter.
+   * @default 1
+   */
+  increment?: number;
   /**
    * The label to display when the counter is empty.
    * @default '0'
@@ -34,28 +49,79 @@ export type Props = {
 export const Counter = ({
   onValueChange,
   initialValue = 0,
+  minValue = 0,
   maxValue = 10,
+  increment = 1,
   emptyLabel = '0',
+  ...accessibilityProps
 }: Props) => {
-  const [count, setCount] = useState(initialValue);
+  const [count, setCount] = useState(
+    Math.min(Math.max(initialValue, minValue), maxValue),
+  );
   const { styles, theme } = useStyles(stylesheet);
   const canIncrease = count < maxValue;
-  const canDecrease = count > 0;
+  const canDecrease = count > minValue;
 
-  const increase = () => {
-    const newValue = count + 1;
-    setCount(newValue);
-    onValueChange(newValue);
-  };
+  const updateCount = useCallback(
+    (action: 'increment' | 'decrement') => {
+      const newValue =
+        count + (action === 'increment' ? increment : -increment);
+      setCount(newValue);
+      onValueChange(newValue);
+    },
+    [count, onValueChange],
+  );
 
-  const decrease = () => {
-    const newValue = count - 1;
-    setCount(newValue);
-    onValueChange(newValue);
-  };
+  const increase = useCallback(() => {
+    if (canIncrease) {
+      updateCount('increment');
+    }
+  }, [canIncrease, updateCount]);
+
+  const decrease = useCallback(() => {
+    if (canDecrease) {
+      updateCount('decrement');
+    }
+  }, [canDecrease, updateCount]);
+
+  const handleAccessibilityAction = useCallback(
+    (event: AccessibilityActionEvent) => {
+      switch (event.nativeEvent.actionName) {
+        case 'increment':
+          increase();
+          break;
+        case 'decrement':
+          decrease();
+          break;
+      }
+    },
+    [updateCount],
+  );
 
   return (
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+      accessible
+      role="slider"
+      accessibilityValue={{
+        min: minValue,
+        max: maxValue,
+        now: count,
+        text: `${count}`,
+      }}
+      accessibilityActions={[
+        {
+          name: 'increment',
+          label: `Increase value by ${increment}`,
+        },
+        {
+          name: 'decrement',
+          label: `Decrease value by ${increment}`,
+        },
+      ]}
+      onAccessibilityAction={handleAccessibilityAction}
+      {...accessibilityProps}
+    >
       <ButtonRound
         onPress={decrease}
         size="small"

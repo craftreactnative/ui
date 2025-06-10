@@ -1,4 +1,5 @@
 import { default as React, useEffect } from 'react';
+import { AccessibilityProps, Pressable } from 'react-native';
 import Animated, {
   Easing,
   interpolateColor,
@@ -18,7 +19,7 @@ export const config = {
 /**
  * Props for the Radio component.
  */
-export type Props = {
+export type Props = AccessibilityProps & {
   /**
    * Whether the radio button is checked.
    */
@@ -27,9 +28,18 @@ export type Props = {
    * Whether the radio button is disabled.
    */
   disabled?: boolean;
+  /**
+   * Callback when the radio is pressed.
+   */
+  onPress?: (isChecked: boolean) => void;
 };
 
-export const Radio = ({ checked = false, disabled = false }: Props) => {
+export const Radio = ({
+  checked = false,
+  disabled = false,
+  onPress,
+  ...accessibilityProps
+}: Props) => {
   const { styles, theme } = useStyles(stylesheet);
   const scale = useSharedValue(1);
   const appearance = useSharedValue(0);
@@ -65,15 +75,24 @@ export const Radio = ({ checked = false, disabled = false }: Props) => {
   }));
 
   return (
-    <Animated.View
-      style={[
-        styles.container,
-        containerAnimatedStyle,
-        disabled && styles.containerDisabled,
-      ]}
+    <Pressable
+      onPress={() => onPress?.(!checked)}
+      accessible
+      role="radio"
+      aria-checked={checked}
+      disabled={disabled}
+      {...accessibilityProps}
     >
-      <Animated.View style={[styles.icon, iconAnimatedStyle]} />
-    </Animated.View>
+      <Animated.View
+        style={[
+          styles.container,
+          containerAnimatedStyle,
+          disabled && styles.containerDisabled,
+        ]}
+      >
+        <Animated.View style={[styles.icon, iconAnimatedStyle]} />
+      </Animated.View>
+    </Pressable>
   );
 };
 

@@ -7,7 +7,11 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import {
+  createStyleSheet,
+  UnistylesRuntime,
+  useStyles,
+} from 'react-native-unistyles';
 
 export default function InputTextScreen() {
   const { styles, theme } = useStyles(stylesheet);
@@ -94,7 +98,8 @@ export default function InputTextScreen() {
 const stylesheet = createStyleSheet(theme => ({
   container: {
     paddingHorizontal: theme.spacing.large,
-    paddingVertical: theme.spacing.medium,
+    paddingTop: theme.spacing.medium,
+    paddingBottom: UnistylesRuntime.insets.bottom,
   },
   content: {
     gap: theme.spacing.small,

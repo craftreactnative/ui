@@ -18,12 +18,16 @@ export type Props = {
    * The content to display inside the key.
    */
   children: React.ReactNode;
+  /**
+   * Aria label for accessibility.
+   */
+  ariaLabel?: string;
 };
 
-export const Key = ({ onPress, children }: Props) => {
+export const Key = ({ onPress, children, ariaLabel }: Props) => {
   const { styles } = useStyles(stylesheet);
   return (
-    <Pressable onPress={onPress}>
+    <Pressable onPress={onPress} aria-label={ariaLabel}>
       {({ pressed }) => <View style={styles.key(pressed)}>{children}</View>}
     </Pressable>
   );

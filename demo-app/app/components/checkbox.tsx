@@ -3,7 +3,7 @@ import { Checkbox } from '@/craftrn-ui/components/Checkbox';
 import { Text } from '@/craftrn-ui/components/Text';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export default function CheckboxScreen() {
@@ -23,12 +23,8 @@ export default function CheckboxScreen() {
           Default
         </Text>
         <Card style={styles.componentContainer}>
-          <Pressable onPress={() => setChecked1(!checked1)}>
-            <Checkbox checked={checked1} />
-          </Pressable>
-          <Pressable onPress={() => setChecked2(!checked2)}>
-            <Checkbox checked={checked2} />
-          </Pressable>
+          <Checkbox checked={checked1} onPress={() => setChecked1(!checked1)} />
+          <Checkbox onPress={() => setChecked2(!checked2)} checked={checked2} />
         </Card>
       </View>
       <View style={styles.content}>

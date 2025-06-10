@@ -55,31 +55,43 @@ export const PasscodeEntry = ({ onPasscodeEntered }: Props) => {
       <View style={styles.pinKeysContainer}>
         <View style={styles.pinKeysRow}>
           {[1, 2, 3].map(num => (
-            <Key key={num} onPress={() => handlePinKeyPress(num)}>
+            <Key
+              key={num}
+              onPress={() => handlePinKeyPress(num)}
+              ariaLabel={`${num}`}
+            >
               <Text style={styles.pinKeyText}>{num}</Text>
             </Key>
           ))}
         </View>
         <View style={styles.pinKeysRow}>
           {[4, 5, 6].map(num => (
-            <Key key={num} onPress={() => handlePinKeyPress(num)}>
+            <Key
+              key={num}
+              onPress={() => handlePinKeyPress(num)}
+              ariaLabel={`${num}`}
+            >
               <Text style={styles.pinKeyText}>{num}</Text>
             </Key>
           ))}
         </View>
         <View style={styles.pinKeysRow}>
           {[7, 8, 9].map(num => (
-            <Key key={num} onPress={() => handlePinKeyPress(num)}>
+            <Key
+              key={num}
+              onPress={() => handlePinKeyPress(num)}
+              ariaLabel={`${num}`}
+            >
               <Text style={styles.pinKeyText}>{num}</Text>
             </Key>
           ))}
         </View>
         <View style={styles.pinKeysRow}>
           <View style={styles.pinKeysRowSpacer} />
-          <Key onPress={() => handlePinKeyPress(0)}>
+          <Key onPress={() => handlePinKeyPress(0)} ariaLabel={`0`}>
             <Text style={styles.pinKeyText}>0</Text>
           </Key>
-          <Key onPress={handleBackspaceKeyPress}>
+          <Key onPress={handleBackspaceKeyPress} ariaLabel="Backspace">
             <Backspace color={theme.colors.contentPrimary} size={28} />
           </Key>
         </View>

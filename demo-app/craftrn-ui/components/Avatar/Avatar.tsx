@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
-import { Image, View } from 'react-native';
+import {
+  AccessibilityProps,
+  Image,
+  ImageSourcePropType,
+  View,
+} from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { Text } from '../Text/Text';
 
 export const config = {
-  avatarSmall: 32,
-  avatarMedium: 38,
-  avatarLarge: 44,
-  avatarIndicatorSmall: 10,
-  avatarIndicatorLarge: 12,
+  small: {
+    avatarSize: 32,
+    indicatorSize: 10,
+  },
+  medium: {
+    avatarSize: 38,
+    indicatorSize: 10,
+  },
+  large: {
+    avatarSize: 44,
+    indicatorSize: 12,
+  },
 };
 
 /**
@@ -19,11 +31,11 @@ export type AvatarColor = 0 | 1 | 2 | 3;
 /**
  * A component that displays an avatar.
  */
-export type Props = {
+export type Props = AccessibilityProps & {
   /**
-   * The URI of the image to display.
+   * The source of the image to display.
    */
-  uri?: string;
+  source?: ImageSourcePropType;
   /**
    * The fallback initials to display if the image cannot be loaded.
    */
@@ -43,44 +55,54 @@ export type Props = {
    * @default 'medium'
    */
   size?: 'small' | 'medium' | 'large';
+  /**
+   * Alternative text for the image.
+   */
+  alt?: string;
 };
 
 export const Avatar = ({
-  uri,
+  source,
   fallbackInitials = '',
   fallbackColor = 0,
   showOnlineIndicator = false,
   size = 'medium',
+  alt,
+  ...accessibilityProps
 }: Props) => {
-  const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const { styles } = useStyles(stylesheet, {
     color: fallbackColor,
     size,
   });
 
-  const avatarIndicatorSize =
-    size === 'small'
-      ? config.avatarIndicatorSmall
-      : config.avatarIndicatorLarge;
+  const avatarIndicatorSize = config[size].indicatorSize;
 
   return (
     <View
       style={[
         styles.container,
-        (!uri || imageError) && styles.containerFallback,
+        (!source || !imageLoaded) && styles.containerFallback,
       ]}
+      accessible
+      accessibilityHint={showOnlineIndicator ? 'online' : undefined}
+      {...accessibilityProps}
     >
-      {uri && !imageError ? (
-        <Image
-          source={{ uri }}
-          style={styles.image}
-          onError={() => setImageError(true)}
-        />
-      ) : (
-        <Text variant="body2" style={styles.text}>
-          {fallbackInitials}
-        </Text>
-      )}
+      <View style={styles.fallbackContainer}>
+        {(!source || !imageLoaded) && (
+          <Text variant="body2" style={styles.text}>
+            {fallbackInitials}
+          </Text>
+        )}
+        {source && (
+          <Image
+            source={source}
+            style={[styles.image, { opacity: imageLoaded ? 1 : 0 }]}
+            onLoad={() => setImageLoaded(true)}
+            alt={alt}
+          />
+        )}
+      </View>
       {showOnlineIndicator && (
         <View
           style={[
@@ -101,18 +123,18 @@ const stylesheet = createStyleSheet(({ borderRadius, colors, spacing }) => ({
     variants: {
       size: {
         small: {
-          width: config.avatarSmall,
-          height: config.avatarSmall,
+          width: config.small.avatarSize,
+          height: config.small.avatarSize,
           borderRadius: borderRadius.small,
         },
         medium: {
-          width: config.avatarMedium,
-          height: config.avatarMedium,
+          width: config.medium.avatarSize,
+          height: config.medium.avatarSize,
           borderRadius: borderRadius.medium,
         },
         large: {
-          width: config.avatarLarge,
-          height: config.avatarLarge,
+          width: config.large.avatarSize,
+          height: config.large.avatarSize,
           borderRadius: borderRadius.medium,
         },
       },
@@ -136,10 +158,18 @@ const stylesheet = createStyleSheet(({ borderRadius, colors, spacing }) => ({
       },
     },
   },
+  fallbackContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    position: 'relative',
+  },
   image: {
     borderRadius: borderRadius.medium,
     width: '100%',
     height: '100%',
+    position: 'absolute',
   },
   text: {
     color: colors.white,

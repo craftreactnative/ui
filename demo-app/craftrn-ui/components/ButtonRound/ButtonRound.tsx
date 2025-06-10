@@ -1,20 +1,29 @@
 import React, { ReactElement } from 'react';
-import { Pressable, View } from 'react-native';
+import { AccessibilityProps, Pressable, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export const config = {
-  buttonSizeSmall: 24,
-  buttonSizeMedium: 32,
-  buttonSizeLarge: 40,
-  iconSizeSmall: 14,
-  iconSizeMedium: 18,
-  iconSizeLarge: 24,
+  small: {
+    buttonSize: 24,
+    iconSize: 14,
+    hitSlop: 10,
+  },
+  medium: {
+    buttonSize: 32,
+    iconSize: 18,
+    hitSlop: 6,
+  },
+  large: {
+    buttonSize: 40,
+    iconSize: 24,
+    hitSlop: 2,
+  },
 };
 
 /**
  * Props for the ButtonRound component.
  */
-export type Props = {
+export type Props = AccessibilityProps & {
   /**
    * Callback function triggered when the button is pressed.
    */
@@ -47,17 +56,19 @@ export const ButtonRound = ({
   disabled = false,
   renderContent,
   variant = 'primary',
+  ...accessibilityProps
 }: Props) => {
   const { styles } = useStyles(stylesheet, { variant, size });
-  const iconSize =
-    size === 'small'
-      ? config.iconSizeSmall
-      : size === 'large'
-        ? config.iconSizeLarge
-        : config.iconSizeMedium;
+  const { iconSize, hitSlop } = config[size];
 
   return (
-    <Pressable onPress={onPress} disabled={disabled} hitSlop={4}>
+    <Pressable
+      onPress={onPress}
+      disabled={disabled}
+      hitSlop={hitSlop}
+      role="button"
+      {...accessibilityProps}
+    >
       {({ pressed }) => (
         <View style={styles.button({ pressed, disabled })}>
           {renderContent({ iconSize })}
@@ -98,16 +109,16 @@ const stylesheet = createStyleSheet(({ borderRadius, colors }) => ({
 
       size: {
         small: {
-          width: config.buttonSizeSmall,
-          height: config.buttonSizeSmall,
+          width: config.small.buttonSize,
+          height: config.small.buttonSize,
         },
         medium: {
-          width: config.buttonSizeMedium,
-          height: config.buttonSizeMedium,
+          width: config.medium.buttonSize,
+          height: config.medium.buttonSize,
         },
         large: {
-          width: config.buttonSizeLarge,
-          height: config.buttonSizeLarge,
+          width: config.large.buttonSize,
+          height: config.large.buttonSize,
         },
       },
     },

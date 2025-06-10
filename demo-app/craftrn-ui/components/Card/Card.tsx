@@ -7,10 +7,12 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
  */
 export type Props = Pick<ViewProps, 'children' | 'style'>;
 
-export const Card = ({ children, style }: Props) => {
+export const Card = ({ children, style, ...viewProps }: Props) => {
   const { styles } = useStyles(stylesheet);
   return (
-    <View style={[styles.card, StyleSheet.flatten(style)]}>{children}</View>
+    <View style={[styles.card, StyleSheet.flatten(style)]} {...viewProps}>
+      {children}
+    </View>
   );
 };
 

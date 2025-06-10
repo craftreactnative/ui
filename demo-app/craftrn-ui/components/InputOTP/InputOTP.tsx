@@ -98,13 +98,20 @@ export const InputOTP = ({ onChange }: Props) => {
             value={code[index]}
             caretHidden
             maxLength={1}
+            accessibilityLabel={`${index + 1} of ${config.length}`}
+            autoComplete="one-time-code"
             textContentType="oneTimeCode"
+            inputMode="numeric"
           />
         )),
     [code, handleKeyPress, handleFocus, resetCode, styles.codeInputItem],
   );
 
-  return <View style={styles.container}>{inputs}</View>;
+  return (
+    <View style={styles.container} role="group">
+      {inputs}
+    </View>
+  );
 };
 
 const stylesheet = createStyleSheet(({ spacing, textVariants }) => ({

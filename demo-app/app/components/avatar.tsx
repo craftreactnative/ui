@@ -25,9 +25,9 @@ export default function AvatarScreen() {
           Sizes
         </Text>
         <Card style={styles.componentContainer}>
-          <Avatar uri={AVATAR_URL1} size="small" />
-          <Avatar uri={AVATAR_URL2} size="medium" />
-          <Avatar uri={AVATAR_URL3} size="large" />
+          <Avatar source={{ uri: AVATAR_URL1 }} size="small" />
+          <Avatar source={{ uri: AVATAR_URL2 }} size="medium" />
+          <Avatar source={{ uri: AVATAR_URL3 }} size="large" />
         </Card>
       </View>
       <View style={styles.content}>
@@ -35,9 +35,21 @@ export default function AvatarScreen() {
           Online indicator
         </Text>
         <Card style={styles.componentContainer}>
-          <Avatar uri={AVATAR_URL1} size="small" showOnlineIndicator />
-          <Avatar uri={AVATAR_URL2} size="medium" showOnlineIndicator />
-          <Avatar uri={AVATAR_URL3} size="large" showOnlineIndicator />
+          <Avatar
+            source={{ uri: AVATAR_URL1 }}
+            size="small"
+            showOnlineIndicator
+          />
+          <Avatar
+            source={{ uri: AVATAR_URL2 }}
+            size="medium"
+            showOnlineIndicator
+          />
+          <Avatar
+            source={{ uri: AVATAR_URL3 }}
+            size="large"
+            showOnlineIndicator
+          />
         </Card>
       </View>
       <View style={styles.content}>
@@ -45,7 +57,21 @@ export default function AvatarScreen() {
           Fallback initial
         </Text>
         <Card style={styles.componentContainer}>
-          <Avatar uri="https://404" size="medium" fallbackInitials="AL" />
+          <Avatar
+            source={{ uri: 'https://404' }}
+            size="small"
+            fallbackInitials="AL"
+          />
+          <Avatar
+            source={{ uri: 'https://404' }}
+            size="medium"
+            fallbackInitials="CM"
+          />
+          <Avatar
+            source={{ uri: 'https://404' }}
+            size="large"
+            fallbackInitials="LC"
+          />
         </Card>
       </View>
       <View style={styles.content}>
@@ -54,25 +80,25 @@ export default function AvatarScreen() {
         </Text>
         <Card style={styles.componentContainer}>
           <Avatar
-            uri="https://404"
+            source={{ uri: 'https://404' }}
             size="medium"
             fallbackInitials="F"
             fallbackColor={0}
           />
           <Avatar
-            uri="https://404"
+            source={{ uri: 'https://404' }}
             size="medium"
             fallbackInitials="CM"
             fallbackColor={1}
           />
           <Avatar
-            uri="https://404"
+            source={{ uri: 'https://404' }}
             size="medium"
             fallbackInitials="H"
             fallbackColor={2}
           />
           <Avatar
-            uri="https://404"
+            source={{ uri: 'https://404' }}
             size="medium"
             fallbackInitials="TP"
             fallbackColor={3}

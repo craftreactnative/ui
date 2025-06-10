@@ -1,37 +1,44 @@
 import React from 'react';
-import { Pressable, StyleSheet, View, ViewProps } from 'react-native';
+import {
+  AccessibilityProps,
+  Pressable,
+  StyleSheet,
+  View,
+  ViewProps,
+} from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { Text } from '../Text/Text';
 
 /**
  * Props for the ListItem component.
  */
-export type Props = Pick<ViewProps, 'style'> & {
-  /**
-   * Left accessory element. Will be placed before the content.
-   */
-  itemLeft?: React.ReactElement;
-  /**
-   * Main text to display.
-   */
-  text: string;
-  /**
-   * Text to display below the main text.
-   */
-  textBelow?: string;
-  /**
-   * Right accessory element. Will be placed after the text.
-   */
-  itemRight?: React.ReactElement;
-  /**
-   * Callback function triggered when the item is pressed.
-   */
-  onPress?: () => void;
-  /**
-   * Whether to display a divider below the item.
-   */
-  divider?: boolean;
-};
+export type Props = Pick<ViewProps, 'style'> &
+  AccessibilityProps & {
+    /**
+     * Left accessory element. Will be placed before the content.
+     */
+    itemLeft?: React.ReactElement;
+    /**
+     * Main text to display.
+     */
+    text: string;
+    /**
+     * Text to display below the main text.
+     */
+    textBelow?: string;
+    /**
+     * Right accessory element. Will be placed after the text.
+     */
+    itemRight?: React.ReactElement;
+    /**
+     * Callback function triggered when the item is pressed.
+     */
+    onPress?: () => void;
+    /**
+     * Whether to display a divider below the item.
+     */
+    divider?: boolean;
+  };
 
 export const ListItem = ({
   itemLeft,
@@ -41,11 +48,16 @@ export const ListItem = ({
   onPress,
   divider = false,
   style,
+  ...accessibilityProps
 }: Props) => {
   const { styles } = useStyles(stylesheet);
   return (
     <>
-      <Pressable onPress={onPress}>
+      <Pressable
+        onPress={onPress}
+        role={!!onPress ? 'button' : 'listitem'}
+        {...accessibilityProps}
+      >
         {({ pressed }) => (
           <View
             style={[

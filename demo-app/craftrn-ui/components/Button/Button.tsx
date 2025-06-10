@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, View } from 'react-native';
+import { AccessibilityProps, Pressable, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { Text } from '../Text/Text';
 
@@ -18,7 +18,7 @@ type Variant = 'primary' | 'secondary' | 'negative' | 'text';
 /**
  * Props for the Button component.
  */
-export type Props = {
+export type Props = AccessibilityProps & {
   /**
    * The text content of the button.
    */
@@ -50,6 +50,7 @@ export const Button = ({
   variant = 'primary',
   size = 'regular',
   disabled = false,
+  ...accessibilityProps
 }: Props) => {
   const { styles } = useStyles(stylesheet, {
     variant,
@@ -65,6 +66,8 @@ export const Button = ({
           : { top: config.hitSlopRegular, bottom: config.hitSlopRegular }
       }
       disabled={disabled}
+      role="button"
+      {...accessibilityProps}
     >
       {({ pressed }) => (
         <View style={styles.button({ pressed, disabled })}>

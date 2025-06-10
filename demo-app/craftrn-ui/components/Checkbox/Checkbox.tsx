@@ -1,4 +1,5 @@
 import { default as React, useEffect } from 'react';
+import { AccessibilityProps, Pressable } from 'react-native';
 import Animated, {
   Easing,
   interpolateColor,
@@ -18,7 +19,7 @@ export const config = {
 /**
  * Props for the Checkbox component.
  */
-export type Props = {
+export type Props = AccessibilityProps & {
   /**
    * Whether the checkbox is checked.
    * @default false
@@ -29,9 +30,18 @@ export type Props = {
    * @default false
    */
   disabled?: boolean;
+  /**
+   * Callback when the checkbox is pressed.
+   */
+  onPress?: (isChecked: boolean) => void;
 };
 
-export const Checkbox = ({ checked = false, disabled = false }: Props) => {
+export const Checkbox = ({
+  checked = false,
+  disabled = false,
+  onPress,
+  ...accessibilityProps
+}: Props) => {
   const { styles, theme } = useStyles(stylesheet);
   const scale = useSharedValue(1);
   const appearance = useSharedValue(0);
@@ -67,17 +77,26 @@ export const Checkbox = ({ checked = false, disabled = false }: Props) => {
   }));
 
   return (
-    <Animated.View
-      style={[
-        styles.container,
-        containerStyle,
-        disabled && styles.containerDisabled,
-      ]}
+    <Pressable
+      onPress={() => onPress?.(!checked)}
+      accessible
+      role="checkbox"
+      aria-checked={checked}
+      disabled={disabled}
+      {...accessibilityProps}
     >
-      <Animated.View style={iconStyle}>
-        <CheckLarge color={theme.colors.white} />
+      <Animated.View
+        style={[
+          styles.container,
+          containerStyle,
+          disabled && styles.containerDisabled,
+        ]}
+      >
+        <Animated.View style={iconStyle}>
+          <CheckLarge color={theme.colors.white} />
+        </Animated.View>
       </Animated.View>
-    </Animated.View>
+    </Pressable>
   );
 };
 

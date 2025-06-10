@@ -17,10 +17,18 @@ import Animated, {
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { Text } from '../Text/Text';
 
-const heightConfig = {
-  small: 40,
-  medium: 48,
-  large: 56,
+const getRandomId = () => Math.random().toString(36).substring(2, 15);
+
+export const config = {
+  small: {
+    height: 40,
+  },
+  medium: {
+    height: 48,
+  },
+  large: {
+    height: 56,
+  },
 } as const;
 
 /**
@@ -35,7 +43,7 @@ export type Props = {
    * The size of the input.
    * @default 'medium'
    */
-  size?: keyof typeof heightConfig;
+  size?: keyof typeof config;
   /**
    * Callback function triggered when the input is pressed.
    */
@@ -78,6 +86,7 @@ export const InputText = forwardRef<TextInput, Props & TextInputProps>(
     const inputRef = useRef<TextInput>(null);
     const reduceMotion = useReducedMotion();
     const isActive = isFocused || !!value;
+    const nativeID = useRef(getRandomId()).current;
 
     const labelAnimatedStyle = useAnimatedStyle(() => {
       const animationConfig = {
@@ -141,6 +150,7 @@ export const InputText = forwardRef<TextInput, Props & TextInputProps>(
                   pointerEvents={!editable || readOnly ? 'none' : undefined}
                   editable={editable}
                   readOnly={readOnly}
+                  accessibilityLabel={`${value ?? ''} ${error ?? ''}`}
                 />
               </View>
               {rightAccessory && (
@@ -177,9 +187,9 @@ const stylesheet = createStyleSheet(
       overflow: 'hidden',
       variants: {
         size: {
-          small: { minHeight: heightConfig.small },
-          medium: { minHeight: heightConfig.medium },
-          large: { minHeight: heightConfig.large },
+          small: { minHeight: config.small.height },
+          medium: { minHeight: config.medium.height },
+          large: { minHeight: config.large.height },
         },
       },
     }),
@@ -199,15 +209,15 @@ const stylesheet = createStyleSheet(
         size: {
           small: {
             ...textVariants.body3,
-            lineHeight: heightConfig.small - spacing.xsmall * 2,
+            lineHeight: config.small.height - spacing.xsmall * 2,
           },
           medium: {
             ...textVariants.body2,
-            lineHeight: heightConfig.medium - spacing.xsmall * 2,
+            lineHeight: config.medium.height - spacing.xsmall * 2,
           },
           large: {
             ...textVariants.body1,
-            lineHeight: heightConfig.large - spacing.xsmall * 2,
+            lineHeight: config.large.height - spacing.xsmall * 2,
           },
         },
       },
