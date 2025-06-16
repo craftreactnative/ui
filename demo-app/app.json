@@ -7,10 +7,10 @@
     "icon": "./assets/images/icon.png",
     "scheme": "craftrn",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.craftreactnative.craftrn-ui-demoapp",
+      "bundleIdentifier": "com.craftreactnative.craftrnui.demoapp",
       "runtimeVersion": "1.0.0"
     },
     "android": {
@@ -18,7 +18,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.craftreactnative.craftrn-ui-demoapp",
+      "package": "com.craftreactnative.craftrnui.demoapp",
       "runtimeVersion": {
         "policy": "appVersion"
       }
