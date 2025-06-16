@@ -69,7 +69,7 @@ export const Counter = ({
       setCount(newValue);
       onValueChange(newValue);
     },
-    [count, onValueChange],
+    [count, onValueChange, increment],
   );
 
   const increase = useCallback(() => {
@@ -95,7 +95,7 @@ export const Counter = ({
           break;
       }
     },
-    [updateCount],
+    [increase, decrease],
   );
 
   return (

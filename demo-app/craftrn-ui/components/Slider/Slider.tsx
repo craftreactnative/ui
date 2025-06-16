@@ -110,6 +110,7 @@ export const Slider = ({
     const value = getSliderValue(position.value);
     runOnJS(onValueChange)(value);
     runOnJS(setAccessibilityValue)(value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getSliderValue, onValueChange]);
 
   const adjustValue = useCallback(
@@ -125,13 +126,14 @@ export const Slider = ({
       runOnJS(onValueChange)(newValue);
       runOnJS(setAccessibilityValue)(newValue);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       getSliderValue,
-      getPositionFromValue,
       max,
-      min,
-      onValueChange,
       accessibilityStep,
+      min,
+      getPositionFromValue,
+      onValueChange,
     ],
   );
 

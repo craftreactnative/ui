@@ -133,6 +133,7 @@ export const SliderDual = ({
     runOnJS(onValuesChange)(values);
     runOnJS(setLeftAccessibilityValue)(leftValue);
     runOnJS(setRightAccessibilityValue)(rightValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getSliderValue, onValuesChange]);
 
   const createKnobGesture = useCallback(
@@ -177,6 +178,7 @@ export const SliderDual = ({
       0,
       Math.min(newPos, rightPosition.value - config.knobSize / 2),
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getRightConstrainedPosition = useCallback(
@@ -187,6 +189,7 @@ export const SliderDual = ({
         Math.min(newPos, sliderWidth),
       );
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [sliderWidth],
   );
 

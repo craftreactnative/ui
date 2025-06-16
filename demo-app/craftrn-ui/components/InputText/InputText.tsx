@@ -17,8 +17,6 @@ import Animated, {
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { Text } from '../Text/Text';
 
-const getRandomId = () => Math.random().toString(36).substring(2, 15);
-
 export const config = {
   small: {
     height: 40,
@@ -86,7 +84,6 @@ export const InputText = forwardRef<TextInput, Props & TextInputProps>(
     const inputRef = useRef<TextInput>(null);
     const reduceMotion = useReducedMotion();
     const isActive = isFocused || !!value;
-    const nativeID = useRef(getRandomId()).current;
 
     const labelAnimatedStyle = useAnimatedStyle(() => {
       const animationConfig = {
