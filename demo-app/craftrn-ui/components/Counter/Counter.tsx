@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import {
   AccessibilityActionEvent,
+  AccessibilityInfo,
   AccessibilityProps,
   View,
 } from 'react-native';
@@ -68,6 +69,7 @@ export const Counter = ({
         count + (action === 'increment' ? increment : -increment);
       setCount(newValue);
       onValueChange(newValue);
+      AccessibilityInfo.announceForAccessibility(`${newValue}`);
     },
     [count, onValueChange, increment],
   );

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { View } from 'react-native';
+import { AccessibilityInfo, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   runOnJS,
@@ -50,6 +50,11 @@ export type Props = {
    * Callback function triggered when the slider's values change.
    */
   onValuesChange: ({ min, max }: { min: number; max: number }) => void;
+  /**
+   * Step value for accessibility adjustments.
+   * @default 1
+   */
+  accessibilityStep?: number;
 };
 
 const scaleSpringConfig = {
@@ -82,6 +87,7 @@ export const SliderDual = ({
   minInitialValue = min,
   maxInitialValue = max,
   onValuesChange,
+  accessibilityStep = 1,
 }: Props) => {
   const { styles } = useStyles(stylesheet);
   const sliderWidth = width - config.knobSize;
@@ -106,11 +112,11 @@ export const SliderDual = ({
   const leftKnobScale = useSharedValue(1);
   const rightKnobScale = useSharedValue(1);
 
-  // States for accessibility values to avoid reading shared values during render
   const [leftAccessibilityValue, setLeftAccessibilityValue] =
     useState(minInitialValue);
   const [rightAccessibilityValue, setRightAccessibilityValue] =
     useState(maxInitialValue);
+
   const getSliderValue = useCallback(
     (pos: number) => {
       'worklet';
@@ -135,6 +141,86 @@ export const SliderDual = ({
     runOnJS(setRightAccessibilityValue)(rightValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getSliderValue, onValuesChange]);
+
+  const adjustValue = useCallback(
+    (knob: 'left' | 'right', action: 'increment' | 'decrement') => {
+      'worklet';
+      const isLeft = knob === 'left';
+      const position = isLeft ? leftPosition : rightPosition;
+      const currentValue = getSliderValue(position.value);
+
+      const getConstrainedValue = () => {
+        const step =
+          action === 'increment' ? accessibilityStep : -accessibilityStep;
+        const newValue = currentValue + step;
+
+        if (isLeft) {
+          return Math.max(
+            min,
+            Math.min(getSliderValue(rightPosition.value) - 1, newValue),
+          );
+        } else {
+          return Math.max(
+            getSliderValue(leftPosition.value) + 1,
+            Math.min(max, newValue),
+          );
+        }
+      };
+
+      const constrainedValue = getConstrainedValue();
+      const newPosition = getPositionFromValue(constrainedValue);
+      position.value = withSpring(newPosition, positionSpringConfig);
+
+      const label = isLeft ? 'Minimum' : 'Maximum';
+      runOnJS(AccessibilityInfo.announceForAccessibility)(
+        `${label} value: ${constrainedValue}`,
+      );
+
+      const leftValue = isLeft
+        ? constrainedValue
+        : getSliderValue(leftPosition.value);
+      const rightValue = isLeft
+        ? getSliderValue(rightPosition.value)
+        : constrainedValue;
+      const values = { min: leftValue, max: rightValue };
+
+      runOnJS(onValuesChange)(values);
+      if (isLeft) {
+        runOnJS(setLeftAccessibilityValue)(constrainedValue);
+      } else {
+        runOnJS(setRightAccessibilityValue)(constrainedValue);
+      }
+    },
+    [
+      leftPosition,
+      rightPosition,
+      getSliderValue,
+      getPositionFromValue,
+      onValuesChange,
+      accessibilityStep,
+      min,
+      max,
+    ],
+  );
+
+  const createAccessibilityActionHandler = useCallback(
+    (knob: 'left' | 'right') => (event: any) => {
+      switch (event.nativeEvent.actionName) {
+        case 'increment':
+          adjustValue(knob, 'increment');
+          break;
+        case 'decrement':
+          adjustValue(knob, 'decrement');
+          break;
+      }
+    },
+    [adjustValue],
+  );
+
+  const handleLeftAccessibilityAction =
+    createAccessibilityActionHandler('left');
+  const handleRightAccessibilityAction =
+    createAccessibilityActionHandler('right');
 
   const createKnobGesture = useCallback(
     ({
@@ -216,27 +302,57 @@ export const SliderDual = ({
   }));
 
   return (
-    <View style={styles.container} accessible>
+    <View style={styles.container}>
       <View style={styles.slider(sliderWidth)}>
         <Animated.View style={[styles.fill, fillStyle]} />
         <GestureDetector gesture={leftGesture}>
           <Animated.View
             style={[styles.knob, leftKnobStyle]}
+            accessible={true}
             role="slider"
+            accessibilityLabel="Minimum value slider"
+            accessibilityHint="Adjust the minimum value of the range"
             aria-valuemin={min}
             aria-valuemax={rightAccessibilityValue}
             aria-valuenow={leftAccessibilityValue}
-            aria-valuetext={`${leftAccessibilityValue}`}
+            aria-valuetext={`Minimum: ${leftAccessibilityValue}`}
+            accessibilityActions={[
+              {
+                name: 'increment',
+                label: `Increase minimum value by ${accessibilityStep}`,
+              },
+              {
+                name: 'decrement',
+                label: `Decrease minimum value by ${accessibilityStep}`,
+              },
+            ]}
+            onAccessibilityAction={handleLeftAccessibilityAction}
+            importantForAccessibility="yes"
           />
         </GestureDetector>
         <GestureDetector gesture={rightGesture}>
           <Animated.View
             style={[styles.knob, rightKnobStyle]}
+            accessible={true}
             role="slider"
+            accessibilityLabel="Maximum value slider"
+            accessibilityHint="Adjust the maximum value of the range"
             aria-valuemin={leftAccessibilityValue}
             aria-valuemax={max}
             aria-valuenow={rightAccessibilityValue}
-            aria-valuetext={`${rightAccessibilityValue}`}
+            aria-valuetext={`Maximum: ${rightAccessibilityValue}`}
+            accessibilityActions={[
+              {
+                name: 'increment',
+                label: `Increase maximum value by ${accessibilityStep}`,
+              },
+              {
+                name: 'decrement',
+                label: `Decrease maximum value by ${accessibilityStep}`,
+              },
+            ]}
+            onAccessibilityAction={handleRightAccessibilityAction}
+            importantForAccessibility="yes"
           />
         </GestureDetector>
       </View>

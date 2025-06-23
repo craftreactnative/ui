@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { View } from 'react-native';
+import { AccessibilityInfo, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   runOnJS,
@@ -123,6 +123,8 @@ export const Slider = ({
           : Math.max(min, currentValue - accessibilityStep);
       const newPosition = getPositionFromValue(newValue);
       position.value = withSpring(newPosition, positionSpringConfig);
+
+      runOnJS(AccessibilityInfo.announceForAccessibility)(`${newValue}`);
       runOnJS(onValueChange)(newValue);
       runOnJS(setAccessibilityValue)(newValue);
     },
