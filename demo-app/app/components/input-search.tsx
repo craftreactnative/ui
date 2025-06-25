@@ -44,8 +44,11 @@ export default function InputSearchScreen() {
             }
             rightAccessory={
               <ButtonRound
-                renderIcon={size => (
-                  <Slider size={size} color={theme.colors.contentTertiary} />
+                renderContent={({ iconSize }) => (
+                  <Slider
+                    size={iconSize}
+                    color={theme.colors.contentTertiary}
+                  />
                 )}
                 onPress={() => {}}
               />

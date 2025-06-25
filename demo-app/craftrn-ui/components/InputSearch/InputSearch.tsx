@@ -67,8 +67,8 @@ export const InputSearch = forwardRef<TextInput, Props>(function InputSearch(
     <Pressable
       onPress={handlePress}
       style={styles.container}
-      accessible={!!handlePress ? true : undefined}
-      role={!!handlePress ? 'button' : undefined}
+      accessible={!!onPress}
+      role={!!onPress ? 'button' : undefined}
     >
       <View
         style={styles.inputContainer({

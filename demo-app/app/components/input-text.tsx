@@ -58,7 +58,7 @@ export default function InputTextScreen() {
           </Text>
           <Card style={styles.componentContainer}>
             <InputText
-              label="Destination"
+              label="Contact name"
               leftAccessory={
                 <View style={styles.leftAccessory}>
                   <Search color={theme.colors.contentPrimary} />
@@ -73,7 +73,7 @@ export default function InputTextScreen() {
           </Text>
           <Card style={styles.componentContainer}>
             <InputText
-              label="Destination"
+              label="Messages"
               rightAccessory={
                 <View style={styles.rightAccessory}>
                   <Slider color={theme.colors.contentPrimary} />
