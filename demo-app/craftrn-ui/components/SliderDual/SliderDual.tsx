@@ -17,6 +17,19 @@ const config = {
   activeKnobScale: 1.2,
 };
 
+const springConfigs = {
+  scale: {
+    mass: 0.5,
+    damping: 15,
+    stiffness: 200,
+  },
+  position: {
+    mass: 0.2,
+    damping: 50,
+    stiffness: 300,
+  },
+};
+
 /**
  * Props for the SliderDual component.
  */
@@ -51,22 +64,15 @@ export type Props = {
    */
   onValuesChange: ({ min, max }: { min: number; max: number }) => void;
   /**
-   * Step value for accessibility adjustments.
+   * Step value for adjustments.
    * @default 1
    */
+  step?: number;
+  /**
+   * Step value for accessibility adjustments.
+   * @default step
+   */
   accessibilityStep?: number;
-};
-
-const scaleSpringConfig = {
-  mass: 0.5,
-  damping: 15,
-  stiffness: 200,
-};
-
-const positionSpringConfig = {
-  mass: 0.2,
-  damping: 50,
-  stiffness: 300,
 };
 
 const useKnobAnimatedStyle = (
@@ -87,7 +93,8 @@ export const SliderDual = ({
   minInitialValue = min,
   maxInitialValue = max,
   onValuesChange,
-  accessibilityStep = 1,
+  step = 1,
+  accessibilityStep = step,
 }: Props) => {
   const { styles } = useStyles(stylesheet);
   const sliderWidth = width - config.knobSize;
@@ -111,36 +118,53 @@ export const SliderDual = ({
 
   const leftKnobScale = useSharedValue(1);
   const rightKnobScale = useSharedValue(1);
+  const lastCallbackTime = useSharedValue(0);
 
   const [leftAccessibilityValue, setLeftAccessibilityValue] =
     useState(minInitialValue);
   const [rightAccessibilityValue, setRightAccessibilityValue] =
     useState(maxInitialValue);
 
+  const snapToStep = useCallback(
+    (value: number) => {
+      'worklet';
+      const steppedValue = Math.round((value - min) / step) * step + min;
+      return Math.min(Math.max(min, steppedValue), max);
+    },
+    [min, max, step],
+  );
+
   const getSliderValue = useCallback(
     (pos: number) => {
       'worklet';
-      return Math.min(
-        Math.max(min, Math.round((pos / sliderWidth) * (max - min) + min)),
-        max,
-      );
+      const rawValue = (pos / sliderWidth) * (max - min) + min;
+      return snapToStep(rawValue);
     },
-    [max, min, sliderWidth],
+    [max, min, sliderWidth, snapToStep],
   );
 
-  const notifyValueChange = useCallback(() => {
-    'worklet';
-    const leftValue = getSliderValue(leftPosition.value);
-    const rightValue = getSliderValue(rightPosition.value);
-    const values = {
-      min: leftValue,
-      max: rightValue,
-    };
-    runOnJS(onValuesChange)(values);
-    runOnJS(setLeftAccessibilityValue)(leftValue);
-    runOnJS(setRightAccessibilityValue)(rightValue);
+  const notifyValueChange = useCallback(
+    (throttle = false) => {
+      'worklet';
+      if (throttle) {
+        const now = Date.now();
+        if (now - lastCallbackTime.value <= 16) return;
+        lastCallbackTime.value = now;
+      }
+
+      const leftValue = getSliderValue(leftPosition.value);
+      const rightValue = getSliderValue(rightPosition.value);
+      const values = {
+        min: leftValue,
+        max: rightValue,
+      };
+      runOnJS(onValuesChange)(values);
+      runOnJS(setLeftAccessibilityValue)(leftValue);
+      runOnJS(setRightAccessibilityValue)(rightValue);
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getSliderValue, onValuesChange]);
+    [getSliderValue, onValuesChange],
+  );
 
   const adjustValue = useCallback(
     (knob: 'left' | 'right', action: 'increment' | 'decrement') => {
@@ -150,18 +174,18 @@ export const SliderDual = ({
       const currentValue = getSliderValue(position.value);
 
       const getConstrainedValue = () => {
-        const step =
-          action === 'increment' ? accessibilityStep : -accessibilityStep;
-        const newValue = currentValue + step;
+        const stepToUse = accessibilityStep;
+        const stepDirection = action === 'increment' ? stepToUse : -stepToUse;
+        const newValue = currentValue + stepDirection;
 
         if (isLeft) {
           return Math.max(
             min,
-            Math.min(getSliderValue(rightPosition.value) - 1, newValue),
+            Math.min(getSliderValue(rightPosition.value) - step, newValue),
           );
         } else {
           return Math.max(
-            getSliderValue(leftPosition.value) + 1,
+            getSliderValue(leftPosition.value) + step,
             Math.min(max, newValue),
           );
         }
@@ -169,7 +193,7 @@ export const SliderDual = ({
 
       const constrainedValue = getConstrainedValue();
       const newPosition = getPositionFromValue(constrainedValue);
-      position.value = withSpring(newPosition, positionSpringConfig);
+      position.value = withSpring(newPosition, springConfigs.position);
 
       const label = isLeft ? 'Minimum' : 'Maximum';
       runOnJS(AccessibilityInfo.announceForAccessibility)(
@@ -200,6 +224,7 @@ export const SliderDual = ({
       accessibilityStep,
       min,
       max,
+      step,
     ],
   );
 
@@ -227,70 +252,76 @@ export const SliderDual = ({
       position,
       prevPosition,
       scale,
-      getConstrainedPosition,
+      isLeft,
     }: {
       position: SharedValue<number>;
       prevPosition: SharedValue<number>;
       scale: SharedValue<number>;
-      getConstrainedPosition: (newPos: number) => number;
+      isLeft: boolean;
     }) =>
       Gesture.Pan()
         .minDistance(1)
         .onBegin(() => {
           'worklet';
           prevPosition.value = position.value;
-          scale.value = withSpring(config.activeKnobScale, scaleSpringConfig);
+          scale.value = withSpring(config.activeKnobScale, springConfigs.scale);
         })
         .onUpdate(e => {
           'worklet';
           const newPosition = prevPosition.value + e.translationX;
-          position.value = withSpring(getConstrainedPosition(newPosition), {
-            ...positionSpringConfig,
-            velocity: e.velocityX,
-          });
-          notifyValueChange();
+          const clampedPosition = Math.max(
+            0,
+            Math.min(newPosition, sliderWidth),
+          );
+
+          const rawValue = (clampedPosition / sliderWidth) * (max - min) + min;
+          const snappedValue = snapToStep(rawValue);
+
+          let finalValue = snappedValue;
+          if (isLeft) {
+            const rightValue = getSliderValue(rightPosition.value);
+            finalValue = Math.min(snappedValue, rightValue - step);
+            finalValue = Math.max(min, finalValue);
+          } else {
+            const leftValue = getSliderValue(leftPosition.value);
+            finalValue = Math.max(snappedValue, leftValue + step);
+            finalValue = Math.min(max, finalValue);
+          }
+
+          const finalPosition = getPositionFromValue(finalValue);
+          position.value = finalPosition;
+
+          notifyValueChange(true);
         })
         .onFinalize(() => {
           'worklet';
-          scale.value = withSpring(1, scaleSpringConfig);
+          scale.value = withSpring(1, springConfigs.scale);
           notifyValueChange();
         }),
-    [notifyValueChange],
-  );
-
-  const getLeftConstrainedPosition = useCallback((newPos: number) => {
-    'worklet';
-    return Math.max(
-      0,
-      Math.min(newPos, rightPosition.value - config.knobSize / 2),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const getRightConstrainedPosition = useCallback(
-    (newPos: number) => {
-      'worklet';
-      return Math.max(
-        leftPosition.value + config.knobSize / 2,
-        Math.min(newPos, sliderWidth),
-      );
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [sliderWidth],
+    [
+      notifyValueChange,
+      sliderWidth,
+      max,
+      min,
+      snapToStep,
+      getPositionFromValue,
+      getSliderValue,
+      step,
+    ],
   );
 
   const leftGesture = createKnobGesture({
     position: leftPosition,
     prevPosition: leftPrevPosition,
     scale: leftKnobScale,
-    getConstrainedPosition: getLeftConstrainedPosition,
+    isLeft: true,
   });
 
   const rightGesture = createKnobGesture({
     position: rightPosition,
     prevPosition: rightPrevPosition,
     scale: rightKnobScale,
-    getConstrainedPosition: getRightConstrainedPosition,
+    isLeft: false,
   });
 
   const leftKnobStyle = useKnobAnimatedStyle(leftPosition, leftKnobScale);

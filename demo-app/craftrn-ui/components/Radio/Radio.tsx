@@ -19,7 +19,7 @@ export const config = {
 /**
  * Props for the Radio component.
  */
-export type Props = AccessibilityProps & {
+export type Props = {
   /**
    * Whether the radio button is checked.
    */
@@ -34,12 +34,14 @@ export type Props = AccessibilityProps & {
   onPress?: (isChecked: boolean) => void;
 };
 
+type RadioProps = Props & AccessibilityProps;
+
 export const Radio = ({
   checked = false,
   disabled = false,
   onPress,
   ...accessibilityProps
-}: Props) => {
+}: RadioProps) => {
   const { styles, theme } = useStyles(stylesheet);
   const scale = useSharedValue(1);
   const appearance = useSharedValue(0);

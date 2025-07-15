@@ -18,7 +18,7 @@ export const Card = ({ children, style, ...viewProps }: Props) => {
 
 const stylesheet = createStyleSheet(({ colors, borderRadius }) => ({
   card: {
-    backgroundColor: colors.backgroundPrimary,
+    backgroundColor: colors.surfacePrimary,
     borderRadius: borderRadius.large,
     overflow: 'hidden',
   },

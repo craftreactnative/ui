@@ -23,7 +23,7 @@ export const config = {
 /**
  * Props for the ButtonRound component.
  */
-export type Props = AccessibilityProps & {
+export type Props = {
   /**
    * Callback function triggered when the button is pressed.
    */
@@ -50,6 +50,8 @@ export type Props = AccessibilityProps & {
   variant?: 'primary' | 'secondary';
 };
 
+type ButtonRoundProps = Props & AccessibilityProps;
+
 export const ButtonRound = ({
   onPress,
   size = 'medium',
@@ -57,7 +59,7 @@ export const ButtonRound = ({
   renderContent,
   variant = 'primary',
   ...accessibilityProps
-}: Props) => {
+}: ButtonRoundProps) => {
   const { styles } = useStyles(stylesheet, { variant, size });
   const { iconSize, hitSlop } = config[size];
 

@@ -1,4 +1,10 @@
-import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {
   AccessibilityInfo,
   AccessibilityProps,
@@ -22,8 +28,9 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 /**
  * Props for the BottomSheet component.
+ * @see AccessibilityProps
  */
-export type Props = AccessibilityProps & {
+export type Props = {
   /**
    * Whether the bottom sheet is visible.
    */
@@ -54,7 +61,19 @@ export type Props = AccessibilityProps & {
    * @default false
    */
   enableOverlayTapToClose?: boolean;
+  /**
+   * The visual style variant of the bottom sheet.
+   * @default 'primary'
+   */
+  variant?: 'primary' | 'secondary';
+  /**
+   * Whether to show the handle bar at the top of the bottom sheet.
+   * @default false
+   */
+  showHandleBar?: boolean;
 };
+
+type BottomSheetProps = Props & AccessibilityProps;
 
 const withTimingConfig = {
   duration: 400,
@@ -69,9 +88,11 @@ export const BottomSheet = ({
   maxHeight,
   enableSwipeToClose = false,
   enableOverlayTapToClose = false,
+  variant = 'primary',
+  showHandleBar = false,
   ...accessibilityProps
-}: Props) => {
-  const { styles } = useStyles(stylesheet);
+}: BottomSheetProps) => {
+  const { styles } = useStyles(stylesheet, { variant });
   const [showModal, setShowModal] = useState(visible);
   const [contentHeight, setContentHeight] = useState<number | undefined>();
   const [isScreenReaderEnabled, setIsScreenReaderEnabled] = useState(false);
@@ -199,7 +220,9 @@ export const BottomSheet = ({
           </Animated.View>
           <Animated.View
             style={[
-              styles.sheet({ maxHeight: bottomSheetMaxHeight }),
+              styles.sheet({
+                maxHeight: bottomSheetMaxHeight,
+              }),
               bottomSheetAnimatedStyle,
             ]}
             onLayout={handleLayout}
@@ -210,7 +233,14 @@ export const BottomSheet = ({
             onAccessibilityEscape={onRequestClose}
             {...accessibilityProps}
           >
-            <View style={styles.content}>{children}</View>
+            <View style={styles.content}>
+              {showHandleBar && (
+                <View style={styles.handleBarContainer}>
+                  <View style={styles.handleBar} />
+                </View>
+              )}
+              {children}
+            </View>
           </Animated.View>
         </View>
       </GestureDetector>
@@ -229,8 +259,8 @@ const stylesheet = createStyleSheet(({ colors, borderRadius, spacing }) => ({
   overlayContent: {
     flex: 1,
   },
-  sheet: ({ maxHeight }) => ({
-    backgroundColor: colors.backgroundPrimary,
+  sheet: ({ maxHeight, backgroundColor }) => ({
+    backgroundColor: backgroundColor ?? colors.backgroundPrimary,
     zIndex: 2,
     borderTopLeftRadius: borderRadius.large,
     borderTopRightRadius: borderRadius.large,
@@ -239,8 +269,30 @@ const stylesheet = createStyleSheet(({ colors, borderRadius, spacing }) => ({
     left: 0,
     right: 0,
     maxHeight,
+    variants: {
+      variant: {
+        primary: {
+          backgroundColor: colors.backgroundPrimary,
+        },
+        secondary: {
+          backgroundColor: colors.backgroundSecondary,
+        },
+      },
+    },
   }),
   content: {
     paddingTop: spacing.large,
+  },
+  handleBarContainer: {
+    alignItems: 'center',
+    paddingVertical: spacing.medium,
+    marginTop: -spacing.large,
+    paddingTop: spacing.medium,
+  },
+  handleBar: {
+    width: 36,
+    height: 4,
+    backgroundColor: colors.contentQuaternary,
+    borderRadius: 2,
   },
 }));

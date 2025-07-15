@@ -12,10 +12,11 @@ export const colors = {
   stone950: '#0c0a09',
 
   teal150: '#d5f2f5',
-  teal300: '#0bb6cb',
+  teal300: '#51c8cf',
   teal600: '#007884',
   teal700: '#006771',
   teal800: '#004247',
+  teal900: '#00282c',
 
   // Semantic colors
   green500: '#22c55e',
@@ -68,7 +69,12 @@ export const lightTheme = {
     backgroundPrimary: colors.stone100,
     backgroundSecondary: colors.stone200,
     backgroundTertiary: colors.stone300,
-    backgroundQuaternary: colors.stone500,
+    backgroundQuaternary: colors.stone400,
+
+    surfacePrimary: colors.stone100,
+    surfaceSecondary: colors.stone300,
+    surfaceTertiary: colors.stone400,
+    surfaceQuaternary: colors.stone500,
 
     accentPrimary: colors.teal700,
     accentSecondary: colors.teal800,
@@ -78,6 +84,7 @@ export const lightTheme = {
     contentPrimary: colors.stone900,
     contentSecondary: colors.stone700,
     contentTertiary: colors.stone600,
+    contentQuaternary: colors.stone500,
     contentAccent: colors.teal700,
     contentError: colors.red700,
 
@@ -165,10 +172,15 @@ export const darkTheme = {
     backgroundTertiary: colors.stone800,
     backgroundQuaternary: colors.stone600,
 
+    surfacePrimary: colors.stone800,
+    surfaceSecondary: colors.stone700,
+    surfaceTertiary: colors.stone600,
+    surfaceQuaternary: colors.stone500,
+
     accentPrimary: colors.teal700,
     accentSecondary: colors.teal600,
     accentTertiary: colors.teal800,
-    accentQuaternary: colors.teal800,
+    accentQuaternary: colors.teal900,
 
     contentPrimary: colors.stone50,
     contentSecondary: colors.stone300,

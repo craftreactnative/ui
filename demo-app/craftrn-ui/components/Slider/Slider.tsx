@@ -65,8 +65,13 @@ export type Props = {
    */
   accessibilityHint?: string;
   /**
-   * Step value for accessibility adjustments.
+   * Step value for adjustments.
    * @default 1
+   */
+  step?: number;
+  /**
+   * Step value for accessibility adjustments.
+   * @default step
    */
   accessibilityStep?: number;
 };
@@ -79,10 +84,16 @@ export const Slider = ({
   onValueChange,
   ariaLabel,
   accessibilityHint = 'Increase or decrease the value',
-  accessibilityStep = 1,
+  step = 1,
+  accessibilityStep = step,
 }: Props) => {
   const { styles } = useStyles(stylesheet);
   const sliderWidth = width - config.knobSize;
+  const [accessibilityValue, setAccessibilityValue] = useState(initialValue);
+
+  const prevPosition = useSharedValue(0);
+  const knobScale = useSharedValue(1);
+  const lastCallbackTime = useSharedValue(0);
 
   const getPositionFromValue = (value: number) => {
     'worklet';
@@ -93,25 +104,39 @@ export const Slider = ({
     initialValue !== undefined ? getPositionFromValue(initialValue) : 0,
   );
 
-  const prevPosition = useSharedValue(0);
-  const knobScale = useSharedValue(1);
-  const [accessibilityValue, setAccessibilityValue] = useState(initialValue);
+  const snapToStep = useCallback(
+    (value: number) => {
+      'worklet';
+      const steppedValue = Math.round((value - min) / step) * step + min;
+      return Math.min(Math.max(min, steppedValue), max);
+    },
+    [min, max, step],
+  );
 
   const getSliderValue = useCallback(
     (pos: number) => {
       'worklet';
-      return Math.round((pos / sliderWidth) * (max - min) + min);
+      const rawValue = (pos / sliderWidth) * (max - min) + min;
+      return snapToStep(rawValue);
     },
-    [max, min, sliderWidth],
+    [max, min, sliderWidth, snapToStep],
   );
 
-  const notifyValueChange = useCallback(() => {
-    'worklet';
-    const value = getSliderValue(position.value);
-    runOnJS(onValueChange)(value);
-    runOnJS(setAccessibilityValue)(value);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getSliderValue, onValueChange]);
+  const notifyValueChange = useCallback(
+    (throttle = false) => {
+      'worklet';
+      if (throttle) {
+        const now = Date.now();
+        if (now - lastCallbackTime.value <= 16) return;
+        lastCallbackTime.value = now;
+      }
+
+      const value = getSliderValue(position.value);
+      runOnJS(onValueChange)(value);
+      runOnJS(setAccessibilityValue)(value);
+    },
+    [getSliderValue, onValueChange],
+  );
 
   const adjustValue = useCallback(
     (action: 'increment' | 'decrement') => {
@@ -128,7 +153,6 @@ export const Slider = ({
       runOnJS(onValueChange)(newValue);
       runOnJS(setAccessibilityValue)(newValue);
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       getSliderValue,
       max,
@@ -163,14 +187,14 @@ export const Slider = ({
     .onUpdate(e => {
       'worklet';
       const newPosition = prevPosition.value + e.translationX;
-      position.value = withSpring(
-        Math.max(0, Math.min(newPosition, sliderWidth)),
-        {
-          ...positionSpringConfig,
-          velocity: e.velocityX,
-        },
-      );
-      notifyValueChange();
+      const clampedPosition = Math.max(0, Math.min(newPosition, sliderWidth));
+
+      const rawValue = (clampedPosition / sliderWidth) * (max - min) + min;
+      const snappedValue = snapToStep(rawValue);
+      const finalPosition = getPositionFromValue(snappedValue);
+
+      position.value = finalPosition;
+      notifyValueChange(true);
     })
     .onFinalize(() => {
       'worklet';

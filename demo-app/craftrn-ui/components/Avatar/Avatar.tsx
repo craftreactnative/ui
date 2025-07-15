@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
-import { Text } from '../Text/Text';
+import { Text } from '../Text';
 
 export const config = {
   small: {
@@ -30,8 +30,9 @@ export type AvatarColor = 0 | 1 | 2 | 3;
 
 /**
  * A component that displays an avatar.
+ * @see AccessibilityProps
  */
-export type Props = AccessibilityProps & {
+export type Props = {
   /**
    * The source of the image to display.
    */
@@ -61,6 +62,8 @@ export type Props = AccessibilityProps & {
   alt?: string;
 };
 
+type AvatarProps = Props & AccessibilityProps;
+
 export const Avatar = ({
   source,
   fallbackInitials = '',
@@ -69,7 +72,7 @@ export const Avatar = ({
   size = 'medium',
   alt,
   ...accessibilityProps
-}: Props) => {
+}: AvatarProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const { styles } = useStyles(stylesheet, {
     color: fallbackColor,

@@ -19,7 +19,7 @@ export const config = {
 /**
  * Props for the Checkbox component.
  */
-export type Props = AccessibilityProps & {
+export type Props = {
   /**
    * Whether the checkbox is checked.
    * @default false
@@ -36,12 +36,14 @@ export type Props = AccessibilityProps & {
   onPress?: (isChecked: boolean) => void;
 };
 
+type CheckboxProps = Props & AccessibilityProps;
+
 export const Checkbox = ({
   checked = false,
   disabled = false,
   onPress,
   ...accessibilityProps
-}: Props) => {
+}: CheckboxProps) => {
   const { styles, theme } = useStyles(stylesheet);
   const scale = useSharedValue(1);
   const appearance = useSharedValue(0);

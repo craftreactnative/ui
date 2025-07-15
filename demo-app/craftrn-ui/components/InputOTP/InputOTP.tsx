@@ -1,11 +1,10 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { Platform, TextInput, View } from 'react-native';
+import { Pressable, TextInput, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
-import { InputText } from '../InputText/InputText';
+import { Text } from '../Text';
 
 const config = {
   length: 6,
-  codeWidth: 24,
 };
 
 /**
@@ -18,111 +17,128 @@ export type Props = {
   onChange: (value: string) => void;
 };
 
-const getEmptyCode = () => Array(config.length).fill('');
-
 export const InputOTP = ({ onChange }: Props) => {
   const { styles } = useStyles(stylesheet);
-  const inputRefs = useRef<TextInput[]>([]);
-  const [code, setCode] = useState(getEmptyCode);
+  const hiddenInputRef = useRef<TextInput>(null);
+  const [code, setCode] = useState('');
+  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
 
-  const resetCode = useCallback(() => {
-    setCode(getEmptyCode());
-    onChange('');
-    setTimeout(() => inputRefs.current[0]?.focus(), 0);
-  }, [onChange]);
+  const handleTextChange = useCallback(
+    (text: string) => {
+      const numericText = text.replace(/[^0-9]/g, '').slice(0, config.length);
+      setCode(numericText);
 
-  const handleFocus = useCallback((index: number) => {
-    setCode(prev => {
-      const newCode = [...prev];
-      newCode[index] = '';
-      return newCode;
-    });
-  }, []);
+      setFocusedIndex(
+        numericText.length < config.length
+          ? numericText.length
+          : config.length - 1,
+      );
 
-  const handleKeyPress = useCallback(
-    (key: string, index: number) => {
-      if (key === 'Backspace' && index > 0) {
-        setCode(prev => {
-          const newCode = [...prev];
-          newCode[index - 1] = '';
-          return newCode;
-        });
-        inputRefs.current[index - 1]?.focus();
-        return;
-      }
-
-      const digit = parseInt(key, 10);
-      if (isNaN(digit)) return;
-
-      setCode(prev => {
-        const newCode = [...prev];
-        newCode[index] = key;
-        return newCode;
-      });
-
-      if (index === config.length - 1) {
-        const newCode = [...code];
-        newCode[index] = key;
-
-        if (newCode.includes('')) {
-          resetCode();
-        } else {
-          inputRefs.current[index].blur();
-          onChange(newCode.join(''));
-        }
+      if (numericText.length === config.length) {
+        onChange(numericText);
+        hiddenInputRef.current?.blur();
       } else {
-        inputRefs.current[index + 1]?.focus();
+        onChange('');
       }
     },
-    [code, resetCode, onChange],
+    [onChange],
   );
+
+  const handleFocus = useCallback(() => {
+    setFocusedIndex(
+      code.length < config.length ? code.length : config.length - 1,
+    );
+  }, [code.length]);
+
+  const handleBlur = useCallback(() => {
+    setFocusedIndex(-1);
+  }, []);
+
+  const handlePress = useCallback(() => {
+    hiddenInputRef.current?.focus();
+  }, []);
 
   const inputs = useMemo(
     () =>
       Array(config.length)
         .fill(null)
-        .map((_, index) => (
-          <InputText
-            key={index}
-            keyboardType="numeric"
-            autoFocus={index === 0}
-            ref={ref => {
-              if (ref) {
-                inputRefs.current[index] = ref;
-              }
-            }}
-            onKeyPress={e => handleKeyPress(e.nativeEvent.key, index)}
-            onPress={resetCode}
-            onFocus={() => handleFocus(index)}
-            style={styles.codeInputItem}
-            value={code[index]}
-            caretHidden
-            maxLength={1}
-            accessibilityLabel={`${index + 1} of ${config.length}`}
-            autoComplete="one-time-code"
-            textContentType="oneTimeCode"
-            inputMode="numeric"
-          />
-        )),
-    [code, handleKeyPress, handleFocus, resetCode, styles.codeInputItem],
+        .map((_, index) => {
+          const char = code[index] || '';
+          const isFocused = index === focusedIndex;
+
+          return (
+            <Pressable
+              key={index}
+              onPress={handlePress}
+              style={[styles.codeInputItem, isFocused && styles.focusedInput]}
+            >
+              <Text
+                variant="heading3"
+                accessibilityLabel={`${index + 1} of ${config.length}`}
+              >
+                {char}
+              </Text>
+            </Pressable>
+          );
+        }),
+    [
+      code,
+      focusedIndex,
+      handlePress,
+      styles.codeInputItem,
+      styles.focusedInput,
+    ],
   );
 
   return (
-    <View style={styles.container} role="group">
+    <View style={styles.container}>
       {inputs}
+      <TextInput
+        ref={hiddenInputRef}
+        value={code}
+        onChangeText={handleTextChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        maxLength={config.length}
+        keyboardType="numeric"
+        autoComplete="one-time-code"
+        textContentType="oneTimeCode"
+        inputMode="numeric"
+        caretHidden
+        style={styles.hiddenInput}
+        autoFocus
+      />
     </View>
   );
 };
 
-const stylesheet = createStyleSheet(({ spacing, textVariants }) => ({
+const stylesheet = createStyleSheet(({ spacing, colors, borderRadius }) => ({
   container: {
     flexDirection: 'row',
     gap: spacing.xsmall,
+    position: 'relative',
   },
   codeInputItem: {
-    ...textVariants.heading3,
-    width: config.codeWidth,
-    lineHeight: Platform.OS === 'ios' ? 0 : undefined,
-    textAlign: 'center',
+    width: 44,
+    height: 52,
+    borderWidth: 1,
+    borderColor: colors.borderPrimary,
+    borderRadius: borderRadius.medium,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.backgroundPrimary,
+  },
+  focusedInput: {
+    borderColor: colors.accentPrimary,
+    borderWidth: 1,
+  },
+  hiddenInput: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    opacity: 0,
+    fontSize: 1,
   },
 }));

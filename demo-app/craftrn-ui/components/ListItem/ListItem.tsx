@@ -7,38 +7,43 @@ import {
   ViewProps,
 } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
-import { Text } from '../Text/Text';
+import { Text } from '../Text';
 
 /**
  * Props for the ListItem component.
  */
-export type Props = Pick<ViewProps, 'style'> &
-  AccessibilityProps & {
-    /**
-     * Left accessory element. Will be placed before the content.
-     */
-    itemLeft?: React.ReactElement;
-    /**
-     * Main text to display.
-     */
-    text: string;
-    /**
-     * Text to display below the main text.
-     */
-    textBelow?: string;
-    /**
-     * Right accessory element. Will be placed after the text.
-     */
-    itemRight?: React.ReactElement;
-    /**
-     * Callback function triggered when the item is pressed.
-     */
-    onPress?: () => void;
-    /**
-     * Whether to display a divider below the item.
-     */
-    divider?: boolean;
-  };
+export type Props = Pick<ViewProps, 'style'> & {
+  /**
+   * Left accessory element. Will be placed before the content.
+   */
+  itemLeft?: React.ReactElement;
+  /**
+   * Main text to display.
+   */
+  text: string;
+  /**
+   * Text to display below the main text.
+   */
+  textBelow?: string;
+  /**
+   * Right accessory element. Will be placed after the text.
+   */
+  itemRight?: React.ReactElement;
+  /**
+   * Callback function triggered when the item is pressed.
+   */
+  onPress?: () => void;
+  /**
+   * Whether to display a divider below the item.
+   */
+  divider?: boolean;
+  /**
+   * The visual style variant of the text
+   */
+  variant?: 'primary' | 'danger';
+};
+
+type ListItemProps = Props & AccessibilityProps;
 
 export const ListItem = ({
   itemLeft,
@@ -48,9 +53,10 @@ export const ListItem = ({
   onPress,
   divider = false,
   style,
+  variant = 'primary',
   ...accessibilityProps
-}: Props) => {
-  const { styles } = useStyles(stylesheet);
+}: ListItemProps) => {
+  const { styles } = useStyles(stylesheet, { variant });
   return (
     <>
       <Pressable
@@ -61,7 +67,8 @@ export const ListItem = ({
         {({ pressed }) => (
           <View
             style={[
-              styles.itemContainer(!!onPress && pressed),
+              styles.itemContainer,
+              !!onPress && pressed && styles.itemContainerPressed,
               StyleSheet.flatten(style),
             ]}
           >
@@ -86,14 +93,14 @@ export const ListItem = ({
 };
 
 const stylesheet = createStyleSheet(({ colors, spacing }) => ({
-  itemContainer: (pressed: boolean) => ({
+  itemContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: pressed
-      ? colors.backgroundTertiary
-      : colors.backgroundPrimary,
-  }),
+  },
+  itemContainerPressed: {
+    backgroundColor: colors.surfaceSecondary,
+  },
   itemContent: {
     flex: 1,
     flexShrink: 1,
@@ -101,6 +108,16 @@ const stylesheet = createStyleSheet(({ colors, spacing }) => ({
   },
   itemText: {
     fontWeight: 'bold',
+    variants: {
+      variant: {
+        primary: {
+          color: colors.contentPrimary,
+        },
+        danger: {
+          color: colors.contentError,
+        },
+      },
+    },
   },
   itemDivider: {
     borderBottomColor: colors.backgroundSecondary,

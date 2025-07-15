@@ -17,7 +17,7 @@ export const config = {
  * Props for the InputSearch component.
  * @see TextInputProps
  */
-export type Props = TextInputProps & {
+export type Props = {
   /**
    * Callback function triggered when the input is pressed.
    */
@@ -32,66 +32,76 @@ export type Props = TextInputProps & {
   rightAccessory?: React.ReactNode;
 };
 
-export const InputSearch = forwardRef<TextInput, Props>(function InputSearch(
-  { onPress, onFocus, onBlur, value, leftAccessory, rightAccessory, ...props },
-  ref,
-) {
-  const { styles, theme } = useStyles(stylesheet);
-  const [isFocused, setIsFocused] = useState(false);
-  const isActive = isFocused || !!value;
-  const isReadOnly = !props.editable && !!props.readOnly;
-  const inputRef = useRef<TextInput>(null);
-
-  const handlePress = useCallback(() => {
-    inputRef.current?.focus();
-    onPress?.();
-  }, [onPress]);
-
-  const handleFocus = useCallback(
-    (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-      setIsFocused(true);
-      onFocus?.(e);
+export const InputSearch = forwardRef<TextInput, Props & TextInputProps>(
+  function InputSearch(
+    {
+      onPress,
+      onFocus,
+      onBlur,
+      value,
+      leftAccessory,
+      rightAccessory,
+      ...props
     },
-    [onFocus],
-  );
+    ref,
+  ) {
+    const { styles, theme } = useStyles(stylesheet);
+    const [isFocused, setIsFocused] = useState(false);
+    const isActive = isFocused || !!value;
+    const isReadOnly = !props.editable && !!props.readOnly;
+    const inputRef = useRef<TextInput>(null);
 
-  const handleBlur = useCallback(
-    (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-      setIsFocused(false);
-      onBlur?.(e);
-    },
-    [onBlur],
-  );
+    const handlePress = useCallback(() => {
+      inputRef.current?.focus();
+      onPress?.();
+    }, [onPress]);
 
-  return (
-    <Pressable
-      onPress={handlePress}
-      style={styles.container}
-      accessible={!!onPress}
-      role={!!onPress ? 'button' : undefined}
-    >
-      <View
-        style={styles.inputContainer({
-          active: isActive,
-        })}
+    const handleFocus = useCallback(
+      (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+        setIsFocused(true);
+        onFocus?.(e);
+      },
+      [onFocus],
+    );
+
+    const handleBlur = useCallback(
+      (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+        setIsFocused(false);
+        onBlur?.(e);
+      },
+      [onBlur],
+    );
+
+    return (
+      <Pressable
+        onPress={handlePress}
+        style={styles.container}
+        accessible={!!onPress}
+        role={!!onPress ? 'button' : undefined}
       >
-        {leftAccessory}
-        <TextInput
-          style={styles.textInput({ readOnly: isReadOnly })}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          value={value}
-          ref={ref}
-          placeholderTextColor={theme.colors.contentTertiary}
-          textAlignVertical="center"
-          role="searchbox"
-          {...props}
-        />
-        {rightAccessory}
-      </View>
-    </Pressable>
-  );
-});
+        <View
+          style={styles.inputContainer({
+            active: isActive,
+          })}
+        >
+          {leftAccessory}
+          <TextInput
+            style={styles.textInput({ readOnly: isReadOnly })}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            value={value}
+            ref={ref}
+            placeholderTextColor={theme.colors.contentTertiary}
+            textAlignVertical="center"
+            role="searchbox"
+            {...props}
+          />
+          {rightAccessory}
+        </View>
+      </Pressable>
+    );
+  },
+);
 
 const stylesheet = createStyleSheet(({ colors, borderRadius, spacing }) => ({
   container: {

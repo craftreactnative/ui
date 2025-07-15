@@ -15,7 +15,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
-import { Text } from '../Text/Text';
+import { Text } from '../Text';
 
 export const config = {
   small: {
@@ -66,7 +66,6 @@ export const InputText = forwardRef<TextInput, Props & TextInputProps>(
       size = 'medium',
       label,
       onPress,
-      onChangeText,
       value,
       leftAccessory,
       rightAccessory,
@@ -176,7 +175,7 @@ const stylesheet = createStyleSheet(
         : error
           ? colors.contentError
           : colors.borderPrimary,
-      backgroundColor: colors.backgroundPrimary,
+      backgroundColor: colors.surfacePrimary,
       paddingVertical: spacing.xsmall,
       paddingHorizontal: spacing.small,
       flexDirection: 'row',
