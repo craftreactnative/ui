@@ -6,12 +6,12 @@ export const config = {
   small: {
     buttonSize: 24,
     iconSize: 14,
-    hitSlop: 10,
+    hitSlop: 2,
   },
   medium: {
     buttonSize: 32,
     iconSize: 18,
-    hitSlop: 6,
+    hitSlop: 2,
   },
   large: {
     buttonSize: 40,
