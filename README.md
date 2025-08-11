@@ -18,11 +18,11 @@ CraftReactNative flips this model on its head:
 
 Built around [Unistyles](https://github.com/jpudysz/react-native-unistyles) (a superset of StyleSheet similar to how TypeScript enhances JavaScript), CraftReactNative feels instantly familiar to React Native developers while offering powerful new capabilities.
 
-## Documentation
+## Get Started
 
-Explore the demo app to see all components in action.
+**Free Components**: Explore our demo app to see all components in action and [read the documentation](https://docs.craftreactnative.com/) to get started.
 
-[Read the documentation](https://docs.craftreactnative.com/) to get started
+**Ready for Production?** Check out our [premium templates](https://craftreactnative.com/templates) - complete screen implementations that save days of development time. Each template includes all necessary components, dark mode support, and production-ready code.
 
 ## License
 
