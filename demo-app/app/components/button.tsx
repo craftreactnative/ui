@@ -4,7 +4,11 @@ import { Text } from '@/craftrn-ui/components/Text';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { ScrollView, View } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import {
+  createStyleSheet,
+  UnistylesRuntime,
+  useStyles,
+} from 'react-native-unistyles';
 
 export default function ButtonScreen() {
   const { styles } = useStyles(stylesheet);
@@ -21,15 +25,85 @@ export default function ButtonScreen() {
           Variants
         </Text>
         <Card style={styles.componentContainer}>
-          <Button onPress={() => {}}>Primary</Button>
-          <Button variant="secondary" onPress={() => {}}>
-            Secondary
+          <Button onPress={() => {}}>Solid</Button>
+          <Button variant="subtle" onPress={() => {}}>
+            Subtle
           </Button>
-          <Button variant="negative" onPress={() => {}}>
-            Negative
+          <Button variant="outlined" onPress={() => {}}>
+            Outlined
           </Button>
           <Button variant="text" onPress={() => {}}>
             Text
+          </Button>
+        </Card>
+      </View>
+      <View style={styles.content}>
+        <Text variant="body2" style={styles.heading}>
+          Intent / Solid
+        </Text>
+        <Card style={styles.componentContainer}>
+          <Button intent="primary" onPress={() => {}}>
+            Primary
+          </Button>
+          <Button intent="secondary" onPress={() => {}}>
+            Secondary
+          </Button>
+          <Button intent="positive" onPress={() => {}}>
+            Positive
+          </Button>
+          <Button intent="negative" onPress={() => {}}>
+            Negative
+          </Button>
+        </Card>
+        <Text variant="body2" style={styles.heading}>
+          Intent / Subtle
+        </Text>
+        <Card style={styles.componentContainer}>
+          <Button intent="primary" variant="subtle" onPress={() => {}}>
+            Primary
+          </Button>
+          <Button intent="secondary" variant="subtle" onPress={() => {}}>
+            Secondary
+          </Button>
+          <Button intent="positive" variant="subtle" onPress={() => {}}>
+            Positive
+          </Button>
+          <Button intent="negative" variant="subtle" onPress={() => {}}>
+            Negative
+          </Button>
+        </Card>
+        <Text variant="body2" style={styles.heading}>
+          Intent / Outlined
+        </Text>
+        <Card style={styles.componentContainer}>
+          <Button intent="primary" variant="outlined" onPress={() => {}}>
+            Primary
+          </Button>
+          <Button intent="secondary" variant="outlined" onPress={() => {}}>
+            Secondary
+          </Button>
+          <Button intent="positive" variant="outlined" onPress={() => {}}>
+            Positive
+          </Button>
+          <Button intent="negative" variant="outlined" onPress={() => {}}>
+            Negative
+          </Button>
+        </Card>
+        <Text variant="body2" style={styles.heading}>
+          Intent / Text
+        </Text>
+        <Card style={styles.componentContainer}>
+          <Button intent="primary" variant="text" onPress={() => {}}>
+            Primary
+          </Button>
+          <Button intent="secondary" variant="text" onPress={() => {}}>
+            Secondary
+          </Button>
+          <Button intent="positive" variant="text" onPress={() => {}}>
+            Positive
+          </Button>
+          <Button intent="negative" variant="text" onPress={() => {}}>
+            Negative
           </Button>
         </Card>
       </View>
@@ -39,13 +113,13 @@ export default function ButtonScreen() {
         </Text>
         <Card style={styles.componentContainer}>
           <Button disabled onPress={() => {}}>
-            Primary
+            Solid
           </Button>
-          <Button variant="secondary" disabled onPress={() => {}}>
-            Secondary
+          <Button variant="subtle" disabled onPress={() => {}}>
+            Subtle
           </Button>
-          <Button variant="negative" disabled onPress={() => {}}>
-            Negative
+          <Button variant="outlined" disabled onPress={() => {}}>
+            Outlined
           </Button>
           <Button variant="text" disabled onPress={() => {}}>
             Text
@@ -63,6 +137,9 @@ export default function ButtonScreen() {
           <Button size="regular" onPress={() => {}}>
             Regular
           </Button>
+          <Button size="large" onPress={() => {}}>
+            Large
+          </Button>
         </Card>
       </View>
     </ScrollView>
@@ -73,6 +150,7 @@ const stylesheet = createStyleSheet(theme => ({
   container: {
     paddingHorizontal: theme.spacing.large,
     paddingVertical: theme.spacing.medium,
+    paddingBottom: UnistylesRuntime.insets.bottom + theme.spacing.xlarge,
   },
   content: {
     gap: theme.spacing.small,

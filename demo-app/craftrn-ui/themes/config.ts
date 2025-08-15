@@ -1,6 +1,7 @@
 export const colors = {
   stone50: '#fafaf9',
   stone100: '#f5f5f4',
+  stone150: '#f0efec',
   stone200: '#e7e5e4',
   stone300: '#d6d3d1',
   stone400: '#beb9b6',
@@ -9,24 +10,30 @@ export const colors = {
   stone700: '#44403c',
   stone800: '#292524',
   stone900: '#1c1917',
-  stone950: '#0c0a09',
+  stone950: '#110e0c',
 
-  teal150: '#d5f2f5',
-  teal300: '#51c8cf',
+  teal150: '#d4edf0',
+  teal300: '#9ecacd',
+  teal500: '#048391',
   teal600: '#007884',
   teal700: '#006771',
   teal800: '#004247',
   teal900: '#00282c',
 
   // Semantic colors
+  green150: '#d2f2dd',
+  green300: '#86efac',
   green500: '#22c55e',
   green700: '#15803d',
   green800: '#166534',
 
-  red500: '#ef4444',
-  red700: '#b91c1c',
-  red800: '#991b1b',
+  red150: '#f0dada',
+  red300: '#d19a9a',
+  red500: '#c44e4e',
+  red700: '#9b3535',
+  red800: '#7a2828',
 
+  blue300: '#6aa7f1',
   blue700: '#1d4ed8',
 
   // Non-semantic colors
@@ -59,7 +66,7 @@ const fontSizes = {
     lineHeight: 19,
   },
   xsmall: {
-    fontSize: 12,
+    fontSize: 13,
     lineHeight: 16,
   },
 } as const;
@@ -72,21 +79,27 @@ export const lightTheme = {
     backgroundQuaternary: colors.stone400,
 
     surfacePrimary: colors.stone100,
-    surfaceSecondary: colors.stone300,
-    surfaceTertiary: colors.stone400,
-    surfaceQuaternary: colors.stone500,
+    surfaceSecondary: colors.stone200,
+    surfaceTertiary: colors.stone300,
+    surfaceQuaternary: colors.stone400,
+
+    surfaceReversedPrimary: colors.stone800,
+    surfaceReversedSecondary: colors.stone700,
 
     accentPrimary: colors.teal700,
     accentSecondary: colors.teal800,
     accentTertiary: colors.teal300,
     accentQuaternary: colors.teal150,
 
-    contentPrimary: colors.stone900,
-    contentSecondary: colors.stone700,
+    contentPrimary: colors.stone950,
+    contentSecondary: colors.stone800,
     contentTertiary: colors.stone600,
     contentQuaternary: colors.stone500,
+    contentReversed: colors.stone50,
+
     contentAccent: colors.teal700,
-    contentError: colors.red700,
+    contentPositive: colors.green700,
+    contentNegative: colors.red700,
 
     borderPrimary: colors.stone300,
     borderSecondary: colors.stone200,
@@ -98,13 +111,17 @@ export const lightTheme = {
     transparent: 'transparent',
 
     // Semantic colors
-    informativeStrong: colors.blue700,
+    informativePrimary: colors.blue700,
 
-    positivePrimary: colors.green700,
-    positiveSecondary: colors.green800,
+    positivePrimary: colors.green800,
+    positiveSecondary: colors.green700,
+    positiveTertiary: colors.green300,
+    positiveQuaternary: colors.green150,
 
-    negativePrimary: colors.red700,
-    negativeSecondary: colors.red800,
+    negativePrimary: colors.red800,
+    negativeSecondary: colors.red700,
+    negativeTertiary: colors.red300,
+    negativeQuaternary: colors.red150,
 
     // Non-semantic colors
     white: colors.stone50,
@@ -177,6 +194,9 @@ export const darkTheme = {
     surfaceTertiary: colors.stone600,
     surfaceQuaternary: colors.stone500,
 
+    surfaceReversedPrimary: colors.stone100,
+    surfaceReversedSecondary: colors.stone200,
+
     accentPrimary: colors.teal700,
     accentSecondary: colors.teal600,
     accentTertiary: colors.teal800,
@@ -186,6 +206,7 @@ export const darkTheme = {
     contentSecondary: colors.stone300,
     contentTertiary: colors.stone400,
     contentAccent: colors.teal300,
+    contentReversed: colors.stone900,
 
     borderPrimary: colors.stone800,
     borderSecondary: colors.stone900,
@@ -195,8 +216,16 @@ export const darkTheme = {
     overlay: colors.stone600,
 
     // Semantic colors
-    positivePrimary: colors.green700,
+    informativePrimary: colors.blue300,
 
-    negativePrimary: colors.red700,
+    positivePrimary: colors.green150,
+    positiveSecondary: colors.green300,
+    positiveTertiary: colors.green700,
+    positiveQuaternary: colors.green800,
+
+    negativePrimary: colors.red150,
+    negativeSecondary: colors.red300,
+    negativeTertiary: colors.red700,
+    negativeQuaternary: colors.red800,
   },
 } as const;
