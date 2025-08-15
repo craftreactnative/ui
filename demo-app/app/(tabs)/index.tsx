@@ -62,6 +62,11 @@ export default function ComponentsScreen() {
             href="/components/checkbox"
           />
           <MenuItem
+            text="ContextMenu"
+            textBelow="Renders a context menu with options to perform actions"
+            href="/components/context-menu"
+          />
+          <MenuItem
             text="Counter"
             textBelow="Renders a counter with increase and decrease buttons and an empty optional text"
             href="/components/counter"
