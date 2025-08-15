@@ -17,15 +17,15 @@ const config = {
 };
 
 const scaleSpringConfig = {
-  mass: 0.5,
-  damping: 15,
-  stiffness: 200,
+  mass: 0.3,
+  damping: 12,
+  stiffness: 250,
 };
 
 const positionSpringConfig = {
-  mass: 0.2,
-  damping: 50,
-  stiffness: 300,
+  mass: 0.1,
+  damping: 20,
+  stiffness: 400,
 };
 
 /**
@@ -76,7 +76,7 @@ export type Props = {
   accessibilityStep?: number;
 };
 
-export const Slider = ({
+const Slider = ({
   min,
   max,
   width = config.sliderWidth,
@@ -127,7 +127,7 @@ export const Slider = ({
       'worklet';
       if (throttle) {
         const now = Date.now();
-        if (now - lastCallbackTime.value <= 16) return;
+        if (now - lastCallbackTime.value <= 32) return;
         lastCallbackTime.value = now;
       }
 
@@ -187,17 +187,16 @@ export const Slider = ({
     .onUpdate(e => {
       'worklet';
       const newPosition = prevPosition.value + e.translationX;
-      const clampedPosition = Math.max(0, Math.min(newPosition, sliderWidth));
-
-      const rawValue = (clampedPosition / sliderWidth) * (max - min) + min;
-      const snappedValue = snapToStep(rawValue);
-      const finalPosition = getPositionFromValue(snappedValue);
-
-      position.value = finalPosition;
+      position.value = Math.max(0, Math.min(newPosition, sliderWidth));
       notifyValueChange(true);
     })
     .onFinalize(() => {
       'worklet';
+      const rawValue = (position.value / sliderWidth) * (max - min) + min;
+      const snappedValue = snapToStep(rawValue);
+      const finalPosition = getPositionFromValue(snappedValue);
+
+      position.value = withSpring(finalPosition, positionSpringConfig);
       knobScale.value = withSpring(1, scaleSpringConfig);
       notifyValueChange();
     });
