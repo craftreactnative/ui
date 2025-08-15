@@ -8,7 +8,7 @@ import { ScrollView, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export default function ButtonRoundScreen() {
-  const { styles, theme } = useStyles(stylesheet);
+  const { styles } = useStyles(stylesheet);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -19,25 +19,61 @@ export default function ButtonRoundScreen() {
       />
       <View style={styles.content}>
         <Text variant="body2" style={styles.heading}>
-          Variants
+          Default Variant
         </Text>
         <Card style={styles.componentContainer}>
           <ButtonRound
             onPress={() => {}}
-            variant="primary"
-            renderContent={({ iconSize }) => (
+            variant="default"
+            intent="primary"
+            renderContent={({ iconSize, iconColor }) => (
               <ChevronRight
-                color={theme.colors.contentPrimary}
+                color={iconColor}
                 size={iconSize}
               />
             )}
           />
           <ButtonRound
             onPress={() => {}}
-            variant="secondary"
-            renderContent={({ iconSize }) => (
+            variant="default"
+            intent="secondary"
+            renderContent={({ iconSize, iconColor }) => (
               <ChevronRight
-                color={theme.colors.contentPrimary}
+                color={iconColor}
+                size={iconSize}
+              />
+            )}
+          />
+        </Card>
+      </View>
+      <View style={styles.content}>
+        <Text variant="body2" style={styles.heading}>
+          Reversed Variant
+        </Text>
+        <Card style={styles.componentContainer}>
+          <ButtonRound
+            onPress={() => {}}
+            variant="reversed"
+            renderContent={({ iconSize, iconColor }) => (
+              <ChevronRight
+                color={iconColor}
+                size={iconSize}
+              />
+            )}
+          />
+        </Card>
+      </View>
+      <View style={styles.content}>
+        <Text variant="body2" style={styles.heading}>
+          Accent Variant
+        </Text>
+        <Card style={styles.componentContainer}>
+          <ButtonRound
+            onPress={() => {}}
+            variant="accent"
+            renderContent={({ iconSize, iconColor }) => (
+              <ChevronRight
+                color={iconColor}
                 size={iconSize}
               />
             )}
@@ -52,9 +88,9 @@ export default function ButtonRoundScreen() {
           <ButtonRound
             onPress={() => {}}
             size="small"
-            renderContent={({ iconSize }) => (
+            renderContent={({ iconSize, iconColor }) => (
               <ChevronRight
-                color={theme.colors.contentPrimary}
+                color={iconColor}
                 size={iconSize}
               />
             )}
@@ -62,9 +98,9 @@ export default function ButtonRoundScreen() {
           <ButtonRound
             onPress={() => {}}
             size="medium"
-            renderContent={({ iconSize }) => (
+            renderContent={({ iconSize, iconColor }) => (
               <ChevronRight
-                color={theme.colors.contentPrimary}
+                color={iconColor}
                 size={iconSize}
               />
             )}
@@ -72,9 +108,9 @@ export default function ButtonRoundScreen() {
           <ButtonRound
             onPress={() => {}}
             size="large"
-            renderContent={({ iconSize }) => (
+            renderContent={({ iconSize, iconColor }) => (
               <ChevronRight
-                color={theme.colors.contentPrimary}
+                color={iconColor}
                 size={iconSize}
               />
             )}
@@ -88,11 +124,13 @@ export default function ButtonRoundScreen() {
         <Card style={styles.componentContainer}>
           <ButtonRound
             onPress={() => {}}
+            variant="default"
+            intent="primary"
             size="medium"
             disabled
-            renderContent={({ iconSize }) => (
+            renderContent={({ iconSize, iconColor }) => (
               <ChevronRight
-                color={theme.colors.contentPrimary}
+                color={iconColor}
                 size={iconSize}
               />
             )}

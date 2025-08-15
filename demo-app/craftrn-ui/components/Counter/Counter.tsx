@@ -129,6 +129,7 @@ export const Counter = ({
       <ButtonRound
         onPress={decrease}
         size="small"
+        intent="secondary"
         renderContent={({ iconSize }) => (
           <Minus color={theme.colors.contentPrimary} size={iconSize} />
         )}
@@ -142,6 +143,7 @@ export const Counter = ({
       <ButtonRound
         onPress={increase}
         size="small"
+        intent="secondary"
         renderContent={({ iconSize }) => (
           <Plus color={theme.colors.contentPrimary} size={iconSize} />
         )}

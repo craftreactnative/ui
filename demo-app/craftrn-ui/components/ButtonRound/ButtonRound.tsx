@@ -1,6 +1,11 @@
 import React, { ReactElement } from 'react';
 import { AccessibilityProps, Pressable, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import type { darkTheme, lightTheme } from '../../themes/config';
+
+type Size = 'large' | 'medium' | 'small';
+type Intent = 'primary' | 'secondary';
+type Variant = 'default' | 'reversed' | 'accent';
 
 export const config = {
   small: {
@@ -20,10 +25,7 @@ export const config = {
   },
 };
 
-/**
- * Props for the ButtonRound component.
- */
-export type Props = {
+type BaseProps = {
   /**
    * Callback function triggered when the button is pressed.
    */
@@ -36,32 +38,125 @@ export type Props = {
   /**
    * Function that renders an icon or other content inside the button.
    * @param props.iconSize - The suggested size of the icon in pixels, depending on the button size.
+   * @param props.iconColor - The appropriate color for the icon based on the button variant.
    */
-  renderContent: (props: { iconSize: number }) => ReactElement;
+  renderContent: (props: {
+    iconSize: number;
+    iconColor: string;
+  }) => ReactElement;
   /**
    * The size of the button.
    * @default 'medium'
    */
-  size?: 'large' | 'medium' | 'small';
-  /**
-   * The visual style variant of the button.
-   * @default 'primary'
-   */
-  variant?: 'primary' | 'secondary';
+  size?: Size;
 };
 
+type DefaultVariantProps = BaseProps & {
+  /**
+   * The visual style variant of the button.
+   * @default 'default'
+   */
+  variant?: 'default';
+  /**
+   * The intent/purpose of the button.
+   * @default 'primary'
+   */
+  intent?: Intent;
+};
+
+type AccentVariantProps = BaseProps & {
+  /**
+   * The visual style variant of the button.
+   */
+  variant: 'accent';
+  /**
+   * Intent is not available for accent variant.
+   */
+  intent?: never;
+};
+
+type ReversedVariantProps = BaseProps & {
+  /**
+   * The visual style variant of the button.
+   */
+  variant: 'reversed';
+  /**
+   * Intent is not available for reversed variant.
+   */
+  intent?: never;
+};
+
+/**
+ * Props for the ButtonRound component.
+ */
+export type Props =
+  | DefaultVariantProps
+  | AccentVariantProps
+  | ReversedVariantProps;
+
 type ButtonRoundProps = Props & AccessibilityProps;
+
+const getButtonStyles = (
+  intent: Intent | undefined,
+  variant: Variant,
+  pressed: boolean,
+  disabled: boolean,
+  colors: typeof lightTheme.colors | typeof darkTheme.colors,
+) => {
+  if (disabled) {
+    return {
+      backgroundColor: colors.surfaceSecondary,
+    };
+  }
+
+  switch (variant) {
+    case 'accent':
+      return {
+        backgroundColor: pressed
+          ? colors.accentSecondary
+          : colors.accentPrimary,
+      };
+    case 'reversed':
+      return {
+        backgroundColor: pressed
+          ? colors.surfaceReversedSecondary
+          : colors.surfaceReversedPrimary,
+      };
+    case 'default':
+      switch (intent ?? 'primary') {
+        case 'primary':
+          return {
+            backgroundColor: pressed
+              ? colors.surfaceTertiary
+              : colors.surfacePrimary,
+          };
+        case 'secondary':
+          return {
+            backgroundColor: pressed
+              ? colors.surfaceTertiary
+              : colors.surfaceSecondary,
+          };
+      }
+  }
+};
 
 export const ButtonRound = ({
   onPress,
   size = 'medium',
   disabled = false,
   renderContent,
-  variant = 'primary',
+  intent = 'primary',
+  variant = 'default',
   ...accessibilityProps
 }: ButtonRoundProps) => {
-  const { styles } = useStyles(stylesheet, { variant, size });
+  const { styles, theme } = useStyles(stylesheet, { size });
   const { iconSize, hitSlop } = config[size];
+
+  const iconVariantColor = {
+    accent: theme.colors.white,
+    reversed: theme.colors.contentReversed,
+    default: theme.colors.contentPrimary,
+  };
 
   return (
     <Pressable
@@ -72,43 +167,29 @@ export const ButtonRound = ({
       {...accessibilityProps}
     >
       {({ pressed }) => (
-        <View style={styles.button({ pressed, disabled })}>
-          {renderContent({ iconSize })}
+        <View
+          style={[
+            styles.button({ disabled }),
+            getButtonStyles(intent, variant, pressed, disabled, theme.colors),
+          ]}
+        >
+          {renderContent({
+            iconSize,
+            iconColor: iconVariantColor[variant],
+          })}
         </View>
       )}
     </Pressable>
   );
 };
 
-const stylesheet = createStyleSheet(({ borderRadius, colors }) => ({
-  button: ({ pressed, disabled }: { pressed: boolean; disabled: boolean }) => ({
+const stylesheet = createStyleSheet(({ borderRadius }) => ({
+  button: ({ disabled }: { disabled: boolean }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: borderRadius.full,
     opacity: disabled ? 0.5 : 1,
     variants: {
-      variant: disabled
-        ? {
-            primary: {
-              backgroundColor: colors.backgroundSecondary,
-            },
-            secondary: {
-              backgroundColor: colors.backgroundSecondary,
-            },
-          }
-        : {
-            primary: {
-              backgroundColor: pressed
-                ? colors.backgroundTertiary
-                : colors.backgroundSecondary,
-            },
-            secondary: {
-              backgroundColor: pressed
-                ? colors.backgroundTertiary
-                : colors.backgroundPrimary,
-            },
-          },
-
       size: {
         small: {
           width: config.small.buttonSize,

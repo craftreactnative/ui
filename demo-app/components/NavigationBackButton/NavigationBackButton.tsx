@@ -7,14 +7,15 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 export const NavigationBackButton = (
   props: Partial<ComponentProps<typeof ButtonRound>>,
 ) => {
-  const { styles, theme } = useStyles(stylesheet);
+  const { styles } = useStyles(stylesheet);
+  const { intent, variant, ...restProps } = props;
   return (
     <View style={styles.container}>
       <ButtonRound
-        renderContent={({ iconSize }) => (
-          <ChevronLeft size={iconSize} color={theme.colors.contentPrimary} />
+        {...restProps}
+        renderContent={({ iconSize, iconColor }) => (
+          <ChevronLeft size={iconSize} color={iconColor} />
         )}
-        {...props}
       />
     </View>
   );
