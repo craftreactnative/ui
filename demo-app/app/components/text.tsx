@@ -45,8 +45,17 @@ export default function TextScreen() {
           <Text variant="body1" color="contentAccent">
             Content Accent
           </Text>
-          <Text variant="body1" color="contentError">
-            Content Error
+          <Text variant="body1" color="positivePrimary">
+            Content Positive Primary
+          </Text>
+          <Text variant="body1" color="positiveSecondary">
+            Content Positive Secondary
+          </Text>
+          <Text variant="body1" color="negativePrimary">
+            Content Negative Primary
+          </Text>
+          <Text variant="body1" color="negativeSecondary">
+            Content Negative Secondary
           </Text>
         </Card>
       </View>

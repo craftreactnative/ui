@@ -99,7 +99,7 @@ const stylesheet = createStyleSheet(({ colors, spacing }) => ({
     alignItems: 'center',
   },
   itemContainerPressed: {
-    backgroundColor: colors.surfaceSecondary,
+    backgroundColor: colors.surfaceTertiary,
   },
   itemContent: {
     flex: 1,
@@ -114,13 +114,13 @@ const stylesheet = createStyleSheet(({ colors, spacing }) => ({
           color: colors.contentPrimary,
         },
         danger: {
-          color: colors.contentError,
+          color: colors.negativePrimary,
         },
       },
     },
   },
   itemDivider: {
-    borderBottomColor: colors.backgroundSecondary,
+    borderBottomColor: colors.surfaceSecondary,
     borderBottomWidth: 1,
   },
 }));

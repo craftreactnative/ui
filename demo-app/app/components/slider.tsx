@@ -8,7 +8,7 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export default function SliderScreen() {
   const { styles } = useStyles(stylesheet);
-  const [sliderValue, setSliderValue] = useState(25);
+  const [sliderValue, setSliderValue] = useState(0);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -25,7 +25,20 @@ export default function SliderScreen() {
           <Slider
             min={0}
             max={100}
-            initialValue={sliderValue}
+            initialValue={0}
+            onValueChange={() => null}
+          />
+        </Card>
+      </View>
+      <View style={styles.content}>
+        <Text variant="body2" style={styles.heading}>
+          With value
+        </Text>
+        <Card style={styles.componentContainer}>
+          <Slider
+            min={0}
+            max={100}
+            initialValue={25}
             onValueChange={setSliderValue}
           />
         </Card>

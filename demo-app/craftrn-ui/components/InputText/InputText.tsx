@@ -156,7 +156,7 @@ export const InputText = forwardRef<TextInput, Props & TextInputProps>(
           )}
         </Pressable>
         {error && (
-          <Text variant="body3" color="contentError" style={styles.error}>
+          <Text variant="body2" color="negativeSecondary" style={styles.error}>
             {error}
           </Text>
         )}
@@ -173,7 +173,7 @@ const stylesheet = createStyleSheet(
       borderColor: active
         ? colors.accentPrimary
         : error
-          ? colors.contentError
+          ? colors.negativeSecondary
           : colors.borderPrimary,
       backgroundColor: colors.surfacePrimary,
       paddingVertical: spacing.xsmall,
@@ -183,9 +183,18 @@ const stylesheet = createStyleSheet(
       overflow: 'hidden',
       variants: {
         size: {
-          small: { minHeight: config.small.height },
-          medium: { minHeight: config.medium.height },
-          large: { minHeight: config.large.height },
+          small: {
+            minHeight: config.small.height,
+            borderRadius: borderRadius.small,
+          },
+          medium: {
+            minHeight: config.medium.height,
+            borderRadius: borderRadius.medium,
+          },
+          large: {
+            minHeight: config.large.height,
+            borderRadius: borderRadius.large,
+          },
         },
       },
     }),
@@ -203,10 +212,6 @@ const stylesheet = createStyleSheet(
       transformOrigin: 'left',
       variants: {
         size: {
-          small: {
-            ...textVariants.body3,
-            lineHeight: config.small.height - spacing.xsmall * 2,
-          },
           medium: {
             ...textVariants.body2,
             lineHeight: config.medium.height - spacing.xsmall * 2,
@@ -236,9 +241,6 @@ const stylesheet = createStyleSheet(
     textInputWithLabel: {
       variants: {
         size: {
-          small: {
-            marginTop: spacing.small,
-          },
           medium: {
             marginTop: spacing.medium,
           },

@@ -2,7 +2,7 @@ import { Card } from '@/craftrn-ui/components/Card';
 import { SliderDual } from '@/craftrn-ui/components/SliderDual';
 import { Text } from '@/craftrn-ui/components/Text';
 import { Stack } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
@@ -10,6 +10,11 @@ export default function SliderDualScreen() {
   const { styles } = useStyles(stylesheet);
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(100);
+
+  const handleValuesChange = useCallback(({ min, max }: { min: number; max: number }) => {
+    setMinValue(min);
+    setMaxValue(max);
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -26,12 +31,9 @@ export default function SliderDualScreen() {
           <SliderDual
             min={0}
             max={100}
-            minInitialValue={minValue}
-            maxInitialValue={maxValue}
-            onValuesChange={({ min, max }) => {
-              setMinValue(min);
-              setMaxValue(max);
-            }}
+            minInitialValue={0}
+            maxInitialValue={100}
+            onValuesChange={handleValuesChange}
           />
         </Card>
         <Text variant="body2">

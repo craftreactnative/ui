@@ -126,7 +126,7 @@ const stylesheet = createStyleSheet(({ spacing, colors, borderRadius }) => ({
     borderRadius: borderRadius.medium,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.backgroundPrimary,
+    backgroundColor: colors.surfacePrimary,
   },
   focusedInput: {
     borderColor: colors.accentPrimary,

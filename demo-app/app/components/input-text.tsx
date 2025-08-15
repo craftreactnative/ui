@@ -37,7 +37,7 @@ export default function InputTextScreen() {
             Sizes
           </Text>
           <Card style={styles.componentContainer}>
-            <InputText label="First name" size="small" />
+            <InputText size="small" />
             <InputText label="First name" size="medium" />
             <InputText label="First name" size="large" />
           </Card>
@@ -47,7 +47,7 @@ export default function InputTextScreen() {
             Prefilled
           </Text>
           <Card style={styles.componentContainer}>
-            <InputText label="First name" size="small" value="Thomas" />
+            <InputText size="small" value="Thomas" />
             <InputText label="First name" size="medium" value="Charlotte" />
             <InputText label="First name" size="large" value="Hugo" />
           </Card>

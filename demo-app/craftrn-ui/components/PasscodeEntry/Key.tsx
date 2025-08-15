@@ -41,7 +41,7 @@ const stylesheet = createStyleSheet(({ colors, borderRadius }) => ({
     width: config.keySize,
     height: config.keySize,
     backgroundColor: pressed
-      ? colors.backgroundTertiary
+      ? colors.surfaceTertiary
       : colors.backgroundPrimary,
   }),
 }));

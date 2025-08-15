@@ -22,27 +22,32 @@ export default function ListItemScreen() {
         <Text variant="body2" style={styles.heading}>
           Default
         </Text>
-        <Card style={styles.componentContainer}>
-          <ListItem text="Account" />
+        <Card>
+          <ListItem style={styles.listItem} text="Account" />
         </Card>
       </View>
       <View style={styles.content}>
         <Text variant="body2" style={styles.heading}>
           With text and textBelow
         </Text>
-        <Card style={styles.componentContainer}>
-          <ListItem text="First name" textBelow="Charlotte" />
+        <Card>
+          <ListItem
+            style={styles.listItem}
+            text="First name"
+            textBelow="Charlotte"
+          />
         </Card>
       </View>
       <View style={styles.content}>
         <Text variant="body2" style={styles.heading}>
           With left accessory
         </Text>
-        <Card style={styles.componentContainer}>
+        <Card>
           <ListItem
             onPress={() => {}}
             text="Filters"
             textBelow="Configure your filter preferences"
+            style={styles.listItem}
             itemLeft={
               <View style={styles.leftAccessory}>
                 <Slider color={theme.colors.contentPrimary} />
@@ -55,11 +60,12 @@ export default function ListItemScreen() {
         <Text variant="body2" style={styles.heading}>
           With right accessory
         </Text>
-        <Card style={styles.componentContainer}>
+        <Card>
           <ListItem
             onPress={() => {}}
             text="First name"
             textBelow="Charlotte"
+            style={styles.listItem}
             itemRight={
               <View style={styles.rightAccessory}>
                 <ChevronDown color={theme.colors.contentPrimary} />
@@ -84,7 +90,7 @@ const stylesheet = createStyleSheet(theme => ({
   heading: {
     fontWeight: 'bold',
   },
-  componentContainer: {
+  listItem: {
     gap: theme.spacing.small,
     padding: theme.spacing.medium,
   },
