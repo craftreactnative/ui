@@ -22,7 +22,10 @@ export type Props = {
     | 'contentTertiary'
     | 'contentQuaternary'
     | 'contentAccent'
-    | 'contentError';
+    | 'positivePrimary'
+    | 'positiveSecondary'
+    | 'negativePrimary'
+    | 'negativeSecondary';
 };
 
 export const Text = ({
@@ -56,8 +59,17 @@ const stylesheet = createStyleSheet(({ textVariants, colors }) => ({
         contentAccent: {
           color: colors.contentAccent,
         },
-        contentError: {
-          color: colors.contentError,
+        positivePrimary: {
+          color: colors.positivePrimary,
+        },
+        positiveSecondary: {
+          color: colors.positiveSecondary,
+        },
+        negativePrimary: {
+          color: colors.negativePrimary,
+        },
+        negativeSecondary: {
+          color: colors.negativeSecondary,
         },
       },
       variant: {
