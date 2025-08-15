@@ -1,0 +1,11 @@
+{
+  "name": "SliderDual",
+  "description": "Dual-value range slider component with gesture handling and accessibility support",
+  "externalDependencies": [
+    "react-native-gesture-handler",
+    "react-native-reanimated",
+    "react-native-unistyles"
+  ],
+  "craftrnUiComponents": [],
+  "tetrislyIcons": []
+}

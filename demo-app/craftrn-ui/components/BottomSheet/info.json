@@ -1,0 +1,11 @@
+{
+  "name": "BottomSheet",
+  "description": "Bottom sheet modal component with swipe-to-close and overlay tap gestures",
+  "externalDependencies": [
+    "react-native-gesture-handler",
+    "react-native-reanimated",
+    "react-native-unistyles"
+  ],
+  "craftrnUiComponents": [],
+  "tetrislyIcons": []
+}

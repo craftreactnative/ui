@@ -1,0 +1,9 @@
+{
+  "name": "Switch",
+  "description": "Switch component with platform-specific styling and theming",
+  "externalDependencies": [
+    "react-native-unistyles"
+  ],
+  "craftrnUiComponents": [],
+  "tetrislyIcons": []
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Avatar",
+  "description": "Avatar component for displaying user profile images with fallback initials and online indicator",
+  "externalDependencies": [
+    "react-native-unistyles"
+  ],
+  "craftrnUiComponents": [
+    "Text"
+  ],
+  "tetrislyIcons": []
+}

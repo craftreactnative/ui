@@ -1,0 +1,10 @@
+{
+  "name": "Checkbox",
+  "description": "Animated checkbox component with checked/unchecked states",
+  "externalDependencies": [
+    "react-native-reanimated",
+    "react-native-unistyles"
+  ],
+  "craftrnUiComponents": [],
+  "tetrislyIcons": []
+}

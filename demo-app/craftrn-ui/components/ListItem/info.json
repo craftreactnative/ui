@@ -1,0 +1,11 @@
+{
+  "name": "ListItem",
+  "description": "List item component with text, accessories, and optional divider",
+  "externalDependencies": [
+    "react-native-unistyles"
+  ],
+  "craftrnUiComponents": [
+    "Text"
+  ],
+  "tetrislyIcons": []
+}

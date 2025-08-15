@@ -1,0 +1,11 @@
+{
+  "name": "Button",
+  "description": "Button component with multiple variants, intents, and sizes",
+  "externalDependencies": [
+    "react-native-unistyles"
+  ],
+  "craftrnUiComponents": [
+    "Text"
+  ],
+  "tetrislyIcons": []
+}

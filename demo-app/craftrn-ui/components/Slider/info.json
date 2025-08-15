@@ -1,0 +1,11 @@
+{
+  "name": "Slider",
+  "description": "Single-value slider component with gesture handling and accessibility support",
+  "externalDependencies": [
+    "react-native-gesture-handler",
+    "react-native-reanimated",
+    "react-native-unistyles"
+  ],
+  "craftrnUiComponents": [],
+  "tetrislyIcons": []
+}

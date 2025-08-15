@@ -1,0 +1,12 @@
+{
+  "name": "Counter",
+  "description": "Counter component with increment/decrement buttons and accessibility support",
+  "externalDependencies": [
+    "react-native-unistyles"
+  ],
+  "craftrnUiComponents": [
+    "ButtonRound",
+    "Text"
+  ],
+  "tetrislyIcons": []
+}

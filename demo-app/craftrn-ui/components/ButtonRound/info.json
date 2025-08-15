@@ -1,0 +1,9 @@
+{
+  "name": "ButtonRound",
+  "description": "Round button component for icon buttons with different variants and sizes",
+  "externalDependencies": [
+    "react-native-unistyles"
+  ],
+  "craftrnUiComponents": [],
+  "tetrislyIcons": []
+}

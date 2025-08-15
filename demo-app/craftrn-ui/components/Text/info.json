@@ -1,0 +1,9 @@
+{
+  "name": "Text",
+  "description": "Text component with variants, colors, and unified styling",
+  "externalDependencies": [
+    "react-native-unistyles"
+  ],
+  "craftrnUiComponents": [],
+  "tetrislyIcons": []
+}
