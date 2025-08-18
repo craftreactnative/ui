@@ -8,13 +8,12 @@ export default function TemplateScreen() {
   const local = useLocalSearchParams();
   const { styles } = useStyles(stylesheet);
   const player = useVideoPlayer(
-    `https://www.craftreactnative.com/screens/template-${local.template}.mp4`,
+    `https://www.craftreactnative.com/videos/templates/${local.template}.mp4`,
     player => {
       player.loop = true;
       player.play();
     },
   );
-
   return (
     <>
       <Stack.Screen

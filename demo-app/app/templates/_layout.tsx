@@ -23,7 +23,7 @@ export default function TemplatesLayout() {
               <View style={{ marginLeft: -16 }}>
                 <NavigationBackButton
                   onPress={navigation.goBack}
-                  variant="secondary"
+                  intent="secondary"
                 />
               </View>
             ) : undefined,
@@ -32,10 +32,10 @@ export default function TemplatesLayout() {
       <SafeAreaView edges={['bottom']} style={styles.safeArea}>
         <Button
           onPress={() =>
-            Linking.openURL('https://craftreactnative.com/templates')
+            Linking.openURL('https://craftreactnative.com/pricing')
           }
         >
-          Access now
+          Buy now
         </Button>
       </SafeAreaView>
     </>
