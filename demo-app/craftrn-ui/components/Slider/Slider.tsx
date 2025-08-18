@@ -76,7 +76,7 @@ export type Props = {
   accessibilityStep?: number;
 };
 
-const Slider = ({
+export const Slider = ({
   min,
   max,
   width = config.sliderWidth,

@@ -8,7 +8,7 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export default function SliderScreen() {
   const { styles } = useStyles(stylesheet);
-  const [sliderValue, setSliderValue] = useState(0);
+  const [sliderValue, setSliderValue] = useState(25);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

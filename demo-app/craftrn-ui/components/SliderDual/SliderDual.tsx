@@ -86,7 +86,7 @@ const useKnobAnimatedStyle = (
     ],
   }));
 
-const SliderDual = ({
+export const SliderDual = ({
   min,
   max,
   width = config.sliderWidth,

@@ -22,16 +22,16 @@ import {
 } from 'react-native-unistyles';
 import { ListItem } from '../ListItem/ListItem';
 
-export interface ContextMenuItem {
+export type ContextMenuItem = {
   id: string;
   label: string;
   subtitle?: string;
   itemLeft?: ReactElement;
   itemRight?: ReactElement;
   onPress: () => void;
-}
+};
 
-type MenuAnchorPosition =
+export type MenuAnchorPosition =
   | 'top-center'
   | 'top-left'
   | 'top-right'
@@ -41,12 +41,12 @@ type MenuAnchorPosition =
 
 type HorizontalAlignment = 'left' | 'center' | 'right';
 
-export interface ContextMenuProps {
+export type ContextMenuProps = {
   items: ContextMenuItem[];
   trigger: (onPress: () => void) => ReactElement;
   menuAnchorPosition?: MenuAnchorPosition;
   offset?: { x: number; y: number };
-}
+};
 
 const config = {
   enterDuration: 200,
