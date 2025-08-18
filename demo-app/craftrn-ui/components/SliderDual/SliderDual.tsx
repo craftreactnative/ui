@@ -99,10 +99,13 @@ export const SliderDual = ({
   const { styles } = useStyles(stylesheet);
   const sliderWidth = width - config.knobSize;
 
-  const getPositionFromValue = (value: number) => {
-    'worklet';
-    return ((value - min) / (max - min)) * sliderWidth;
-  };
+  const getPositionFromValue = useCallback(
+    (value: number) => {
+      'worklet';
+      return ((value - min) / (max - min)) * sliderWidth;
+    },
+    [min, max, sliderWidth],
+  );
 
   const leftPosition = useSharedValue(
     minInitialValue !== undefined ? getPositionFromValue(minInitialValue) : 0,
@@ -319,6 +322,8 @@ export const SliderDual = ({
       getPositionFromValue,
       getSliderValue,
       step,
+      leftPosition,
+      rightPosition,
     ],
   );
 

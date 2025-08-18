@@ -135,7 +135,7 @@ export const Slider = ({
       runOnJS(onValueChange)(value);
       runOnJS(setAccessibilityValue)(value);
     },
-    [getSliderValue, onValueChange],
+    [getSliderValue, onValueChange, lastCallbackTime, position],
   );
 
   const adjustValue = useCallback(
@@ -155,6 +155,7 @@ export const Slider = ({
     },
     [
       getSliderValue,
+      position,
       max,
       accessibilityStep,
       min,

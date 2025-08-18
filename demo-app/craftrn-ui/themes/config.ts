@@ -96,10 +96,7 @@ export const lightTheme = {
     contentTertiary: colors.stone600,
     contentQuaternary: colors.stone500,
     contentReversed: colors.stone50,
-
     contentAccent: colors.teal700,
-    contentPositive: colors.green700,
-    contentNegative: colors.red700,
 
     borderPrimary: colors.stone300,
     borderSecondary: colors.stone200,

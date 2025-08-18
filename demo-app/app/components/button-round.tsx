@@ -27,10 +27,7 @@ export default function ButtonRoundScreen() {
             variant="default"
             intent="primary"
             renderContent={({ iconSize, iconColor }) => (
-              <ChevronRight
-                color={iconColor}
-                size={iconSize}
-              />
+              <ChevronRight color={iconColor} size={iconSize} />
             )}
           />
           <ButtonRound
@@ -38,10 +35,7 @@ export default function ButtonRoundScreen() {
             variant="default"
             intent="secondary"
             renderContent={({ iconSize, iconColor }) => (
-              <ChevronRight
-                color={iconColor}
-                size={iconSize}
-              />
+              <ChevronRight color={iconColor} size={iconSize} />
             )}
           />
         </Card>
@@ -55,10 +49,7 @@ export default function ButtonRoundScreen() {
             onPress={() => {}}
             variant="reversed"
             renderContent={({ iconSize, iconColor }) => (
-              <ChevronRight
-                color={iconColor}
-                size={iconSize}
-              />
+              <ChevronRight color={iconColor} size={iconSize} />
             )}
           />
         </Card>
@@ -72,10 +63,7 @@ export default function ButtonRoundScreen() {
             onPress={() => {}}
             variant="accent"
             renderContent={({ iconSize, iconColor }) => (
-              <ChevronRight
-                color={iconColor}
-                size={iconSize}
-              />
+              <ChevronRight color={iconColor} size={iconSize} />
             )}
           />
         </Card>
@@ -89,30 +77,21 @@ export default function ButtonRoundScreen() {
             onPress={() => {}}
             size="small"
             renderContent={({ iconSize, iconColor }) => (
-              <ChevronRight
-                color={iconColor}
-                size={iconSize}
-              />
+              <ChevronRight color={iconColor} size={iconSize} />
             )}
           />
           <ButtonRound
             onPress={() => {}}
             size="medium"
             renderContent={({ iconSize, iconColor }) => (
-              <ChevronRight
-                color={iconColor}
-                size={iconSize}
-              />
+              <ChevronRight color={iconColor} size={iconSize} />
             )}
           />
           <ButtonRound
             onPress={() => {}}
             size="large"
             renderContent={({ iconSize, iconColor }) => (
-              <ChevronRight
-                color={iconColor}
-                size={iconSize}
-              />
+              <ChevronRight color={iconColor} size={iconSize} />
             )}
           />
         </Card>
@@ -129,10 +108,7 @@ export default function ButtonRoundScreen() {
             size="medium"
             disabled
             renderContent={({ iconSize, iconColor }) => (
-              <ChevronRight
-                color={iconColor}
-                size={iconSize}
-              />
+              <ChevronRight color={iconColor} size={iconSize} />
             )}
           />
         </Card>

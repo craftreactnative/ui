@@ -8,13 +8,16 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export default function SliderDualScreen() {
   const { styles } = useStyles(stylesheet);
-  const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(100);
+  const [minValue, setMinValue] = useState(20);
+  const [maxValue, setMaxValue] = useState(50);
 
-  const handleValuesChange = useCallback(({ min, max }: { min: number; max: number }) => {
-    setMinValue(min);
-    setMaxValue(max);
-  }, []);
+  const handleValuesChange = useCallback(
+    ({ min, max }: { min: number; max: number }) => {
+      setMinValue(min);
+      setMaxValue(max);
+    },
+    [],
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -33,12 +36,9 @@ export default function SliderDualScreen() {
             max={100}
             minInitialValue={0}
             maxInitialValue={100}
-            onValuesChange={handleValuesChange}
+            onValuesChange={() => null}
           />
         </Card>
-        <Text variant="body2">
-          Values: {minValue} - {maxValue}
-        </Text>
       </View>
       <View style={styles.content}>
         <Text variant="body2" style={styles.heading}>
@@ -50,9 +50,12 @@ export default function SliderDualScreen() {
             max={100}
             minInitialValue={20}
             maxInitialValue={50}
-            onValuesChange={({ min, max }) => {}}
+            onValuesChange={handleValuesChange}
           />
         </Card>
+        <Text variant="body2">
+          Values: {minValue} - {maxValue}
+        </Text>
       </View>
     </ScrollView>
   );
