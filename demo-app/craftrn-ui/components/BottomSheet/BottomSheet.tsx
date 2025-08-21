@@ -15,7 +15,11 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from 'react-native-gesture-handler';
 import Animated, {
   Easing,
   runOnJS,
@@ -203,47 +207,49 @@ export const BottomSheet = ({
       onRequestClose={onRequestClose}
       animationType="none"
     >
-      <GestureDetector gesture={gesture}>
-        <View style={styles.container}>
-          <Animated.View
-            style={[
-              styles.overlay,
-              StyleSheet.absoluteFillObject,
-              overlayAnimatedStyle,
-            ]}
-          >
-            <TouchableWithoutFeedback
-              onPress={enableOverlayTapToClose ? onRequestClose : undefined}
+      <GestureHandlerRootView>
+        <GestureDetector gesture={gesture}>
+          <View style={styles.container}>
+            <Animated.View
+              style={[
+                styles.overlay,
+                StyleSheet.absoluteFillObject,
+                overlayAnimatedStyle,
+              ]}
             >
-              <View style={styles.overlayContent} />
-            </TouchableWithoutFeedback>
-          </Animated.View>
-          <Animated.View
-            style={[
-              styles.sheet({
-                maxHeight: bottomSheetMaxHeight,
-              }),
-              bottomSheetAnimatedStyle,
-            ]}
-            onLayout={handleLayout}
-            role="dialog"
-            accessible
-            accessibilityLiveRegion="polite"
-            accessibilityViewIsModal
-            onAccessibilityEscape={onRequestClose}
-            {...accessibilityProps}
-          >
-            <View style={styles.content}>
-              {showHandleBar && (
-                <View style={styles.handleBarContainer}>
-                  <View style={styles.handleBar} />
-                </View>
-              )}
-              {children}
-            </View>
-          </Animated.View>
-        </View>
-      </GestureDetector>
+              <TouchableWithoutFeedback
+                onPress={enableOverlayTapToClose ? onRequestClose : undefined}
+              >
+                <View style={styles.overlayContent} />
+              </TouchableWithoutFeedback>
+            </Animated.View>
+            <Animated.View
+              style={[
+                styles.sheet({
+                  maxHeight: bottomSheetMaxHeight,
+                }),
+                bottomSheetAnimatedStyle,
+              ]}
+              onLayout={handleLayout}
+              role="dialog"
+              accessible
+              accessibilityLiveRegion="polite"
+              accessibilityViewIsModal
+              onAccessibilityEscape={onRequestClose}
+              {...accessibilityProps}
+            >
+              <View style={styles.content}>
+                {showHandleBar && (
+                  <View style={styles.handleBarContainer}>
+                    <View style={styles.handleBar} />
+                  </View>
+                )}
+                {children}
+              </View>
+            </Animated.View>
+          </View>
+        </GestureDetector>
+      </GestureHandlerRootView>
     </Modal>
   );
 };
