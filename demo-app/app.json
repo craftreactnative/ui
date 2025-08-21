@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "craftrn-ui-demo-app",
+    "name": "CraftRN UI",
     "slug": "craftrn-ui-demo-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "craftrn",
+    "scheme": "craftrnui",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": false,
+    "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.craftreactnative.craftrnui.demoapp",
       "runtimeVersion": "1.0.0"
     },
@@ -19,9 +19,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.craftreactnative.craftrnui.demoapp",
-      "runtimeVersion": {
-        "policy": "appVersion"
-      }
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "bundler": "metro",
