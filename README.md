@@ -2,8 +2,11 @@
 
 A collection of copy-paste React Native components built for [Unistyles](https://github.com/jpudysz/react-native-unistyles).
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue)](#)
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](https://choosealicense.com/licenses/mit/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue?style=for-the-badge)](#)
+[![platform - expo](https://img.shields.io/badge/Expo-000?style=for-the-badge&logo=expo&logoColor=white)](https://docs.expo.dev/)
+[![platform - ios](https://img.shields.io/badge/iOS-000?logo=apple&style=for-the-badge)](https://developer.apple.com/ios/)
+[![platform - android](https://img.shields.io/badge/Android-44CD11?style=for-the-badge&logo=android&logoColor=white)](https://developer.android.com/)
 
 ## Overview
 
