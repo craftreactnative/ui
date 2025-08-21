@@ -207,7 +207,7 @@ const getTextColor = (
         case 'primary':
         case 'positive':
         case 'negative':
-          return colors.white;
+          return colors.contentReversed;
         case 'secondary':
           return colors.contentPrimary;
       }
@@ -216,7 +216,7 @@ const getTextColor = (
     case 'text':
       switch (intent) {
         case 'primary':
-          return colors.accentPrimary;
+          return colors.contentAccent;
         case 'secondary':
           return colors.contentPrimary;
         case 'positive':

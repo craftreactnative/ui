@@ -5,7 +5,14 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Dimensions, Keyboard, Modal, Pressable, View } from 'react-native';
+import {
+  Dimensions,
+  Keyboard,
+  Modal,
+  Platform,
+  Pressable,
+  View,
+} from 'react-native';
 import Animated, {
   Easing,
   interpolate,
@@ -96,7 +103,7 @@ export const ContextMenu = ({
 
   useEffect(() => {
     if (visible) {
-      setTimeout(measureTrigger, 10);
+      measureTrigger();
     }
   }, [visible, measureTrigger]);
 
@@ -105,9 +112,12 @@ export const ContextMenu = ({
     const screenWidth = Dimensions.get('window').width;
     const screenHeight = Dimensions.get('window').height;
 
-    const spaceAbove = y - UnistylesRuntime.insets.top;
+    const screenY =
+      Platform.OS === 'android' ? y - UnistylesRuntime.insets.top : y;
+
+    const spaceAbove = screenY - UnistylesRuntime.insets.top;
     const spaceBelow =
-      screenHeight - UnistylesRuntime.insets.bottom - (y + height);
+      screenHeight - UnistylesRuntime.insets.bottom - (screenY + height);
 
     const preferredIsTop = menuAnchorPosition.startsWith('top-');
     const shouldShowOnTop = preferredIsTop
@@ -116,9 +126,9 @@ export const ContextMenu = ({
         spaceAbove >= menuHeight + offset.y;
 
     const top = shouldShowOnTop
-      ? Math.max(y - menuHeight - offset.y, UnistylesRuntime.insets.top)
+      ? Math.max(screenY - menuHeight - offset.y, UnistylesRuntime.insets.top)
       : Math.min(
-          y + height + offset.y,
+          screenY + height + offset.y,
           screenHeight - UnistylesRuntime.insets.bottom - menuHeight,
         );
 
@@ -182,6 +192,7 @@ export const ContextMenu = ({
     if (visible) {
       setHasMenuPositioned(false);
       setIsModalVisible(true);
+      animationProgress.value = 0;
       Keyboard.dismiss();
     } else if (isModalVisible) {
       animationProgress.value = withTiming(
@@ -222,10 +233,10 @@ export const ContextMenu = ({
       <View ref={triggerRef} collapsable={false}>
         {trigger(onOpen)}
       </View>
-      {!isModalVisible || !hasMenuPositioned ? null : (
+      {isModalVisible && (
         <Modal
           transparent
-          visible={isModalVisible}
+          visible
           animationType="none"
           onRequestClose={onClose}
         >
@@ -271,14 +282,14 @@ const stylesheet = createStyleSheet(({ colors, spacing }) => ({
     position: 'absolute',
     backgroundColor: colors.backgroundPrimary,
     borderRadius: spacing.medium,
-    shadowColor: colors.contentPrimary,
+    shadowColor: colors.shadowPrimary,
     shadowOffset: {
       width: 0,
       height: 8,
     },
     shadowOpacity: 0.24,
     shadowRadius: 16,
-    elevation: 16,
+    elevation: 10,
     overflow: 'hidden',
     minWidth: 200,
   },

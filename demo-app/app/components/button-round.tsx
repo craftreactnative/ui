@@ -76,6 +76,7 @@ export default function ButtonRoundScreen() {
           <ButtonRound
             onPress={() => {}}
             size="small"
+            variant="accent"
             renderContent={({ iconSize, iconColor }) => (
               <ChevronRight color={iconColor} size={iconSize} />
             )}
@@ -83,6 +84,7 @@ export default function ButtonRoundScreen() {
           <ButtonRound
             onPress={() => {}}
             size="medium"
+            variant="accent"
             renderContent={({ iconSize, iconColor }) => (
               <ChevronRight color={iconColor} size={iconSize} />
             )}
@@ -90,6 +92,7 @@ export default function ButtonRoundScreen() {
           <ButtonRound
             onPress={() => {}}
             size="large"
+            variant="accent"
             renderContent={({ iconSize, iconColor }) => (
               <ChevronRight color={iconColor} size={iconSize} />
             )}

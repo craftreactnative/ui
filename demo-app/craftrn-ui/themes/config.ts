@@ -13,7 +13,8 @@ export const colors = {
   stone950: '#110e0c',
 
   teal150: '#d4edf0',
-  teal300: '#9ecacd',
+  teal300: '#a3d6da',
+  teal400: '#6bbbc4',
   teal500: '#048391',
   teal600: '#007884',
   teal700: '#006771',
@@ -194,18 +195,18 @@ export const darkTheme = {
     surfaceReversedPrimary: colors.stone100,
     surfaceReversedSecondary: colors.stone200,
 
-    accentPrimary: colors.teal700,
-    accentSecondary: colors.teal600,
+    accentPrimary: colors.teal600,
+    accentSecondary: colors.teal700,
     accentTertiary: colors.teal800,
     accentQuaternary: colors.teal900,
 
     contentPrimary: colors.stone50,
     contentSecondary: colors.stone300,
     contentTertiary: colors.stone400,
-    contentAccent: colors.teal300,
+    contentAccent: colors.teal400,
     contentReversed: colors.stone900,
 
-    borderPrimary: colors.stone800,
+    borderPrimary: colors.stone700,
     borderSecondary: colors.stone900,
 
     shadowPrimary: colors.stone600,
@@ -215,13 +216,13 @@ export const darkTheme = {
     // Semantic colors
     informativePrimary: colors.blue300,
 
-    positivePrimary: colors.green150,
-    positiveSecondary: colors.green300,
+    positivePrimary: colors.green300,
+    positiveSecondary: colors.green150,
     positiveTertiary: colors.green700,
     positiveQuaternary: colors.green800,
 
-    negativePrimary: colors.red150,
-    negativeSecondary: colors.red300,
+    negativePrimary: colors.red300,
+    negativeSecondary: colors.red150,
     negativeTertiary: colors.red700,
     negativeQuaternary: colors.red800,
   },
