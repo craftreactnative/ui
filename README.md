@@ -1,40 +1,60 @@
-<img src="https://github.com/craftreactnative/craftrn-ui/raw/main/demo-app/assets/images/craftrn-light.png" alt="CraftReactNative Logo" style="width: 200px;">
+# CraftReactNative
 
-## CraftReactNative UI components
+A collection of copy-paste React Native components built for [Unistyles](https://github.com/jpudysz/react-native-unistyles).
 
-Ever felt trapped by rigid development solutions that limit your creativity? **CraftReactNative** breaks that mold.
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue)](#)
 
-This isn't just another component library, it's an ecosystem that puts _you_ in control of your mobile app development. Written in TypeScript and built on carefully selected core libraries, CraftReactNative empowers you to build exactly what you envision.
+## Overview
 
-## Why CraftReactNative is Different
+CraftReactNative provides production-ready React Native components designed specifically to work with Unistyles. Instead of installing a package, you copy the component code directly into your project, giving you full control and customization.
 
-Traditional solutions force you to adapt your vision to their constraints. You install a package, import pre-built elements, and then fight against their limitations when customizing.
+**Note**: This is a community project and is not officially affiliated with the Unistyles team.
 
-CraftReactNative flips this model on its head:
+## Features
 
-- **Copy, paste, customize** - Take only what you need and make it truly yours
-- **No dependency lock-in** - Your code, your rules
-- **Full creative control** - Modify anything without worrying about breaking updates
+- **Unistyles-optimized**: Components leverage Unistyles' theming and performance benefits
+- **Copy-paste approach**: Own your code, no dependency lock-in
+- **TypeScript**: Fully typed components with IntelliSense support
+- **Theme-aware**: Built-in dark/light mode support
+- **Customizable**: Modify anything without breaking updates
 
-## Powered by Unistyles 🦄
+## Prerequisites
 
-Built around [**Unistyles**](https://github.com/jpudysz/react-native-unistyles) - the revolutionary styling library that's transforming React Native development. Think of Unistyles as TypeScript for your styles: it enhances the familiar StyleSheet API with powerful features like:
+```bash
+npm install react-native-unistyles
+```
 
-- **Type-safe theming** with full TypeScript support
-- **Runtime theme switching** for dark/light modes
-- **Better performance** than traditional styling approaches
-- **Familiar syntax** that feels natural to React Native developers
+Make sure you have Unistyles v2 properly configured in your React Native project before using these components.
 
-CraftReactNative components leverage Unistyles' full potential, giving you a styling system that scales from simple apps to complex enterprise solutions.
+> **Note**: Migration to Unistyles v3 is currently in progress.
 
-## Get Started
+## Getting Started
 
-**Free Components**: Explore our demo app to see all components in action and [read the documentation](https://docs.craftreactnative.com/) to get started.
+1. **Browse components** in the [demo app](https://docs.craftreactnative.com/) to see what's available
+2. **Copy the component code** and theme configuration from the source files
+3. **Paste into your project** and customize as needed
 
-**Ready for Production?** Check out our [premium templates](https://craftreactnative.com/templates) - complete screen implementations that save days of development time. Each template includes all necessary components, dark mode support, and production-ready code.
+## Documentation
+
+- [Component Documentation](https://docs.craftreactnative.com/) - Detailed usage guides
+- [Unistyles Documentation](https://v2.unistyl.es/) - Learn about the styling library.
+
+## Premium Templates
+
+Ready-to-use complete screen implementations built with these components. Save development time with production-ready code that includes dark mode support and follows best practices.
+
+[Browse Templates →](https://craftreactnative.com/templates)
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. Whether it's:
+
+- Bug fixes
+- New components
+- Documentation improvements
+- Example usage
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-Enjoy building with CraftReactNative!
+MIT License - see the [LICENSE](LICENSE) file for details.
