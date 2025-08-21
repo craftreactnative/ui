@@ -97,6 +97,7 @@ const stylesheet = createStyleSheet(({ colors, spacing }) => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: spacing.small,
   },
   itemContainerPressed: {
     backgroundColor: colors.surfaceTertiary,
@@ -114,7 +115,7 @@ const stylesheet = createStyleSheet(({ colors, spacing }) => ({
           color: colors.contentPrimary,
         },
         danger: {
-          color: colors.negativePrimary,
+          color: colors.negativeSecondary,
         },
       },
     },

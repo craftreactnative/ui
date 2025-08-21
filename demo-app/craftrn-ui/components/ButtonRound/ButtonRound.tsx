@@ -101,7 +101,7 @@ const getButtonStyles = (
   variant: Variant,
   pressed: boolean,
   disabled: boolean,
-  colors: typeof lightTheme.colors | typeof darkTheme.colors,
+  colors: Record<string, string>,
 ) => {
   if (disabled) {
     return {

@@ -138,7 +138,7 @@ const stylesheet = createStyleSheet(({ spacing, colors, borderRadius }) => ({
     left: 0,
     width: '100%',
     height: '100%',
-    opacity: 0,
+    opacity: 0.05,
     fontSize: 1,
   },
 }));

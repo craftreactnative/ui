@@ -5,7 +5,7 @@ export const colors = {
   stone200: '#e7e5e4',
   stone300: '#d6d3d1',
   stone400: '#beb9b6',
-  stone500: '#78716c',
+  stone500: '#837b75',
   stone600: '#57534e',
   stone700: '#44403c',
   stone800: '#292524',
@@ -81,7 +81,7 @@ export const lightTheme = {
     surfacePrimary: colors.stone100,
     surfaceSecondary: colors.stone200,
     surfaceTertiary: colors.stone300,
-    surfaceQuaternary: colors.stone400,
+    surfaceQuaternary: colors.stone500,
 
     surfaceReversedPrimary: colors.stone800,
     surfaceReversedSecondary: colors.stone700,

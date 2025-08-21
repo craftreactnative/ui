@@ -68,7 +68,7 @@ const getButtonStyles = (
   intent: Intent,
   pressed: boolean,
   disabled: boolean,
-  colors: typeof lightTheme.colors,
+  colors: typeof lightTheme.colors | typeof darkTheme.colors,
 ) => {
   if (disabled) {
     return {

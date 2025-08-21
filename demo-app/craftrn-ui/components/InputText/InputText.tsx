@@ -12,6 +12,7 @@ import Animated, {
   Easing,
   useAnimatedStyle,
   useReducedMotion,
+  useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
@@ -83,6 +84,14 @@ export const InputText = forwardRef<TextInput, Props & TextInputProps>(
     const inputRef = useRef<TextInput>(null);
     const reduceMotion = useReducedMotion();
     const isActive = isFocused || !!value;
+    const isActiveShared = useSharedValue(false);
+
+    // Fix Fabric timing issue - always use requestAnimationFrame for consistency
+    React.useEffect(() => {
+      requestAnimationFrame(() => {
+        isActiveShared.value = isActive;
+      });
+    }, [isActive, isActiveShared]);
 
     const labelAnimatedStyle = useAnimatedStyle(() => {
       const animationConfig = {
@@ -92,11 +101,18 @@ export const InputText = forwardRef<TextInput, Props & TextInputProps>(
 
       return {
         transform: [
-          { translateY: withTiming(isActive ? -12 : 0, animationConfig) },
-          { scale: withTiming(isActive ? 0.85 : 1, animationConfig) },
+          {
+            translateY: withTiming(
+              isActiveShared.value ? -12 : 0,
+              animationConfig,
+            ),
+          },
+          {
+            scale: withTiming(isActiveShared.value ? 0.85 : 1, animationConfig),
+          },
         ],
       };
-    }, [isActive]);
+    }, [reduceMotion]);
 
     const handlePress = useCallback(() => {
       inputRef.current?.focus();
@@ -207,9 +223,10 @@ const stylesheet = createStyleSheet(
       position: 'absolute',
       top: 0,
       bottom: 0,
+      left: 0,
       color: colors.contentSecondary,
       textAlign: 'left',
-      transformOrigin: 'left',
+      transformOrigin: '0 50%',
       variants: {
         size: {
           medium: {
