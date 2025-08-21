@@ -22,10 +22,10 @@ CraftReactNative provides production-ready React Native components designed spec
 ## Prerequisites
 
 ```bash
-npm install react-native-unistyles
+npm install react-native-reanimated@^3 react-native-gesture-handler@^2 react-native-svg@^14 react-native-unistyles@^2
 ```
 
-Make sure you have Unistyles v2 properly configured in your React Native project before using these components.
+Make sure you follow the documentation to configure your project and use these components. 
 
 > **Note**: Migration to Unistyles v3 is currently in progress.
 
