@@ -16,7 +16,16 @@ CraftReactNative flips this model on its head:
 - **No dependency lock-in** - Your code, your rules
 - **Full creative control** - Modify anything without worrying about breaking updates
 
-Built around [Unistyles](https://github.com/jpudysz/react-native-unistyles) (a superset of StyleSheet similar to how TypeScript enhances JavaScript), CraftReactNative feels instantly familiar to React Native developers while offering powerful new capabilities.
+## Powered by Unistyles 🦄
+
+Built around [**Unistyles**](https://github.com/jpudysz/react-native-unistyles) - the revolutionary styling library that's transforming React Native development. Think of Unistyles as TypeScript for your styles: it enhances the familiar StyleSheet API with powerful features like:
+
+- **Type-safe theming** with full TypeScript support
+- **Runtime theme switching** for dark/light modes
+- **Better performance** than traditional styling approaches
+- **Familiar syntax** that feels natural to React Native developers
+
+CraftReactNative components leverage Unistyles' full potential, giving you a styling system that scales from simple apps to complex enterprise solutions.
 
 ## Get Started
 
