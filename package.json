@@ -1,0 +1,49 @@
+{
+  "name": "craftrn-ui",
+  "version": "1.0.0",
+  "description": "React Native UI components library based on Unistyles",
+  "main": "dist/index.js",
+  "bin": {
+    "craftrn-ui": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "semantic-release": "semantic-release"
+  },
+  "keywords": [
+    "react-native",
+    "expo",
+    "components",
+    "unistyles",
+    "design-system"
+  ],
+  "author": {
+    "name": "alexmngn",
+    "url": "https://www.linkedin.com/in/alexismangin/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/craftreactnative/craftrn-ui.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^11.1.0",
+    "fs-extra": "^11.2.0",
+    "ora": "^5.4.1"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.4",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.10.5",
+    "semantic-release": "^24.2.7",
+    "typescript": "^5.3.3"
+  },
+  "files": [
+    "dist",
+    "demo-app/craftrn-ui"
+  ]
+}
