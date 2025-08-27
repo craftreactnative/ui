@@ -11,13 +11,13 @@ const program = new Command();
 
 program
   .name("craftrn-ui")
-  .description("CLI for installing craftrn-ui components")
+  .description("CLI for installing @craftreactnative/ui components")
   .version("1.0.0");
 
 program
   .command("init")
   .description(
-    "Initialize craftrn-ui in your project (install dependencies and themes)"
+    "Initialize @craftreactnative/ui in your project (install dependencies and themes)"
   )
   .option("--skip-deps", "Skip installing dependencies")
   .action(async (options) => {
@@ -76,7 +76,7 @@ program
       console.log(
         chalk.gray(
           `\nUse ${chalk.white(
-            "npx craftrn-ui@latest add <component>"
+            "npx @craftreactnative/ui@latest add <component>"
           )} to install a component`
         )
       );

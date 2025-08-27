@@ -23,7 +23,7 @@ export async function ensureProjectRoot(): Promise<void> {
     
     if (!hasReactNative) {
       console.warn(chalk.yellow('Warning: This doesn\'t appear to be a React Native project.'));
-      console.warn(chalk.gray('craftrn-ui components are designed for React Native apps.'));
+      console.warn(chalk.gray('@craftreactnative/ui components are designed for React Native apps.'));
     }
     
     // Check if TypeScript is configured
@@ -35,7 +35,7 @@ export async function ensureProjectRoot(): Promise<void> {
     
     if (!hasTypeScript && !hasTsConfig) {
       console.error(chalk.red('Error: TypeScript support not detected.'));
-      console.error(chalk.yellow('craftrn-ui components are written in TypeScript and require TypeScript support.'));
+      console.error(chalk.yellow('@craftreactnative/ui components are written in TypeScript and require TypeScript support.'));
       console.error(chalk.gray('Please set up TypeScript in your project:'));
       console.error(chalk.gray('  npm install --save-dev typescript @types/react @types/react-native'));
       console.error(chalk.gray('  npx tsc --init'));

@@ -22,7 +22,7 @@ export async function addCommand(
   const craftrnUiPath = path.join(targetPath, "craftrn-ui");
   if (!(await fs.pathExists(craftrnUiPath))) {
     console.log(
-      chalk.blue("🚀 craftrn-ui not found. Initializing project first...\n")
+      chalk.blue("🚀 @craftreactnative/ui not found. Initializing project first...\n")
     );
     await initCommand();
     console.log(chalk.blue("\nNow adding component...\n"));

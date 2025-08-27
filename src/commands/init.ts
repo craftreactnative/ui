@@ -25,7 +25,7 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     return;
   }
 
-  console.log(chalk.blue("🚀 Initializing craftrn-ui in your project...\n"));
+  console.log(chalk.blue("🚀 Initializing @craftreactnative/ui in your project...\n"));
 
   // Install required dependencies
   if (!options.skipDeps) {
@@ -124,19 +124,19 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     console.log(chalk.blue(getImportInstructions()));
   }
 
-  console.log(chalk.green("\n✅ craftrn-ui initialized successfully!"));
+  console.log(chalk.green("\n✅ @craftreactnative/ui initialized successfully!"));
   console.log(chalk.blue("Next steps:"));
   console.log(
     chalk.gray(
       `  1. Run ${chalk.white(
-        "npx craftrn-ui@latest list"
+        "npx @craftreactnative/ui@latest list"
       )} to see available components`
     )
   );
   console.log(
     chalk.gray(
       `  2. Run ${chalk.white(
-        "npx craftrn-ui@latest add <component>"
+        "npx @craftreactnative/ui@latest add <component>"
       )} to add components`
     )
   );
