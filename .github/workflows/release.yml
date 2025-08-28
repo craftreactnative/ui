@@ -5,9 +5,10 @@ on:
     branches:
       - main
 
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
 permissions:
   contents: write
-  issues: write
   pull-requests: write
   id-token: write
 
@@ -21,11 +22,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up npm auth
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -35,14 +31,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
-        run: npm audit signatures
-
       - name: Build
         run: npm run build
 
-      - name: Release
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: npm run changeset:publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx semantic-release

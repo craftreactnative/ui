@@ -9,7 +9,9 @@
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "semantic-release": "semantic-release"
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "changeset:publish": "changeset publish"
   },
   "keywords": [
     "react-native",
@@ -34,12 +36,10 @@
     "ora": "^5.4.1"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^11.0.4",
+    "@changesets/changelog-github": "^0.5.1",
+    "@changesets/cli": "^2.29.6",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.10.5",
-    "semantic-release": "^24.2.7",
     "typescript": "^5.3.3"
   },
   "files": [
