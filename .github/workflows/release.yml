@@ -11,6 +11,9 @@ permissions:
   contents: write
   pull-requests: write
   id-token: write
+  actions: read
+  checks: read
+  issues: write
 
 jobs:
   release:
@@ -34,11 +37,14 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Create Release Pull Request or Publish to npm
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          publish: npm run changeset:publish
+      - name: Version and Publish
+        run: |
+          if [ -d ".changeset" ] && [ "$(ls -A .changeset | grep -v README.md | grep -v config.json)" ]; then
+            npm run changeset:version
+            npm run changeset:publish
+          else
+            echo "No changesets to process"
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
