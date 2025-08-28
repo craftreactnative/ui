@@ -1,7 +1,8 @@
 {
   "name": "@craftreactnative/ui",
   "version": "1.0.0",
-  "description": "React Native UI components library based on Unistyles",
+  "description": "CLI for adding React Native UI components built for Unistyles",
+  "readme": "CLI_README.md",
   "main": "dist/index.js",
   "bin": {
     "craftreactnative-ui": "dist/cli.js"
@@ -44,6 +45,7 @@
   },
   "files": [
     "dist",
-    "demo-app/craftrn-ui"
+    "demo-app/craftrn-ui",
+    "CLI_README.md"
   ]
 }
