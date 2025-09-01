@@ -28,11 +28,32 @@ CraftReactNative provides production-ready React Native components designed spec
 npm install react-native-reanimated@^3 react-native-gesture-handler@^2 react-native-svg@^14 react-native-unistyles@^2
 ```
 
-Make sure you follow the documentation to configure your project and use these components. 
+Make sure you follow the documentation to configure your project and use these components.
 
 > **Note**: Migration to Unistyles v3 is currently in progress.
 
 ## Getting Started
+
+The fastest way to get started is with the CLI tool:
+
+1. **Initialize** your project with themes and dependencies:
+
+   ```bash
+   npx @craftreactnative/ui init
+   ```
+
+2. **Add components** to your project:
+
+   ```bash
+   npx @craftreactnative/ui add Button
+   npx @craftreactnative/ui add Avatar Card Slider
+   ```
+
+3. **Start building** with fully typed, theme-aware components!
+
+### Alternative: Manual Setup
+
+You can also manually browse and copy components:
 
 1. **Browse components** in the [demo app](https://docs.craftreactnative.com/) to see what's available
 2. **Copy the component code** and theme configuration from the source files
