@@ -33,7 +33,10 @@
       "Bash(npx changeset:*)",
       "Bash(npm publish:*)",
       "Bash(git add:*)",
-      "Bash(npm view:*)"
+      "Bash(npm view:*)",
+      "Bash(chmod:*)",
+      "Bash(npm unlink:*)",
+      "Bash(craftreactnative-ui:*)"
     ],
     "deny": [],
     "additionalDirectories": [

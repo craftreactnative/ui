@@ -1,14 +1,14 @@
 {
   "name": "@craftreactnative/ui",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "CLI for adding React Native UI components built for Unistyles",
-  "readme": "CLI_README.md",
   "main": "dist/index.js",
   "bin": {
     "craftreactnative-ui": "dist/cli.js"
   },
   "scripts": {
-    "build": "tsc",
+    "copy-components": "node scripts/copy-components.js",
+    "build": "npm run copy-components && tsc",
     "prepublishOnly": "npm run build",
     "changeset": "changeset",
     "changeset:version": "changeset version",
@@ -45,7 +45,6 @@
   },
   "files": [
     "dist",
-    "demo-app/craftrn-ui",
-    "CLI_README.md"
+    "craftrn-ui"
   ]
 }

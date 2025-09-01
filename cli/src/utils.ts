@@ -2,14 +2,8 @@ import * as fs from "fs-extra";
 import * as path from "path";
 import { ComponentInfo } from "./types";
 
-const COMPONENTS_SOURCE_PATH = path.join(
-  __dirname,
-  "../demo-app/craftrn-ui/components"
-);
-const THEMES_SOURCE_PATH = path.join(
-  __dirname,
-  "../demo-app/craftrn-ui/themes"
-);
+const COMPONENTS_SOURCE_PATH = path.join(__dirname, "../craftrn-ui/components");
+const THEMES_SOURCE_PATH = path.join(__dirname, "../craftrn-ui/themes");
 
 export async function getComponentInfo(
   componentName: string

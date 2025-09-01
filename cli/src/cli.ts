@@ -36,16 +36,24 @@ program
   });
 
 program
-  .command("add <component>")
-  .description("Add a component to your project")
+  .command("add <components...>")
+  .description("Add one or more components to your project")
   .option("--force", "Overwrite existing components")
-  .action(async (componentName: string, options) => {
+  .action(async (componentNames: string[], options) => {
     try {
       await ensureProjectRoot();
-      await addCommand(componentName, {
-        componentName,
-        force: options.force,
-      });
+      
+      console.log(chalk.blue(`\n📦 Installing ${componentNames.length} component(s): ${componentNames.join(', ')}\n`));
+      
+      for (const componentName of componentNames) {
+        console.log(chalk.yellow(`\n⏳ Installing ${componentName}...`));
+        await addCommand(componentName, {
+          componentName,
+          force: options.force,
+        });
+      }
+      
+      console.log(chalk.green(`\n✅ Successfully installed all ${componentNames.length} component(s)!`));
     } catch (error) {
       console.error(
         chalk.red("Error:"),

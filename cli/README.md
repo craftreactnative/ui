@@ -3,30 +3,27 @@
 [![npm version](https://img.shields.io/npm/v/@craftreactnative/ui.svg?style=for-the-badge)](https://www.npmjs.com/package/@craftreactnative/ui)
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](https://choosealicense.com/licenses/mit/)
 
-A CLI tool for adding [CraftReactNative UI](https://github.com/craftreactnative/ui) components to your React Native projects. Copy-paste components built for [Unistyles](https://github.com/jpudysz/react-native-unistyles).
-
-## Installation
-
-```bash
-npx @craftreactnative/ui init
-```
+A CLI tool for adding [CraftReactNative UI](https://github.com/craftreactnative/ui) components to your React Native projects. Built for [Unistyles](https://github.com/jpudysz/react-native-unistyles).
 
 ## Quick Start
 
 1. **Initialize** your project with themes and dependencies:
+
 ```bash
 npx @craftreactnative/ui init
 ```
 
 2. **Add components** to your project:
+
 ```bash
-npx @craftreactnative/ui add button
-npx @craftreactnative/ui add avatar card
+npx @craftreactnative/ui add Button
+npx @craftreactnative/ui add Avatar Card
 ```
 
 ## Commands
 
 ### `init`
+
 Initialize your project with Unistyles themes and install required dependencies.
 
 ```bash
@@ -34,37 +31,49 @@ npx @craftreactnative/ui init
 ```
 
 **Options:**
+
 - `--skip-deps` - Skip installing dependencies
 
+### `list`
+
+List all available components.
+
+```bash
+npx @craftreactnative/ui list
+# or
+npx @craftreactnative/ui ls
+```
+
 ### `add <components...>`
+
 Add one or more components to your project.
 
 ```bash
-npx @craftreactnative/ui add button
-npx @craftreactnative/ui add avatar card slider
+npx @craftreactnative/ui add Button
+npx @craftreactnative/ui add Avatar Card Slider
 ```
 
 ## Available Components
 
-- `avatar` - User profile avatars
-- `bottom-sheet` - Modal bottom sheets
-- `button` - Primary action buttons
-- `button-round` - Circular action buttons
-- `card` - Container cards
-- `checkbox` - Checkboxes with animations
-- `context-menu` - Context menus
-- `counter` - Number input counters
-- `input-otp` - OTP/PIN input fields
-- `input-search` - Search input fields
-- `input-text` - Text input fields
-- `list-item` - List items
-- `passcode-entry` - Passcode entry interface
-- `photo-carousel` - Image carousels
-- `radio` - Radio buttons
-- `slider` - Value sliders
-- `slider-dual` - Range sliders
-- `switch` - Toggle switches
-- `text` - Styled text components
+- `Avatar` - User profile avatars
+- `BottomSheet` - Modal bottom sheets
+- `Button` - Primary action buttons
+- `ButtonRound` - Circular action buttons
+- `Card` - Container cards
+- `Checkbox` - Checkboxes with animations
+- `ContextMenu` - Context menus
+- `Counter` - Number input counters
+- `InputOTP` - OTP/PIN input fields
+- `InputSearch` - Search input fields
+- `InputText` - Text input fields
+- `ListItem` - List items
+- `PasscodeEntry` - Passcode entry interface
+- `PhotoCarousel` - Image carousels
+- `Radio` - Radio buttons
+- `Slider` - Value sliders
+- `SliderDual` - Range sliders
+- `Switch` - Toggle switches
+- `Text` - Styled text components
 
 ## Prerequisites
 

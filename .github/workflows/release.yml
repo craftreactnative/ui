@@ -11,14 +11,14 @@ permissions:
   contents: write
   pull-requests: write
   id-token: write
-  actions: read
-  checks: read
-  issues: write
 
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./cli
     steps:
       - name: Checkout
         uses: actions/checkout@v4

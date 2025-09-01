@@ -1,3 +1,4 @@
 node_modules
 /craftrn-templates
-/dist
+/cli/dist
+/cli/craftrn-ui
