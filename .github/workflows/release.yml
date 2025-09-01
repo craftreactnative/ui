@@ -40,7 +40,6 @@ jobs:
       - name: Version and Publish
         run: |
           if [ -d ".changeset" ] && [ "$(ls -A .changeset | grep -v README.md | grep -v config.json)" ]; then
-            npm run changeset:version
             npm run changeset:publish
           else
             echo "No changesets to process"
@@ -48,3 +47,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
