@@ -25,7 +25,9 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     return;
   }
 
-  console.log(chalk.blue("🚀 Initializing @craftreactnative/ui in your project...\n"));
+  console.log(
+    chalk.blue("🚀 Initializing @craftreactnative/ui in your project...\n")
+  );
 
   // Install required dependencies
   if (!options.skipDeps) {
@@ -46,45 +48,45 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     });
 
     if (missingDeps.length > 0) {
-      const depsSpinner = ora(
-        `Installing required dependencies: ${missingDeps.join(", ")}...`
-      ).start();
+      const isExpoProject = await isExpo();
+      console.log(
+        chalk.blue(
+          `📦 Installing ${missingDeps.length} missing dependencies...\n`
+        )
+      );
 
       try {
-        const packageManager = await detectPackageManager(targetPath);
-        const installCommand = getInstallCommand(
-          packageManager,
-          missingDeps.join(" ")
+        // Install dependencies one by one
+        for (const dep of missingDeps) {
+          const packageName = dep.split("@")[0];
+          const isNativeDep = isNativeDependency(packageName);
+
+          const method =
+            isExpoProject && isNativeDep ? "expo install" : "package manager";
+          const depSpinner = ora(
+            `Installing ${chalk.cyan(packageName)} with ${method}...`
+          ).start();
+
+          try {
+            await installDependency(dep, isExpoProject);
+            depSpinner.succeed(`${packageName}`);
+          } catch (error) {
+            depSpinner.fail(`${packageName}`);
+            throw error;
+          }
+        }
+
+        console.log(
+          chalk.green(`\n✅ All dependencies installed successfully!`)
         );
 
-        await execAsync(installCommand, { cwd: targetPath });
-        depsSpinner.succeed(
-          `Installed dependencies: ${missingDeps.join(", ")}`
-        );
-        
-        // Check if react-native-reanimated was installed and show setup instructions
-        const installedReanimated = missingDeps.some(dep => dep.includes('react-native-reanimated'));
-        const installedGestureHandler = missingDeps.some(dep => dep.includes('react-native-gesture-handler'));
-        
-        if (installedReanimated) {
-          console.log(chalk.blue('\n📋 Additional setup required for react-native-reanimated:'));
-          console.log(chalk.yellow('Please follow the platform-specific installation steps at:'));
-          console.log(chalk.cyan('https://docs.swmansion.com/react-native-reanimated/docs/3.x/fundamentals/getting-started#installation'));
-          console.log(chalk.gray('This includes updating your babel.config.js and platform-specific configurations.'));
-        }
-        
-        if (installedGestureHandler) {
-          console.log(chalk.blue('\n📋 Additional setup required for react-native-gesture-handler:'));
-          console.log(chalk.yellow('Please follow the platform-specific installation steps at:'));
-          console.log(chalk.cyan('https://docs.swmansion.com/react-native-gesture-handler/docs/fundamentals/installation'));
-          console.log(chalk.gray('This includes platform-specific configurations for iOS and Android.'));
+        // Show setup instructions for non-Expo projects
+        if (!isExpoProject) {
+          await showSetupInstructions(missingDeps);
         }
       } catch (error) {
-        depsSpinner.fail("Failed to install dependencies");
-        console.error(chalk.yellow("Please install them manually:"));
-        missingDeps.forEach((dep) =>
-          console.error(chalk.gray(`  npm install ${dep}`))
-        );
+        console.error(chalk.red("\n❌ Failed to install some dependencies"));
+        await showManualInstallInstructions(missingDeps, isExpoProject);
       }
     } else {
       console.log(chalk.green("✓ All required dependencies already installed"));
@@ -124,8 +126,44 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     console.log(chalk.blue(getImportInstructions()));
   }
 
-  console.log(chalk.green("\n✅ @craftreactnative/ui initialized successfully!"));
-  console.log(chalk.blue("Next steps:"));
+  console.log(
+    chalk.green("\n✅ @craftreactnative/ui initialized successfully!")
+  );
+
+  // Check if this is an Expo project and warn about Expo Go limitations
+  const isExpoProject = await isExpo();
+  if (isExpoProject) {
+    console.log(chalk.yellow("\n⚠️  Expo Project Detected:"));
+    console.log(chalk.gray("   Unistyles won't work with Expo Go."));
+    console.log(
+      chalk.gray(
+        "   Ensure to use Expo Dev Client or build a custom development client."
+      )
+    );
+    console.log(
+      chalk.cyan(
+        "   Learn more: https://docs.expo.dev/development/getting-started/"
+      )
+    );
+  }
+
+  console.log(chalk.blue("\n🔄 Important:"));
+  console.log(
+    chalk.gray(
+      "   You'll need to rebuild your app for the native dependencies to work properly."
+    )
+  );
+  if (isExpoProject) {
+    console.log(chalk.gray("   Run: npx expo run:ios or npx expo run:android"));
+  } else {
+    console.log(
+      chalk.gray(
+        "   Run: npx react-native run-ios or npx react-native run-android"
+      )
+    );
+  }
+
+  console.log(chalk.blue("\nNext steps:"));
   console.log(
     chalk.gray(
       `  1. Run ${chalk.white(
@@ -142,6 +180,29 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
   );
 }
 
+async function installDependency(
+  dep: string,
+  isExpoProject: boolean
+): Promise<void> {
+  const packageName = dep.split("@")[0];
+  const targetPath = process.cwd();
+
+  // For native dependencies in Expo projects, use expo install
+  const isExpoDep =
+    packageName.includes("react-native-svg") ||
+    packageName.includes("react-native-reanimated") ||
+    packageName.includes("react-native-gesture-handler");
+
+  if (isExpoProject && isExpoDep) {
+    await execAsync(`npx expo install ${packageName}`, { cwd: targetPath });
+  } else {
+    // For unistyles or non-Expo projects, use regular package manager
+    const packageManager = await detectPackageManager(targetPath);
+    const installCommand = getInstallCommand(packageManager, dep);
+    await execAsync(installCommand, { cwd: targetPath });
+  }
+}
+
 async function detectPackageManager(
   targetPath: string
 ): Promise<"npm" | "yarn" | "pnpm"> {
@@ -152,6 +213,26 @@ async function detectPackageManager(
     return "pnpm";
   }
   return "npm";
+}
+
+async function isExpo(): Promise<boolean> {
+  const packageJsonPath = path.join(process.cwd(), "package.json");
+  try {
+    const packageJson = await fs.readJson(packageJsonPath);
+    // Check if expo is in dependencies or if app.json/app.config.js exists
+    const hasExpoDep =
+      packageJson.dependencies?.expo || packageJson.devDependencies?.expo;
+    const hasAppJson = await fs.pathExists(
+      path.join(process.cwd(), "app.json")
+    );
+    const hasAppConfig = await fs.pathExists(
+      path.join(process.cwd(), "app.config.js")
+    );
+
+    return !!(hasExpoDep || hasAppJson || hasAppConfig);
+  } catch (error) {
+    return false;
+  }
 }
 
 function getInstallCommand(
@@ -215,4 +296,85 @@ async function addUnistylesImport(targetPath: string): Promise<void> {
   const newContent = lines.join("\n");
 
   await fs.writeFile(entryFile, newContent, "utf8");
+}
+
+function isNativeDependency(packageName: string): boolean {
+  return (
+    packageName.includes("react-native-svg") ||
+    packageName.includes("react-native-reanimated") ||
+    packageName.includes("react-native-gesture-handler")
+  );
+}
+
+async function showSetupInstructions(installedDeps: string[]): Promise<void> {
+  const installedReanimated = installedDeps.some((dep) =>
+    dep.includes("react-native-reanimated")
+  );
+  const installedGestureHandler = installedDeps.some((dep) =>
+    dep.includes("react-native-gesture-handler")
+  );
+
+  if (installedReanimated) {
+    console.log(
+      chalk.blue("\n📋 Additional setup required for react-native-reanimated:")
+    );
+    console.log(
+      chalk.yellow("Please follow the platform-specific installation steps at:")
+    );
+    console.log(
+      chalk.cyan(
+        "https://docs.swmansion.com/react-native-reanimated/docs/3.x/fundamentals/getting-started#installation"
+      )
+    );
+    console.log(
+      chalk.gray(
+        "This includes updating your babel.config.js and platform-specific configurations."
+      )
+    );
+  }
+
+  if (installedGestureHandler) {
+    console.log(
+      chalk.blue(
+        "\n📋 Additional setup required for react-native-gesture-handler:"
+      )
+    );
+    console.log(
+      chalk.yellow("Please follow the platform-specific installation steps at:")
+    );
+    console.log(
+      chalk.cyan(
+        "https://docs.swmansion.com/react-native-gesture-handler/docs/fundamentals/installation"
+      )
+    );
+    console.log(
+      chalk.gray(
+        "This includes platform-specific configurations for iOS and Android."
+      )
+    );
+  }
+}
+
+async function showManualInstallInstructions(
+  missingDeps: string[],
+  isExpoProject: boolean
+): Promise<void> {
+  console.error(chalk.yellow("Please install them manually:"));
+
+  if (isExpoProject) {
+    missingDeps.forEach((dep) => {
+      const packageName = dep.split("@")[0];
+      const isNativeDep = isNativeDependency(packageName);
+
+      if (isNativeDep) {
+        console.error(chalk.gray(`  npx expo install ${packageName}`));
+      } else {
+        console.error(chalk.gray(`  npm install ${dep}`));
+      }
+    });
+  } else {
+    missingDeps.forEach((dep) =>
+      console.error(chalk.gray(`  npm install ${dep}`))
+    );
+  }
 }

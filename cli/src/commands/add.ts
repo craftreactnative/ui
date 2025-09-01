@@ -22,7 +22,9 @@ export async function addCommand(
   const craftrnUiPath = path.join(targetPath, "craftrn-ui");
   if (!(await fs.pathExists(craftrnUiPath))) {
     console.log(
-      chalk.blue("🚀 @craftreactnative/ui not found. Initializing project first...\n")
+      chalk.blue(
+        "😅 @craftreactnative/ui not found. Initializing project first...\n"
+      )
     );
     await initCommand();
     console.log(chalk.blue("\nNow adding component...\n"));
@@ -87,7 +89,7 @@ export async function addCommand(
 
     // Show success message and usage
     console.log(chalk.green("\n✅ Installation complete!"));
-    console.log(chalk.blue(`Example usage for ${componentName}:`));
+    console.log(chalk.blue(`Example import for ${componentName}:`));
 
     // Find main entry file to determine import style
     const possibleEntryFiles = [
