@@ -1,5 +1,11 @@
 # @craftreactnative/ui
 
+## 1.0.4
+
+### Patch Changes
+
+- [`8e4cd6f`](https://github.com/craftreactnative/ui/commit/8e4cd6f2449acf7bf0233e356c33c920eb826424) Thanks [@alexmngn](https://github.com/alexmngn)! - Support dependency install from cli init
+
 ## 1.0.3
 
 ### Patch Changes

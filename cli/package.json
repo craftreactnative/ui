@@ -1,6 +1,6 @@
 {
   "name": "@craftreactnative/ui",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "CLI for adding React Native UI components built for Unistyles",
   "main": "dist/index.js",
   "bin": {
