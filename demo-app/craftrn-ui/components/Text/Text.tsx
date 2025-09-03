@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text as RNText, StyleSheet, TextProps } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { Text as RNText, TextProps, StyleSheet as RNStyleSheet } from 'react-native';
+import { useUnistyles } from 'react-native-unistyles';
 
 /**
  * Props for the Text component.
@@ -34,64 +34,12 @@ export const Text = ({
   style,
   ...props
 }: Props & TextProps) => {
-  const { styles } = useStyles(stylesheet, { color, variant });
-  return <RNText style={[styles.text, StyleSheet.flatten(style)]} {...props} />;
+  const { theme } = useUnistyles();
+  
+  const variantStyle = theme.textVariants[variant];
+  const colorStyle = { color: theme.colors[color] };
+  
+  return <RNText style={[variantStyle, colorStyle, RNStyleSheet.flatten(style)]} {...props} />;
 };
 
-const stylesheet = createStyleSheet(({ textVariants, colors }) => ({
-  text: {
-    ...textVariants.body1,
-    color: colors.contentPrimary,
-    variants: {
-      color: {
-        contentPrimary: {
-          color: colors.contentPrimary,
-        },
-        contentSecondary: {
-          color: colors.contentSecondary,
-        },
-        contentTertiary: {
-          color: colors.contentTertiary,
-        },
-        contentQuaternary: {
-          color: colors.contentQuaternary,
-        },
-        contentAccent: {
-          color: colors.contentAccent,
-        },
-        positivePrimary: {
-          color: colors.positivePrimary,
-        },
-        positiveSecondary: {
-          color: colors.positiveSecondary,
-        },
-        negativePrimary: {
-          color: colors.negativePrimary,
-        },
-        negativeSecondary: {
-          color: colors.negativeSecondary,
-        },
-      },
-      variant: {
-        heading1: {
-          ...textVariants.heading1,
-        },
-        heading2: {
-          ...textVariants.heading2,
-        },
-        heading3: {
-          ...textVariants.heading3,
-        },
-        body1: {
-          ...textVariants.body1,
-        },
-        body2: {
-          ...textVariants.body2,
-        },
-        body3: {
-          ...textVariants.body3,
-        },
-      },
-    },
-  },
-}));
+

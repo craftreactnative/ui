@@ -5,10 +5,9 @@ import { ChevronRight } from '@/tetrisly-icons/ChevronRight';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { ScrollView, View } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 
 export default function ButtonRoundScreen() {
-  const { styles } = useStyles(stylesheet);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -120,7 +119,7 @@ export default function ButtonRoundScreen() {
   );
 }
 
-const stylesheet = createStyleSheet(theme => ({
+const styles = StyleSheet.create(theme => ({
   container: {
     paddingHorizontal: theme.spacing.large,
     paddingVertical: theme.spacing.medium,

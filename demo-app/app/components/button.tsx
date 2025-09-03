@@ -5,13 +5,11 @@ import { Stack } from 'expo-router';
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 import {
-  createStyleSheet,
+  StyleSheet,
   UnistylesRuntime,
-  useStyles,
 } from 'react-native-unistyles';
 
 export default function ButtonScreen() {
-  const { styles } = useStyles(stylesheet);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -146,7 +144,7 @@ export default function ButtonScreen() {
   );
 }
 
-const stylesheet = createStyleSheet(theme => ({
+const styles = StyleSheet.create(theme => ({
   container: {
     paddingHorizontal: theme.spacing.large,
     paddingVertical: theme.spacing.medium,

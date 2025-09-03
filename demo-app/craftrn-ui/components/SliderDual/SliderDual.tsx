@@ -8,7 +8,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 const config = {
   sliderHeight: 4,
@@ -96,7 +96,7 @@ export const SliderDual = ({
   step = 1,
   accessibilityStep = step,
 }: Props) => {
-  const { styles } = useStyles(stylesheet);
+  const { theme } = useUnistyles();
   const sliderWidth = width - config.knobSize;
 
   const getPositionFromValue = useCallback(

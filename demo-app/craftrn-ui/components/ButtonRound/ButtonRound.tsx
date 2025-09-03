@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { AccessibilityProps, Pressable, View } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { useUnistyles } from 'react-native-unistyles';
 import type { darkTheme, lightTheme } from '../../themes/config';
 
 type Size = 'large' | 'medium' | 'small';
@@ -149,8 +149,12 @@ export const ButtonRound = ({
   variant = 'default',
   ...accessibilityProps
 }: ButtonRoundProps) => {
-  const { styles, theme } = useStyles(stylesheet, { size });
+  const { theme } = useUnistyles();
   const { iconSize, hitSlop } = config[size];
+
+  // Get size-specific styles
+  const containerStyle = styles.container({ size });
+  const buttonStyle = styles.button({ size });
 
   const iconVariantColor = {
     accent: theme.colors.white,

@@ -4,10 +4,10 @@ import { Text } from '@/craftrn-ui/components/Text';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 export default function SwitchScreen() {
-  const { styles } = useStyles(stylesheet);
+  const { theme } = useUnistyles();
   const [enabled1, setEnabled1] = useState(false);
   const [enabled2, setEnabled2] = useState(true);
 
@@ -40,7 +40,7 @@ export default function SwitchScreen() {
   );
 }
 
-const stylesheet = createStyleSheet(theme => ({
+const styles = StyleSheet.create(theme => ({
   container: {
     paddingHorizontal: theme.spacing.large,
     paddingVertical: theme.spacing.medium,

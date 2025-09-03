@@ -5,7 +5,7 @@ import {
   AccessibilityProps,
   View,
 } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { ButtonRound } from '../ButtonRound';
 import { Text } from '../Text';
 import { Minus } from './Minus';
@@ -61,7 +61,7 @@ export const Counter = ({
   const [count, setCount] = useState(
     Math.min(Math.max(initialValue, minValue), maxValue),
   );
-  const { styles, theme } = useStyles(stylesheet);
+  const { theme } = useUnistyles();
   const canIncrease = count < maxValue;
   const canDecrease = count > minValue;
 
@@ -153,7 +153,7 @@ export const Counter = ({
   );
 };
 
-const stylesheet = createStyleSheet(({ spacing }) => ({
+const styles = StyleSheet.create(({ spacing }) => ({
   container: {
     flexDirection: 'row',
     alignItems: 'center',

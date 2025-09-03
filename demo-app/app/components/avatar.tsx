@@ -4,14 +4,13 @@ import { Text } from '@/craftrn-ui/components/Text';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { ScrollView, View } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 
 const AVATAR_URL1 = 'https://i.pravatar.cc/300?img=5';
 const AVATAR_URL2 = 'https://i.pravatar.cc/300?img=8';
 const AVATAR_URL3 = 'https://i.pravatar.cc/300?img=26';
 
 export default function AvatarScreen() {
-  const { styles } = useStyles(stylesheet);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -109,7 +108,7 @@ export default function AvatarScreen() {
   );
 }
 
-const stylesheet = createStyleSheet(theme => ({
+const styles = StyleSheet.create(theme => ({
   container: {
     paddingHorizontal: theme.spacing.large,
     paddingVertical: theme.spacing.medium,

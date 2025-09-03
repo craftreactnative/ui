@@ -1,10 +1,10 @@
 import { NavigationBackButton } from '@/components/NavigationBackButton/NavigationBackButton';
 import { Stack } from 'expo-router';
 import { View } from 'react-native';
-import { useStyles } from 'react-native-unistyles';
+import { useUnistyles } from 'react-native-unistyles';
 
 export default function ComponentsLayout() {
-  const { theme } = useStyles();
+  const { theme } = useUnistyles();
 
   return (
     <Stack
@@ -20,7 +20,7 @@ export default function ComponentsLayout() {
             <View style={{ marginLeft: -16 }}>
               <NavigationBackButton
                 onPress={navigation.goBack}
-                variant="secondary"
+                variant="default"
               />
             </View>
           ) : undefined,

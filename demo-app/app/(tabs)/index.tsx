@@ -4,13 +4,13 @@ import { ChevronRight } from '@/tetrisly-icons/ChevronRight';
 import { Href, useRouter } from 'expo-router';
 import { ComponentProps, ComponentType } from 'react';
 import { View } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import ParallaxScrollView from '../../components/ParallaxScrollView/ParallaxScrollView';
 
 export const MenuItem: ComponentType<
   ComponentProps<typeof ListItem> & { divider?: boolean; href: Href }
 > = ({ divider = true, href, ...listItemProps }) => {
-  const { styles, theme } = useStyles(stylesheet);
+  const { theme } = useUnistyles();
   const router = useRouter();
 
   return (
@@ -25,7 +25,6 @@ export const MenuItem: ComponentType<
 };
 
 export default function ComponentsScreen() {
-  const { styles } = useStyles(stylesheet);
 
   return (
     <ParallaxScrollView title="Components">
@@ -133,7 +132,7 @@ export default function ComponentsScreen() {
   );
 }
 
-const stylesheet = createStyleSheet(theme => ({
+const styles = StyleSheet.create(theme => ({
   container: {
     flex: 1,
     backgroundColor: theme.colors.backgroundSecondary,

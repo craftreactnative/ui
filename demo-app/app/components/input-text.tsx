@@ -8,13 +8,13 @@ import { Stack } from 'expo-router';
 import React from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import {
-  createStyleSheet,
+  StyleSheet,
   UnistylesRuntime,
-  useStyles,
+  useUnistyles,
 } from 'react-native-unistyles';
 
 export default function InputTextScreen() {
-  const { styles, theme } = useStyles(stylesheet);
+  const { theme } = useUnistyles();
   const headerHeight = useHeaderHeight();
 
   return (
@@ -95,11 +95,11 @@ export default function InputTextScreen() {
   );
 }
 
-const stylesheet = createStyleSheet(theme => ({
+const styles = StyleSheet.create(theme => ({
   container: {
     paddingHorizontal: theme.spacing.large,
     paddingTop: theme.spacing.medium,
-    paddingBottom: UnistylesRuntime.insets.bottom,
+    paddingBottom: UnistylesRuntime.insets.ime,
   },
   content: {
     gap: theme.spacing.small,
