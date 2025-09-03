@@ -27,7 +27,6 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="craftrnui"/>
-        <data android:scheme="com.craftreactnative.craftrnui.demoapp"/>
         <data android:scheme="exp+craftrn-ui-demo-app"/>
       </intent-filter>
     </activity>

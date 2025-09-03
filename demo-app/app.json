@@ -19,7 +19,8 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.craftreactnative.craftrnui.demoapp",
-      "runtimeVersion": "1.0.0"
+      "runtimeVersion": "1.0.0",
+      "edgeToEdge": false
     },
     "web": {
       "bundler": "metro",
@@ -37,7 +38,9 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-video"
+      "expo-video",
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

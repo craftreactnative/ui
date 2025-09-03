@@ -18,10 +18,7 @@ export default function ComponentsLayout() {
             // The NativeStack adds some margins on the sides of the header.
             // Those 16px compensates for that
             <View style={{ marginLeft: -16 }}>
-              <NavigationBackButton
-                onPress={navigation.goBack}
-                variant="default"
-              />
+              <NavigationBackButton onPress={navigation.goBack} />
             </View>
           ) : undefined,
       })}
