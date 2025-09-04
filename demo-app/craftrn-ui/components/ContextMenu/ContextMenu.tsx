@@ -102,10 +102,13 @@ export const ContextMenu = ({
   }, []);
 
   useEffect(() => {
-    if (visible) {
-      measureTrigger();
+    if (visible && !hasMenuPositioned) {
+      const timer = setTimeout(() => {
+        measureTrigger();
+      }, 10);
+      return () => clearTimeout(timer);
     }
-  }, [visible, measureTrigger]);
+  }, [visible, measureTrigger, hasMenuPositioned]);
 
   const getMenuPosition = () => {
     const { x, y, width, height } = triggerPosition;
