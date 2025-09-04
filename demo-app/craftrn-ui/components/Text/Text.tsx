@@ -1,5 +1,9 @@
 import React from 'react';
-import { Text as RNText, TextProps, StyleSheet as RNStyleSheet } from 'react-native';
+import {
+  StyleSheet as RNStyleSheet,
+  Text as RNText,
+  TextProps,
+} from 'react-native';
 import { useUnistyles } from 'react-native-unistyles';
 
 /**
@@ -35,11 +39,14 @@ export const Text = ({
   ...props
 }: Props & TextProps) => {
   const { theme } = useUnistyles();
-  
+
   const variantStyle = theme.textVariants[variant];
   const colorStyle = { color: theme.colors[color] };
-  
-  return <RNText style={[variantStyle, colorStyle, RNStyleSheet.flatten(style)]} {...props} />;
+
+  return (
+    <RNText
+      style={[variantStyle, colorStyle, RNStyleSheet.flatten(style)]}
+      {...props}
+    />
+  );
 };
-
-

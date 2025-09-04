@@ -10,7 +10,6 @@ import {
   AccessibilityProps,
   LayoutChangeEvent,
   Modal,
-  StyleSheet,
   TouchableWithoutFeedback,
   useWindowDimensions,
   View,
@@ -28,7 +27,7 @@ import Animated, {
   withTiming,
   WithTimingConfig,
 } from 'react-native-reanimated';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 
 /**
  * Props for the BottomSheet component.
@@ -96,7 +95,6 @@ export const BottomSheet = ({
   showHandleBar = false,
   ...accessibilityProps
 }: BottomSheetProps) => {
-  const { styles } = useStyles(stylesheet, { variant });
   const [showModal, setShowModal] = useState(visible);
   const [contentHeight, setContentHeight] = useState<number | undefined>();
   const [isScreenReaderEnabled, setIsScreenReaderEnabled] = useState(false);
@@ -254,7 +252,7 @@ export const BottomSheet = ({
   );
 };
 
-const stylesheet = createStyleSheet(({ colors, borderRadius, spacing }) => ({
+const styles = StyleSheet.create(({ colors, borderRadius, spacing }) => ({
   container: {
     flex: 1,
   },
@@ -275,16 +273,6 @@ const stylesheet = createStyleSheet(({ colors, borderRadius, spacing }) => ({
     left: 0,
     right: 0,
     maxHeight,
-    variants: {
-      variant: {
-        primary: {
-          backgroundColor: colors.backgroundPrimary,
-        },
-        secondary: {
-          backgroundColor: colors.backgroundSecondary,
-        },
-      },
-    },
   }),
   content: {
     paddingTop: spacing.large,

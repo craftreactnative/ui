@@ -15,7 +15,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { Text } from '../Text';
 
 export const config = {
@@ -79,7 +79,7 @@ export const InputText = forwardRef<TextInput, Props & TextInputProps>(
     },
     ref,
   ) {
-    const { styles, theme } = useStyles(stylesheet, { size });
+    const { theme } = useUnistyles();
     const [isFocused, setIsFocused] = useState(false);
     const inputRef = useRef<TextInput>(null);
     const reduceMotion = useReducedMotion();
@@ -132,17 +132,29 @@ export const InputText = forwardRef<TextInput, Props & TextInputProps>(
         <Pressable onPress={handlePress}>
           {({ pressed }) => (
             <View
-              style={styles.container({
-                active: pressed || isFocused,
-                error: !!error,
-              })}
+              style={[
+                styles.container({
+                  active: pressed || isFocused,
+                  error: !!error,
+                }),
+                size === 'small' && styles.containerSmall,
+                size === 'medium' && styles.containerMedium,
+                size === 'large' && styles.containerLarge,
+              ]}
             >
               {leftAccessory && (
                 <View style={styles.accessory}>{leftAccessory}</View>
               )}
               <View style={styles.textInputContainer}>
                 {label && (
-                  <Animated.Text style={[styles.label, labelAnimatedStyle]}>
+                  <Animated.Text
+                    style={[
+                      styles.label,
+                      size === 'medium' && styles.labelMedium,
+                      size === 'large' && styles.labelLarge,
+                      labelAnimatedStyle,
+                    ]}
+                  >
                     {label}
                   </Animated.Text>
                 )}
@@ -151,7 +163,16 @@ export const InputText = forwardRef<TextInput, Props & TextInputProps>(
                   ref={ref ?? inputRef}
                   style={[
                     styles.textInput,
+                    size === 'small' && styles.textInputSmall,
+                    size === 'medium' && styles.textInputMedium,
+                    size === 'large' && styles.textInputLarge,
                     !!label && styles.textInputWithLabel,
+                    !!label &&
+                      size === 'medium' &&
+                      styles.textInputWithLabelMedium,
+                    !!label &&
+                      size === 'large' &&
+                      styles.textInputWithLabelLarge,
                     style,
                   ]}
                   value={value}
@@ -181,7 +202,7 @@ export const InputText = forwardRef<TextInput, Props & TextInputProps>(
   },
 );
 
-const stylesheet = createStyleSheet(
+const styles = StyleSheet.create(
   ({ colors, borderRadius, spacing, textVariants }) => ({
     container: ({ active, error }: { active: boolean; error: boolean }) => ({
       borderRadius: borderRadius.medium,
@@ -197,23 +218,19 @@ const stylesheet = createStyleSheet(
       flexDirection: 'row',
       alignItems: 'center',
       overflow: 'hidden',
-      variants: {
-        size: {
-          small: {
-            minHeight: config.small.height,
-            borderRadius: borderRadius.small,
-          },
-          medium: {
-            minHeight: config.medium.height,
-            borderRadius: borderRadius.medium,
-          },
-          large: {
-            minHeight: config.large.height,
-            borderRadius: borderRadius.large,
-          },
-        },
-      },
     }),
+    containerSmall: {
+      minHeight: config.small.height,
+      borderRadius: borderRadius.small,
+    },
+    containerMedium: {
+      minHeight: config.medium.height,
+      borderRadius: borderRadius.medium,
+    },
+    containerLarge: {
+      minHeight: config.large.height,
+      borderRadius: borderRadius.large,
+    },
     textInputContainer: {
       flexGrow: 1,
       position: 'relative',
@@ -227,18 +244,14 @@ const stylesheet = createStyleSheet(
       color: colors.contentSecondary,
       textAlign: 'left',
       transformOrigin: '0 50%',
-      variants: {
-        size: {
-          medium: {
-            ...textVariants.body2,
-            lineHeight: config.medium.height - spacing.xsmall * 2,
-          },
-          large: {
-            ...textVariants.body1,
-            lineHeight: config.large.height - spacing.xsmall * 2,
-          },
-        },
-      },
+    },
+    labelMedium: {
+      ...textVariants.body2,
+      lineHeight: config.medium.height - spacing.xsmall * 2,
+    },
+    labelLarge: {
+      ...textVariants.body1,
+      lineHeight: config.large.height - spacing.xsmall * 2,
     },
     textInput: {
       flexGrow: 1,
@@ -247,25 +260,18 @@ const stylesheet = createStyleSheet(
       paddingLeft: 0,
       minWidth: 0,
       color: colors.contentPrimary,
-      variants: {
-        size: {
-          small: textVariants.body3,
-          medium: textVariants.body2,
-          large: textVariants.body1,
-        },
-      },
     },
+    textInputSmall: textVariants.body3,
+    textInputMedium: textVariants.body2,
+    textInputLarge: textVariants.body1,
     textInputWithLabel: {
-      variants: {
-        size: {
-          medium: {
-            marginTop: spacing.medium,
-          },
-          large: {
-            marginTop: spacing.large,
-          },
-        },
-      },
+      marginTop: 0,
+    },
+    textInputWithLabelMedium: {
+      marginTop: spacing.medium,
+    },
+    textInputWithLabelLarge: {
+      marginTop: spacing.large,
     },
     accessory: {
       marginHorizontal: spacing.xsmall,

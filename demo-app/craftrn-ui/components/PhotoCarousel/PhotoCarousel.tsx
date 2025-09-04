@@ -1,11 +1,16 @@
 import React, { useRef, useState } from 'react';
-import { Image, View, ViewProps, StyleSheet as RNStyleSheet } from 'react-native';
+import {
+  Image,
+  StyleSheet as RNStyleSheet,
+  View,
+  ViewProps,
+} from 'react-native';
 import Animated, {
   runOnJS,
   useAnimatedScrollHandler,
   useSharedValue,
 } from 'react-native-reanimated';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { useUnistyles } from 'react-native-unistyles';
 import { AnimatedDot } from './AnimatedDot';
 
 const config = {
@@ -116,11 +121,13 @@ export const PhotoCarousel = ({
       onAccessibilityAction={onAccessibilityAction}
     >
       {carouselWidth > 0 && (
-        <View style={{
-          width: carouselWidth,
-          height: carouselHeight,
-          overflow: 'hidden',
-        }}>
+        <View
+          style={{
+            width: carouselWidth,
+            height: carouselHeight,
+            overflow: 'hidden',
+          }}
+        >
           <Animated.FlatList
             ref={flatListRef}
             data={photos}
@@ -135,15 +142,18 @@ export const PhotoCarousel = ({
             importantForAccessibility="no-hide-descendants"
           />
           <View
-            style={[{
-              position: 'absolute',
-              bottom: theme.spacing.medium,
-              left: 0,
-              right: 0,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              gap: theme.spacing.xsmall,
-            }, RNStyleSheet.flatten(dotsStyle)]}
+            style={[
+              {
+                position: 'absolute',
+                bottom: theme.spacing.medium,
+                left: 0,
+                right: 0,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                gap: theme.spacing.xsmall,
+              },
+              RNStyleSheet.flatten(dotsStyle),
+            ]}
             accessible={false}
           >
             {photos.map((_, index) => (
@@ -160,5 +170,3 @@ export const PhotoCarousel = ({
     </View>
   );
 };
-
-

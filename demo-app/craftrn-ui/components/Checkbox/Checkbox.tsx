@@ -44,7 +44,7 @@ export const Checkbox = ({
   onPress,
   ...accessibilityProps
 }: CheckboxProps) => {
-  const { styles, theme } = useStyles(stylesheet);
+  const { theme } = useUnistyles();
   const scale = useSharedValue(1);
   const appearance = useSharedValue(0);
 
@@ -102,7 +102,7 @@ export const Checkbox = ({
   );
 };
 
-const stylesheet = createStyleSheet(({ borderRadius }) => ({
+const styles = StyleSheet.create(({ borderRadius }) => ({
   container: {
     borderRadius: borderRadius.small,
     borderWidth: 1,

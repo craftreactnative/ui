@@ -1,10 +1,7 @@
 {
   "name": "PhotoCarousel",
   "description": "Photo carousel component with animated dots and accessibility support",
-  "externalDependencies": [
-    "react-native-reanimated",
-    "react-native-unistyles"
-  ],
+  "externalDependencies": ["react-native-reanimated", "react-native-unistyles"],
   "craftrnUiComponents": [],
   "tetrislyIcons": []
 }

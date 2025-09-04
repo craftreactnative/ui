@@ -1,6 +1,6 @@
 import React from 'react';
 import { AccessibilityProps, Pressable, View } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { darkTheme, lightTheme } from '../../themes/config';
 import { Text } from '../Text';
 
@@ -236,9 +236,7 @@ export const Button = ({
   disabled = false,
   ...accessibilityProps
 }: ButtonProps) => {
-  const { styles, theme } = useStyles(stylesheet, {
-    size,
-  });
+  const { theme } = useUnistyles();
 
   return (
     <Pressable
@@ -251,13 +249,13 @@ export const Button = ({
       {({ pressed }) => (
         <View
           style={[
-            styles.button({ disabled }),
+            styles.button({ disabled, size }),
             getButtonStyles(variant, intent, pressed, disabled, theme.colors),
           ]}
         >
           <Text
             style={[
-              styles.text,
+              styles.text({ size }),
               { color: getTextColor(variant, intent, disabled, theme.colors) },
             ]}
           >
@@ -269,53 +267,47 @@ export const Button = ({
   );
 };
 
-const stylesheet = createStyleSheet(
-  ({ borderRadius, spacing, textVariants }) => ({
-    button: ({ disabled }: { disabled: boolean }) => ({
-      borderRadius: borderRadius.medium,
-      justifyContent: 'center',
-      opacity: disabled ? 0.5 : 1,
-      variants: {
-        size: {
-          large: {
-            paddingHorizontal: spacing.large,
-            paddingVertical: spacing.medium,
-            minHeight: config.large.buttonMinHeight,
-            minWidth: config.large.buttonMinWidth,
-            borderRadius: borderRadius.large,
-          },
-          regular: {
-            paddingHorizontal: spacing.medium,
-            paddingVertical: spacing.small,
-            minHeight: config.regular.buttonMinHeight,
-            minWidth: config.regular.buttonMinWidth,
-            borderRadius: borderRadius.medium,
-          },
-          small: {
-            paddingHorizontal: spacing.small,
-            paddingVertical: spacing.xsmall,
-            minHeight: config.small.buttonMinHeight,
-            minWidth: config.small.buttonMinWidth,
-            borderRadius: borderRadius.small,
-          },
-        },
-      },
+const styles = StyleSheet.create(({ borderRadius, spacing, textVariants }) => ({
+  button: (params: { disabled: boolean; size: Size }) => ({
+    borderRadius: borderRadius.medium,
+    justifyContent: 'center',
+    opacity: params.disabled ? 0.5 : 1,
+    ...(params.size === 'large' && {
+      paddingHorizontal: spacing.large,
+      paddingVertical: spacing.medium,
+      minHeight: config.large.buttonMinHeight,
+      minWidth: config.large.buttonMinWidth,
+      borderRadius: borderRadius.large,
     }),
-    text: {
-      textAlign: 'center',
-      fontWeight: 'bold',
-      variants: {
-        size: {
-          regular: {
-            ...textVariants.body2,
-            fontWeight: 'bold',
-          },
-          small: {
-            ...textVariants.body3,
-            fontWeight: 'bold',
-          },
-        },
-      },
-    },
+    ...(params.size === 'regular' && {
+      paddingHorizontal: spacing.medium,
+      paddingVertical: spacing.small,
+      minHeight: config.regular.buttonMinHeight,
+      minWidth: config.regular.buttonMinWidth,
+      borderRadius: borderRadius.medium,
+    }),
+    ...(params.size === 'small' && {
+      paddingHorizontal: spacing.small,
+      paddingVertical: spacing.xsmall,
+      minHeight: config.small.buttonMinHeight,
+      minWidth: config.small.buttonMinWidth,
+      borderRadius: borderRadius.small,
+    }),
   }),
-);
+  text: (params: { size: Size }) => ({
+    textAlign: 'center',
+    fontWeight: 'bold',
+    ...(params.size === 'regular' && {
+      ...textVariants.body2,
+      fontWeight: 'bold',
+    }),
+    ...(params.size === 'small' && {
+      ...textVariants.body3,
+      fontWeight: 'bold',
+    }),
+    ...(params.size === 'large' && {
+      ...textVariants.body2,
+      fontWeight: 'bold',
+    }),
+  }),
+}));

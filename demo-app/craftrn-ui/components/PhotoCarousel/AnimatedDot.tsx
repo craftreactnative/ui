@@ -4,7 +4,7 @@ import Animated, {
   SharedValue,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { useUnistyles } from 'react-native-unistyles';
 
 const config = {
   dotSize: 4,
@@ -52,10 +52,17 @@ export const AnimatedDot = ({ index, scrollX, carouselWidth }: Props) => {
     };
   });
 
-  return <Animated.View style={[{
-    width: config.dotSize,
-    height: config.dotSize,
-    borderRadius: theme.borderRadius.full,
-    backgroundColor: theme.colors.white,
-  }, dotAnimatedStyle]} />;
+  return (
+    <Animated.View
+      style={[
+        {
+          width: config.dotSize,
+          height: config.dotSize,
+          borderRadius: theme.borderRadius.full,
+          backgroundColor: theme.colors.white,
+        },
+        dotAnimatedStyle,
+      ]}
+    />
+  );
 };

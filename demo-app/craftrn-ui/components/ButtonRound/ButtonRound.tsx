@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import { AccessibilityProps, Pressable, View } from 'react-native';
-import { useUnistyles } from 'react-native-unistyles';
-import type { darkTheme, lightTheme } from '../../themes/config';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 type Size = 'large' | 'medium' | 'small';
 type Intent = 'primary' | 'secondary';
@@ -152,10 +151,6 @@ export const ButtonRound = ({
   const { theme } = useUnistyles();
   const { iconSize, hitSlop } = config[size];
 
-  // Get size-specific styles
-  const containerStyle = styles.container({ size });
-  const buttonStyle = styles.button({ size });
-
   const iconVariantColor = {
     accent: theme.colors.white,
     reversed: theme.colors.contentReversed,
@@ -173,7 +168,7 @@ export const ButtonRound = ({
       {({ pressed }) => (
         <View
           style={[
-            styles.button({ disabled }),
+            styles.button({ disabled, size }),
             getButtonStyles(intent, variant, pressed, disabled, theme.colors),
           ]}
         >
@@ -187,27 +182,23 @@ export const ButtonRound = ({
   );
 };
 
-const stylesheet = createStyleSheet(({ borderRadius }) => ({
-  button: ({ disabled }: { disabled: boolean }) => ({
+const styles = StyleSheet.create(({ borderRadius }) => ({
+  button: ({ disabled, size }: { disabled: boolean; size: Size }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: borderRadius.full,
     opacity: disabled ? 0.5 : 1,
-    variants: {
-      size: {
-        small: {
-          width: config.small.buttonSize,
-          height: config.small.buttonSize,
-        },
-        medium: {
-          width: config.medium.buttonSize,
-          height: config.medium.buttonSize,
-        },
-        large: {
-          width: config.large.buttonSize,
-          height: config.large.buttonSize,
-        },
-      },
-    },
+    ...(size === 'small' && {
+      width: config.small.buttonSize,
+      height: config.small.buttonSize,
+    }),
+    ...(size === 'medium' && {
+      width: config.medium.buttonSize,
+      height: config.medium.buttonSize,
+    }),
+    ...(size === 'large' && {
+      width: config.large.buttonSize,
+      height: config.large.buttonSize,
+    }),
   }),
 }));

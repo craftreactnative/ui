@@ -23,11 +23,11 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {
-  createStyleSheet,
+  StyleSheet,
   UnistylesRuntime,
-  useStyles,
+  useUnistyles,
 } from 'react-native-unistyles';
-import { ListItem } from '../ListItem/ListItem';
+import { ListItem } from '../ListItem';
 
 export type ContextMenuItem = {
   id: string;
@@ -66,7 +66,7 @@ export const ContextMenu = ({
   menuAnchorPosition = 'bottom-center',
   offset = { x: 0, y: 8 },
 }: ContextMenuProps) => {
-  const { styles, theme } = useStyles(stylesheet);
+  const { theme } = useUnistyles();
   const [visible, setVisible] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [triggerPosition, setTriggerPosition] = useState({
@@ -102,10 +102,14 @@ export const ContextMenu = ({
   }, []);
 
   useEffect(() => {
-    if (visible) {
-      measureTrigger();
+    if (visible && !hasMenuPositioned) {
+      const timer = setTimeout(() => {
+        measureTrigger();
+      }, 10);
+
+      return () => clearTimeout(timer);
     }
-  }, [visible, measureTrigger]);
+  }, [visible, hasMenuPositioned, measureTrigger]);
 
   const getMenuPosition = () => {
     const { x, y, width, height } = triggerPosition;
@@ -270,7 +274,7 @@ export const ContextMenu = ({
   );
 };
 
-const stylesheet = createStyleSheet(({ colors, spacing }) => ({
+const styles = StyleSheet.create(({ colors, spacing }) => ({
   overlay: {
     flex: 1,
     backgroundColor: colors.overlay,

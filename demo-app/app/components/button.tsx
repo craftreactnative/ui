@@ -4,13 +4,9 @@ import { Text } from '@/craftrn-ui/components/Text';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { ScrollView, View } from 'react-native';
-import {
-  StyleSheet,
-  UnistylesRuntime,
-} from 'react-native-unistyles';
+import { StyleSheet, UnistylesRuntime } from 'react-native-unistyles';
 
 export default function ButtonScreen() {
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Stack.Screen

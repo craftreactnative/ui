@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  AccessibilityProps,
-  Pressable,
-  StyleSheet,
-  View,
-  ViewProps,
-} from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { AccessibilityProps, Pressable, View, ViewProps } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import { Text } from '../Text';
 
 /**
@@ -56,7 +50,6 @@ export const ListItem = ({
   variant = 'primary',
   ...accessibilityProps
 }: ListItemProps) => {
-  const { styles } = useStyles(stylesheet, { variant });
   return (
     <>
       <Pressable
@@ -74,7 +67,14 @@ export const ListItem = ({
           >
             {itemLeft}
             <View style={styles.itemContent}>
-              <Text variant="body2" style={styles.itemText}>
+              <Text
+                variant="body2"
+                style={[
+                  variant === 'primary'
+                    ? styles.itemText
+                    : styles.itemTextDanger,
+                ]}
+              >
                 {text}
               </Text>
               {textBelow && (
@@ -92,7 +92,7 @@ export const ListItem = ({
   );
 };
 
-const stylesheet = createStyleSheet(({ colors, spacing }) => ({
+const styles = StyleSheet.create(({ colors, spacing }) => ({
   itemContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -109,16 +109,11 @@ const stylesheet = createStyleSheet(({ colors, spacing }) => ({
   },
   itemText: {
     fontWeight: 'bold',
-    variants: {
-      variant: {
-        primary: {
-          color: colors.contentPrimary,
-        },
-        danger: {
-          color: colors.negativeSecondary,
-        },
-      },
-    },
+    color: colors.contentPrimary,
+  },
+  itemTextDanger: {
+    fontWeight: 'bold',
+    color: colors.negativeSecondary,
   },
   itemDivider: {
     borderBottomColor: colors.surfaceSecondary,

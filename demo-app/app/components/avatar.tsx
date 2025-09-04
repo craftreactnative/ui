@@ -11,7 +11,6 @@ const AVATAR_URL2 = 'https://i.pravatar.cc/300?img=8';
 const AVATAR_URL3 = 'https://i.pravatar.cc/300?img=26';
 
 export default function AvatarScreen() {
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Stack.Screen

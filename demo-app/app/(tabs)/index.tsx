@@ -25,7 +25,6 @@ export const MenuItem: ComponentType<
 };
 
 export default function ComponentsScreen() {
-
   return (
     <ParallaxScrollView title="Components">
       <View style={styles.scrollViewContent}>

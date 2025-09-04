@@ -23,7 +23,7 @@ export type Props = {
 };
 
 export const PinDot = ({ filled }: Props) => {
-  const { styles, theme } = useStyles(stylesheet);
+  const { theme } = useUnistyles();
   const scale = useSharedValue(1);
   const filledStatus = useSharedValue(filled ? 1 : 0);
 
@@ -59,7 +59,7 @@ export const PinDot = ({ filled }: Props) => {
   return <Animated.View style={[styles.pinDot, dotAnimatedStyle]} />;
 };
 
-const stylesheet = createStyleSheet(({ colors, borderRadius }) => ({
+const styles = StyleSheet.create(({ colors, borderRadius }) => ({
   pinDot: {
     width: config.dotSize,
     height: config.dotSize,

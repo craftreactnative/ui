@@ -1,12 +1,7 @@
 {
   "name": "InputText",
   "description": "Text input component with animated label, accessories, and error states",
-  "externalDependencies": [
-    "react-native-reanimated",
-    "react-native-unistyles"
-  ],
-  "craftrnUiComponents": [
-    "Text"
-  ],
+  "externalDependencies": ["react-native-reanimated", "react-native-unistyles"],
+  "craftrnUiComponents": ["Text"],
   "tetrislyIcons": []
 }

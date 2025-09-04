@@ -5,7 +5,7 @@ import {
   ImageSourcePropType,
   View,
 } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 import { Text } from '../Text';
 
 export const config = {
@@ -74,18 +74,15 @@ export const Avatar = ({
   ...accessibilityProps
 }: AvatarProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const { styles } = useStyles(stylesheet, {
-    color: fallbackColor,
-    size,
-  });
 
   const avatarIndicatorSize = config[size].indicatorSize;
 
   return (
     <View
       style={[
-        styles.container,
-        (!source || !imageLoaded) && styles.containerFallback,
+        styles.container({ size }),
+        (!source || !imageLoaded) &&
+          styles.containerFallback({ color: fallbackColor }),
       ]}
       accessible
       accessibilityHint={showOnlineIndicator ? 'online' : undefined}
@@ -118,49 +115,41 @@ export const Avatar = ({
   );
 };
 
-const stylesheet = createStyleSheet(({ borderRadius, colors, spacing }) => ({
-  container: {
+const styles = StyleSheet.create(({ borderRadius, colors, spacing }) => ({
+  container: (params: { size: 'small' | 'medium' | 'large' }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-    variants: {
-      size: {
-        small: {
-          width: config.small.avatarSize,
-          height: config.small.avatarSize,
-          borderRadius: borderRadius.small,
-        },
-        medium: {
-          width: config.medium.avatarSize,
-          height: config.medium.avatarSize,
-          borderRadius: borderRadius.medium,
-        },
-        large: {
-          width: config.large.avatarSize,
-          height: config.large.avatarSize,
-          borderRadius: borderRadius.medium,
-        },
-      },
-    },
-  },
-  containerFallback: {
-    variants: {
-      color: {
-        0: {
-          backgroundColor: colors.wineStrong,
-        },
-        1: {
-          backgroundColor: colors.berryStrong,
-        },
-        2: {
-          backgroundColor: colors.darkOliveStrong,
-        },
-        3: {
-          backgroundColor: colors.imperialBlueStrong,
-        },
-      },
-    },
-  },
+    ...(params.size === 'small' && {
+      width: config.small.avatarSize,
+      height: config.small.avatarSize,
+      borderRadius: borderRadius.small,
+    }),
+    ...(params.size === 'medium' && {
+      width: config.medium.avatarSize,
+      height: config.medium.avatarSize,
+      borderRadius: borderRadius.medium,
+    }),
+    ...(params.size === 'large' && {
+      width: config.large.avatarSize,
+      height: config.large.avatarSize,
+      borderRadius: borderRadius.medium,
+    }),
+  }),
+  containerFallback: (params: { color: number }) => ({
+    ...(params.color === 0 && {
+      backgroundColor: colors.wineStrong,
+    }),
+    ...(params.color === 1 && {
+      backgroundColor: colors.berryStrong,
+    }),
+    ...(params.color === 2 && {
+      backgroundColor: colors.darkOliveStrong,
+    }),
+    ...(params.color === 3 && {
+      backgroundColor: colors.imperialBlueStrong,
+    }),
+  }),
   fallbackContainer: {
     alignItems: 'center',
     justifyContent: 'center',

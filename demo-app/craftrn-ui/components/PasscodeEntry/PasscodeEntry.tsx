@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { Text } from '../Text';
 import { Backspace } from './Backspace';
 import { Key } from './Key';
@@ -22,7 +22,7 @@ export type Props = {
 
 export const PasscodeEntry = ({ onPasscodeEntered }: Props) => {
   const [pin, setPin] = useState<string>('');
-  const { styles, theme } = useStyles(stylesheet);
+  const { theme } = useUnistyles();
 
   const handlePinKeyPress = (value: number) => {
     if (pin.length < config.pinLength) {
@@ -100,7 +100,7 @@ export const PasscodeEntry = ({ onPasscodeEntered }: Props) => {
   );
 };
 
-const stylesheet = createStyleSheet(({ spacing, textVariants }) => ({
+const styles = StyleSheet.create(({ spacing, textVariants }) => ({
   container: {
     flex: 1,
     alignItems: 'center',

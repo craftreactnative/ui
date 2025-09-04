@@ -46,6 +46,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { ComponentType } from 'react';
 import {
   Image,
+  ImageSourcePropType,
   Linking,
   Platform,
   Pressable,
@@ -58,7 +59,7 @@ import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 export const MenuItem: ComponentType<{
   title: string;
   href: Href;
-  imageSource: number;
+  imageSource: ImageSourcePropType;
   description: string;
 }> = ({ title, href, imageSource, description }) => {
   const router = useRouter();
