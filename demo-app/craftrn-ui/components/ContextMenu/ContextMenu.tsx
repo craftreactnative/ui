@@ -106,10 +106,9 @@ export const ContextMenu = ({
       const timer = setTimeout(() => {
         measureTrigger();
       }, 10);
-
       return () => clearTimeout(timer);
     }
-  }, [visible, hasMenuPositioned, measureTrigger]);
+  }, [visible, measureTrigger, hasMenuPositioned]);
 
   const getMenuPosition = () => {
     const { x, y, width, height } = triggerPosition;

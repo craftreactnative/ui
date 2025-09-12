@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		1B1FED946E679BD60E0C1D65 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C2E7C95147F3B3B4178ADDE6 /* PrivacyInfo.xcprivacy */; };
+		19AAC30395CD1E2EF8DD3D5A /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C4A2EE9091DB391CAEDBE4 /* ExpoModulesProvider.swift */; };
+		1BDA158BD9BF08BFC8ED7195 /* libPods-CraftRNUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEE98A7C5221BDBBEA696DAD /* libPods-CraftRNUI.a */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		7F8740A575037A4FECB66A4A /* libPods-CraftRNUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E12CDDF63054BA7ACF691955 /* libPods-CraftRNUI.a */; };
-		A3A16C21CA980399F6CD18C3 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B438263466FA415C2588D /* ExpoModulesProvider.swift */; };
+		8D48E69D4E3D9BCE1C3C6641 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 593D91457F91CF54987F1B16 /* PrivacyInfo.xcprivacy */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
@@ -20,13 +20,19 @@
 		13B07F961A680F5B00A75B9A /* CraftRNUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CraftRNUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = CraftRNUI/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = CraftRNUI/Info.plist; sourceTree = "<group>"; };
-		3FCACDAA8CE6F17108EFAFB1 /* Pods-CraftRNUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CraftRNUI.debug.xcconfig"; path = "Target Support Files/Pods-CraftRNUI/Pods-CraftRNUI.debug.xcconfig"; sourceTree = "<group>"; };
-		5455740EBB4ADAE8F22E1524 /* Pods-CraftRNUI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CraftRNUI.release.xcconfig"; path = "Target Support Files/Pods-CraftRNUI/Pods-CraftRNUI.release.xcconfig"; sourceTree = "<group>"; };
+		4E70FF11BA8A3C4E2A1A7DDD /* Pods-CraftRNUI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CraftRNUI.release.xcconfig"; path = "Target Support Files/Pods-CraftRNUI/Pods-CraftRNUI.release.xcconfig"; sourceTree = "<group>"; };
+		593D91457F91CF54987F1B16 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = CraftRNUI/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		A36805CED32BC9A3803417E9 /* Pods-CraftRNUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CraftRNUI.debug.xcconfig"; path = "Target Support Files/Pods-CraftRNUI/Pods-CraftRNUI.debug.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = CraftRNUI/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		C2E7C95147F3B3B4178ADDE6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = CraftRNUI/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		DA6B438263466FA415C2588D /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-CraftRNUI/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		E12CDDF63054BA7ACF691955 /* libPods-CraftRNUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CraftRNUI.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+=======
+		BEE98A7C5221BDBBEA696DAD /* libPods-CraftRNUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CraftRNUI.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0C4A2EE9091DB391CAEDBE4 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-CraftRNUI/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+>>>>>>> main
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = CraftRNUI/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* CraftRNUI-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CraftRNUI-Bridging-Header.h"; path = "CraftRNUI/CraftRNUI-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -37,7 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F8740A575037A4FECB66A4A /* libPods-CraftRNUI.a in Frameworks */,
+				1BDA158BD9BF08BFC8ED7195 /* libPods-CraftRNUI.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,18 +59,36 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				C2E7C95147F3B3B4178ADDE6 /* PrivacyInfo.xcprivacy */,
+				593D91457F91CF54987F1B16 /* PrivacyInfo.xcprivacy */,
 			);
 			name = CraftRNUI;
+			sourceTree = "<group>";
+		};
+		2153CAA433815FF04384428B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A36805CED32BC9A3803417E9 /* Pods-CraftRNUI.debug.xcconfig */,
+				4E70FF11BA8A3C4E2A1A7DDD /* Pods-CraftRNUI.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				E12CDDF63054BA7ACF691955 /* libPods-CraftRNUI.a */,
+				BEE98A7C5221BDBBEA696DAD /* libPods-CraftRNUI.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3EE8E3781872CABB4FF12709 /* CraftRNUI */ = {
+			isa = PBXGroup;
+			children = (
+				D0C4A2EE9091DB391CAEDBE4 /* ExpoModulesProvider.swift */,
+			);
+			name = CraftRNUI;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -81,8 +105,8 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				8D4E77EABA12810E0ADCBDFF /* Pods */,
-				DA035D2CCAB0F81139F0C1F0 /* ExpoModulesProviders */,
+				2153CAA433815FF04384428B /* Pods */,
+				8C736A9EB2C8880FA0E1C2CD /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -97,13 +121,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8D4E77EABA12810E0ADCBDFF /* Pods */ = {
+		8C736A9EB2C8880FA0E1C2CD /* ExpoModulesProviders */ = {
 			isa = PBXGroup;
 			children = (
-				3FCACDAA8CE6F17108EFAFB1 /* Pods-CraftRNUI.debug.xcconfig */,
-				5455740EBB4ADAE8F22E1524 /* Pods-CraftRNUI.release.xcconfig */,
+				3EE8E3781872CABB4FF12709 /* CraftRNUI */,
 			);
+<<<<<<< HEAD
 			path = Pods;
+=======
+			name = ExpoModulesProviders;
+>>>>>>> main
 			sourceTree = "<group>";
 		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
@@ -115,22 +142,6 @@
 			path = CraftRNUI/Supporting;
 			sourceTree = "<group>";
 		};
-		D723FB72EC82EEE981F1AC93 /* CraftRNUI */ = {
-			isa = PBXGroup;
-			children = (
-				DA6B438263466FA415C2588D /* ExpoModulesProvider.swift */,
-			);
-			name = CraftRNUI;
-			sourceTree = "<group>";
-		};
-		DA035D2CCAB0F81139F0C1F0 /* ExpoModulesProviders */ = {
-			isa = PBXGroup;
-			children = (
-				D723FB72EC82EEE981F1AC93 /* CraftRNUI */,
-			);
-			name = ExpoModulesProviders;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -139,13 +150,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "CraftRNUI" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				D0E07CDC7E5E69084310FBB8 /* [Expo] Configure project */,
+				1EB1197B7A79DFBBEB047515 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				0AEE2030AD7E6D7727F8CB14 /* [CP] Embed Pods Frameworks */,
+				695C7BCCAE2C6E6C28C3EE5B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -195,7 +206,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				1B1FED946E679BD60E0C1D65 /* PrivacyInfo.xcprivacy in Resources */,
+				8D48E69D4E3D9BCE1C3C6641 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,7 +250,26 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		0AEE2030AD7E6D7727F8CB14 /* [CP] Embed Pods Frameworks */ = {
+		1EB1197B7A79DFBBEB047515 /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-CraftRNUI/expo-configure-project.sh\"\n";
+		};
+		695C7BCCAE2C6E6C28C3EE5B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -301,25 +331,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CraftRNUI/Pods-CraftRNUI-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D0E07CDC7E5E69084310FBB8 /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-CraftRNUI/expo-configure-project.sh\"\n";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -328,7 +339,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				A3A16C21CA980399F6CD18C3 /* ExpoModulesProvider.swift in Sources */,
+				19AAC30395CD1E2EF8DD3D5A /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,7 +348,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3FCACDAA8CE6F17108EFAFB1 /* Pods-CraftRNUI.debug.xcconfig */;
+			baseConfigurationReference = A36805CED32BC9A3803417E9 /* Pods-CraftRNUI.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -373,7 +384,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5455740EBB4ADAE8F22E1524 /* Pods-CraftRNUI.release.xcconfig */;
+			baseConfigurationReference = 4E70FF11BA8A3C4E2A1A7DDD /* Pods-CraftRNUI.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
