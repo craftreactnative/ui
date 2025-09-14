@@ -1,4 +1,4 @@
-# CraftReactNative
+# CraftReactNative UI
 
 A collection of copy-paste React Native components built for [Unistyles](https://github.com/jpudysz/react-native-unistyles).
 
@@ -10,7 +10,7 @@ A collection of copy-paste React Native components built for [Unistyles](https:/
 
 ## Overview
 
-CraftReactNative provides production-ready React Native components designed specifically to work with Unistyles. Instead of installing a package, you copy the component code directly into your project, giving you full control and customization.
+CraftReactNative UI provides production-ready React Native components designed specifically to work with Unistyles. Instead of installing a package, you copy the component code directly into your project, giving you full control and customization.
 
 **Note**: This is a community project and is not officially affiliated with the Unistyles team.
 
