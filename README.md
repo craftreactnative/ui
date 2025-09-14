@@ -61,7 +61,7 @@ You can also manually browse and copy components:
 
 ## Documentation
 
-- [Component Documentation](https://docs.craftreactnative.com/) - Detailed usage guides
+- [Component Documentation](https://docs.craftreactnative.com/docs/components/avatar) - Detailed usage guides
 - [Unistyles Documentation](https://v2.unistyl.es/) - Learn about the styling library.
 
 ## Premium Templates
