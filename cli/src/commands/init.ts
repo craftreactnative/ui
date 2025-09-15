@@ -4,8 +4,15 @@ import chalk from "chalk";
 import ora from "ora";
 import { exec } from "child_process";
 import { promisify } from "util";
-import { copyThemes, getImportInstructions } from "../utils";
-import { determineImportPath } from "../path-utils";
+import { copyThemes, getImportInstructions } from "../utils/component-manager";
+import { determineImportPath } from "../utils/file-system";
+import { setupBabelConfig } from "../utils/build-config";
+import {
+  isExpo,
+  hasExpoRouter,
+  createExpoRouterEntryFile,
+  updatePackageJsonMainEntry,
+} from "../utils/project-detection";
 
 const execAsync = promisify(exec);
 
@@ -29,10 +36,15 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     chalk.blue("🚀 Initializing @craftreactnative/ui in your project...\n")
   );
 
+  // Detect project type once at the beginning
+  const isExpoProject = await isExpo(targetPath);
+
   // Install required dependencies
   if (!options.skipDeps) {
     const requiredDeps = [
-      "react-native-unistyles@^2",
+      "react-native-unistyles@^3",
+      "react-native-edge-to-edge@^1",
+      "react-native-nitro-modules@0.29.4",
       "react-native-gesture-handler@^2",
       "react-native-reanimated@^3",
       "react-native-svg@^14",
@@ -48,7 +60,6 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     });
 
     if (missingDeps.length > 0) {
-      const isExpoProject = await isExpo();
       console.log(
         chalk.blue(
           `📦 Installing ${missingDeps.length} missing dependencies...\n`
@@ -104,9 +115,66 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     themesSpinner.fail("Failed to copy themes");
     console.error(
       chalk.red("Error:"),
-      error instanceof Error ? error.message : "Unknown error"
+      error instanceof Error ? error.message : "Unknown error",
+      targetPath
     );
     return;
+  }
+
+  // Check for Expo Router and configure entry point if needed
+  const usesExpoRouter = await hasExpoRouter(targetPath);
+
+  if (isExpoProject && usesExpoRouter) {
+    const expoRouterSpinner = ora(
+      "Configuring Expo Router entry point for Unistyles..."
+    ).start();
+
+    try {
+      await createExpoRouterEntryFile(targetPath);
+      await updatePackageJsonMainEntry(targetPath);
+      expoRouterSpinner.succeed(
+        "Expo Router configured with Unistyles entry point"
+      );
+    } catch (error) {
+      expoRouterSpinner.warn("Could not automatically configure Expo Router");
+      console.log(
+        chalk.yellow("⚠️  Please manually configure Expo Router entry point:")
+      );
+      console.log(chalk.gray("1. Create index.ts at project root with:"));
+      console.log(chalk.gray("   import 'expo-router/entry'"));
+      console.log(chalk.gray('   import "@/craftrn-ui/themes/unistyles";'));
+      console.log(chalk.gray("2. Update package.json main entry:"));
+      console.log(chalk.gray('   "main": "index.ts"'));
+    }
+  }
+
+  // Setup babel.config.js with unistyles plugin
+  const babelSpinner = ora(
+    "Setting up babel.config.js with Unistyles plugin..."
+  ).start();
+
+  try {
+    await setupBabelConfig(targetPath);
+    babelSpinner.succeed("Babel configuration updated with Unistyles plugin");
+  } catch (error) {
+    babelSpinner.warn("Could not automatically configure babel.config.js");
+    console.log(
+      chalk.yellow(
+        "⚠️  Please manually add the react-native-unistyles/plugin to your babel.config.js"
+      )
+    );
+    console.log(chalk.gray("Example configuration:"));
+    console.log(
+      chalk.gray(`
+plugins: [
+  [
+    'react-native-unistyles/plugin',
+    {
+      root: 'app', // or 'src' depending on your project structure
+    },
+  ],
+],`)
+    );
   }
 
   const importSpinner = ora(
@@ -131,7 +199,6 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
   );
 
   // Check if this is an Expo project and warn about Expo Go limitations
-  const isExpoProject = await isExpo();
   if (isExpoProject) {
     console.log(chalk.yellow("\n⚠️  Expo Project Detected:"));
     console.log(chalk.gray("   Unistyles won't work with Expo Go."));
@@ -213,26 +280,6 @@ async function detectPackageManager(
     return "pnpm";
   }
   return "npm";
-}
-
-async function isExpo(): Promise<boolean> {
-  const packageJsonPath = path.join(process.cwd(), "package.json");
-  try {
-    const packageJson = await fs.readJson(packageJsonPath);
-    // Check if expo is in dependencies or if app.json/app.config.js exists
-    const hasExpoDep =
-      packageJson.dependencies?.expo || packageJson.devDependencies?.expo;
-    const hasAppJson = await fs.pathExists(
-      path.join(process.cwd(), "app.json")
-    );
-    const hasAppConfig = await fs.pathExists(
-      path.join(process.cwd(), "app.config.js")
-    );
-
-    return !!(hasExpoDep || hasAppJson || hasAppConfig);
-  } catch (error) {
-    return false;
-  }
 }
 
 function getInstallCommand(
