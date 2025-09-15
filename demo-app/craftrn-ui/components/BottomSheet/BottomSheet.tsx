@@ -27,7 +27,7 @@ import Animated, {
   withTiming,
   WithTimingConfig,
 } from 'react-native-reanimated';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 /**
  * Props for the BottomSheet component.
@@ -99,6 +99,7 @@ export const BottomSheet = ({
   const [contentHeight, setContentHeight] = useState<number | undefined>();
   const [isScreenReaderEnabled, setIsScreenReaderEnabled] = useState(false);
   const { height: windowHeight } = useWindowDimensions();
+  const { theme } = useUnistyles();
   const translateY = useSharedValue(windowHeight);
   const overlayOpacity = useSharedValue(0);
   const startY = useSharedValue(0);
@@ -225,6 +226,10 @@ export const BottomSheet = ({
               style={[
                 styles.sheet({
                   maxHeight: bottomSheetMaxHeight,
+                  backgroundColor:
+                    variant === 'primary'
+                      ? undefined
+                      : theme.colors.surfaceSecondary,
                 }),
                 bottomSheetAnimatedStyle,
               ]}
