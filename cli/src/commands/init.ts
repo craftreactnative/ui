@@ -51,7 +51,7 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     ];
 
     const missingDeps = requiredDeps.filter((dep) => {
-      // Extract package name from version specifier (e.g., "react-native-unistyles@^2" -> "react-native-unistyles")
+      // Extract package name from version specifier (e.g., "react-native-unistyles@^3" -> "react-native-unistyles")
       const packageName = dep.split("@")[0];
       return (
         !packageJson.dependencies?.[packageName] &&
