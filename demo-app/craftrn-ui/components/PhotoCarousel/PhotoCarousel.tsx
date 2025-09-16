@@ -1,11 +1,16 @@
 import React, { useRef, useState } from 'react';
-import { Image, StyleSheet, View, ViewProps } from 'react-native';
+import {
+  Image,
+  StyleSheet as RNStyleSheet,
+  View,
+  ViewProps,
+} from 'react-native';
 import Animated, {
   runOnJS,
   useAnimatedScrollHandler,
   useSharedValue,
 } from 'react-native-reanimated';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { useUnistyles } from 'react-native-unistyles';
 import { AnimatedDot } from './AnimatedDot';
 
 const config = {
@@ -42,7 +47,7 @@ export const PhotoCarousel = ({
   carouselHeight = config.carouselHeight,
   dotsStyle = {},
 }: Props): React.ReactElement => {
-  const { styles } = useStyles(stylesheet);
+  const { theme } = useUnistyles();
   const scrollX = useSharedValue(0);
   const flatListRef = useRef<Animated.FlatList<Photo>>(null);
   const [carouselWidth, setCarouselWidth] = useState(0);
@@ -100,7 +105,11 @@ export const PhotoCarousel = ({
 
   return (
     <View
-      style={styles.container}
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+      }}
       onLayout={event => setCarouselWidth(event.nativeEvent.layout.width)}
       accessible
       accessibilityRole="adjustable"
@@ -112,7 +121,13 @@ export const PhotoCarousel = ({
       onAccessibilityAction={onAccessibilityAction}
     >
       {carouselWidth > 0 && (
-        <View style={styles.carouselContainer(carouselWidth, carouselHeight)}>
+        <View
+          style={{
+            width: carouselWidth,
+            height: carouselHeight,
+            overflow: 'hidden',
+          }}
+        >
           <Animated.FlatList
             ref={flatListRef}
             data={photos}
@@ -127,7 +142,18 @@ export const PhotoCarousel = ({
             importantForAccessibility="no-hide-descendants"
           />
           <View
-            style={[styles.dotsContainer, StyleSheet.flatten(dotsStyle)]}
+            style={[
+              {
+                position: 'absolute',
+                bottom: theme.spacing.medium,
+                left: 0,
+                right: 0,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                gap: theme.spacing.xsmall,
+              },
+              RNStyleSheet.flatten(dotsStyle),
+            ]}
             accessible={false}
           >
             {photos.map((_, index) => (
@@ -144,25 +170,3 @@ export const PhotoCarousel = ({
     </View>
   );
 };
-
-const stylesheet = createStyleSheet(({ spacing }) => ({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-  },
-  carouselContainer: (width: number, height: number) => ({
-    width,
-    height,
-    overflow: 'hidden',
-  }),
-  dotsContainer: {
-    position: 'absolute',
-    bottom: spacing.medium,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: spacing.xsmall,
-  },
-}));

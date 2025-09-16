@@ -7,11 +7,11 @@ import { Text } from '@/craftrn-ui/components/Text';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { Alert, Pressable, View } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { ChevronRight } from '../../tetrisly-icons/ChevronRight';
 
 export default function ContextMenuScreen() {
-  const { styles, theme } = useStyles(stylesheet);
+  const { theme } = useUnistyles();
 
   const contextMenuItems: ContextMenuItem[] = [
     {
@@ -122,7 +122,7 @@ export default function ContextMenuScreen() {
   );
 }
 
-const stylesheet = createStyleSheet(theme => ({
+const styles = StyleSheet.create(theme => ({
   container: {
     flex: 1,
     paddingHorizontal: theme.spacing.large,

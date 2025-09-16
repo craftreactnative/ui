@@ -1,11 +1,7 @@
 {
   "name": "PasscodeEntry",
   "description": "Passcode entry component with numeric keypad and pin dots",
-  "externalDependencies": [
-    "react-native-unistyles"
-  ],
-  "craftrnUiComponents": [
-    "Text"
-  ],
+  "externalDependencies": ["react-native-unistyles"],
+  "craftrnUiComponents": ["Text"],
   "tetrislyIcons": []
 }

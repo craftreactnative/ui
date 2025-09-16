@@ -1,12 +1,7 @@
 {
   "name": "ContextMenu",
   "description": "Context menu component with positioning and animated appearance",
-  "externalDependencies": [
-    "react-native-reanimated",
-    "react-native-unistyles"
-  ],
-  "craftrnUiComponents": [
-    "ListItem"
-  ],
+  "externalDependencies": ["react-native-reanimated", "react-native-unistyles"],
+  "craftrnUiComponents": ["ListItem"],
   "tetrislyIcons": []
 }

@@ -3,10 +3,10 @@ import { Button } from '@/craftrn-ui/components/Button/Button';
 import { Stack } from 'expo-router';
 import { Linking, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 export default function TemplatesLayout() {
-  const { styles, theme } = useStyles(stylesheet);
+  const { theme } = useUnistyles();
 
   return (
     <>
@@ -42,7 +42,7 @@ export default function TemplatesLayout() {
   );
 }
 
-const stylesheet = createStyleSheet(theme => ({
+const styles = StyleSheet.create(theme => ({
   safeArea: {
     backgroundColor: theme.colors.backgroundQuaternary,
     paddingHorizontal: theme.spacing.large,

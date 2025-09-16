@@ -1,7 +1,7 @@
 import { HapticTab } from '@/components/HapticTab/HapticTab';
 import { Tabs } from 'expo-router';
 import Svg, { Path, SvgProps } from 'react-native-svg';
-import { useStyles } from 'react-native-unistyles';
+import { useUnistyles } from 'react-native-unistyles';
 
 const ComponentsIcon = (props: SvgProps) => (
   <Svg viewBox="0 0 100 100" {...props}>
@@ -19,7 +19,7 @@ const TemplatesIcon = (props: SvgProps) => (
 );
 
 export default function TabLayout() {
-  const { theme } = useStyles();
+  const { theme } = useUnistyles();
 
   return (
     <Tabs

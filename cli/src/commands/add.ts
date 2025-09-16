@@ -8,9 +8,9 @@ import {
   resolveDependencies,
   copyComponent,
   getAvailableComponents,
-} from "../utils";
+} from "../utils/component-manager";
 import { initCommand } from "./init";
-import { determineImportPath } from "../path-utils";
+import { determineImportPath } from "../utils/file-system";
 
 export async function addCommand(
   componentName: string,

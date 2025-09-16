@@ -4,8 +4,8 @@ import { Command } from "commander";
 import chalk from "chalk";
 import { addCommand } from "./commands/add";
 import { initCommand } from "./commands/init";
-import { getAvailableComponents } from "./utils";
-import { ensureProjectRoot } from "./project-utils";
+import { getAvailableComponents } from "./utils/component-manager";
+import { ensureProjectRoot } from "./utils/project-detection";
 
 const program = new Command();
 
@@ -42,9 +42,15 @@ program
   .action(async (componentNames: string[], options) => {
     try {
       await ensureProjectRoot();
-      
-      console.log(chalk.blue(`\n📦 Installing ${componentNames.length} component(s): ${componentNames.join(', ')}\n`));
-      
+
+      console.log(
+        chalk.blue(
+          `\n📦 Installing ${
+            componentNames.length
+          } component(s): ${componentNames.join(", ")}\n`
+        )
+      );
+
       for (const componentName of componentNames) {
         console.log(chalk.yellow(`\n⏳ Installing ${componentName}...`));
         await addCommand(componentName, {
@@ -52,8 +58,12 @@ program
           force: options.force,
         });
       }
-      
-      console.log(chalk.green(`\n✅ Successfully installed all ${componentNames.length} component(s)!`));
+
+      console.log(
+        chalk.green(
+          `\n✅ Successfully installed all ${componentNames.length} component(s)!`
+        )
+      );
     } catch (error) {
       console.error(
         chalk.red("Error:"),

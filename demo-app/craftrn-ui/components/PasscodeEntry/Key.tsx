@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable, View } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 
 export const config = {
   keySize: 70,
@@ -25,7 +25,6 @@ export type Props = {
 };
 
 export const Key = ({ onPress, children, ariaLabel }: Props) => {
-  const { styles } = useStyles(stylesheet);
   return (
     <Pressable onPress={onPress} aria-label={ariaLabel}>
       {({ pressed }) => <View style={styles.key(pressed)}>{children}</View>}
@@ -33,7 +32,7 @@ export const Key = ({ onPress, children, ariaLabel }: Props) => {
   );
 };
 
-const stylesheet = createStyleSheet(({ colors, borderRadius }) => ({
+const styles = StyleSheet.create(({ colors, borderRadius }) => ({
   key: (pressed: boolean) => ({
     borderRadius: borderRadius.full,
     justifyContent: 'center',

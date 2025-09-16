@@ -1,11 +1,7 @@
 {
   "name": "InputOTP",
   "description": "One-time password input component with numeric code entry",
-  "externalDependencies": [
-    "react-native-unistyles"
-  ],
-  "craftrnUiComponents": [
-    "Text"
-  ],
+  "externalDependencies": ["react-native-unistyles"],
+  "craftrnUiComponents": ["Text"],
   "tetrislyIcons": []
 }

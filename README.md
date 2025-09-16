@@ -25,12 +25,10 @@ CraftReactNative UI provides production-ready React Native components designed s
 ## Prerequisites
 
 ```bash
-npm install react-native-reanimated@^3 react-native-gesture-handler@^2 react-native-svg@^14 react-native-unistyles@^2
+npm install react-native-unistyles@^3 react-native-edge-to-edge react-native-nitro-modules@0.29.4 react-native-gesture-handler@^2 react-native-reanimated@^3 react-native-svg@^14
 ```
 
 Make sure you follow the documentation to configure your project and use these components.
-
-> **Note**: Migration to Unistyles v3 is currently in progress.
 
 ## Getting Started
 
@@ -62,7 +60,7 @@ You can also manually browse and copy components:
 ## Documentation
 
 - [Component Documentation](https://docs.craftreactnative.com/docs/components/avatar) - Detailed usage guides
-- [Unistyles Documentation](https://v2.unistyl.es/) - Learn about the styling library.
+- [Unistyles Documentation](https://www.unistyl.es/) - Learn about the styling library.
 
 ## Premium Templates
 

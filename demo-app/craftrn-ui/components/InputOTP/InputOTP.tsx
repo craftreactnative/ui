@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 import { Text } from '../Text';
 
 const config = {
@@ -18,7 +18,6 @@ export type Props = {
 };
 
 export const InputOTP = ({ onChange }: Props) => {
-  const { styles } = useStyles(stylesheet);
   const hiddenInputRef = useRef<TextInput>(null);
   const [code, setCode] = useState('');
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
@@ -112,7 +111,7 @@ export const InputOTP = ({ onChange }: Props) => {
   );
 };
 
-const stylesheet = createStyleSheet(({ spacing, colors, borderRadius }) => ({
+const styles = StyleSheet.create(({ spacing, colors, borderRadius }) => ({
   container: {
     flexDirection: 'row',
     gap: spacing.xsmall,

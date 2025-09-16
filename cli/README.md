@@ -80,7 +80,7 @@ npx @craftreactnative/ui add Avatar Card Slider
 Your project needs these dependencies:
 
 ```bash
-npm install react-native-reanimated@^3 react-native-gesture-handler@^2 react-native-svg@^14 react-native-unistyles@^2
+npm install react-native-unistyles@^3 react-native-edge-to-edge react-native-nitro-modules@0.29.4 react-native-gesture-handler@^2 react-native-reanimated@^3 react-native-svg@^14
 ```
 
 The CLI will install these automatically when you run `init`, unless you use `--skip-deps`.
@@ -111,7 +111,7 @@ your-project/
 ## Documentation
 
 - 📚 [Component Documentation](https://docs.craftreactnative.com/)
-- 🎨 [Unistyles Documentation](https://v2.unistyl.es/)
+- 🎨 [Unistyles Documentation](https://www.unistyl.es/)
 - 💎 [Premium Templates](https://craftreactnative.com/templates)
 
 ## License

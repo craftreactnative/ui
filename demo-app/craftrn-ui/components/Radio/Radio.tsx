@@ -9,7 +9,7 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 export const config = {
   size: 24,
@@ -42,7 +42,7 @@ export const Radio = ({
   onPress,
   ...accessibilityProps
 }: RadioProps) => {
-  const { styles, theme } = useStyles(stylesheet);
+  const { theme } = useUnistyles();
   const scale = useSharedValue(1);
   const appearance = useSharedValue(0);
 
@@ -98,7 +98,7 @@ export const Radio = ({
   );
 };
 
-const stylesheet = createStyleSheet(({ borderRadius, colors }) => ({
+const styles = StyleSheet.create(({ borderRadius, colors }) => ({
   container: {
     borderRadius: borderRadius.full,
     borderWidth: 1,
