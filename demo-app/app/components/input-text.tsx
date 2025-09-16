@@ -99,7 +99,7 @@ const styles = StyleSheet.create(theme => ({
   container: {
     paddingHorizontal: theme.spacing.large,
     paddingTop: theme.spacing.medium,
-    paddingBottom: UnistylesRuntime.insets.ime,
+    paddingBottom: UnistylesRuntime.insets.bottom,
   },
   content: {
     gap: theme.spacing.small,

@@ -30,8 +30,6 @@ npm install react-native-unistyles@^3 react-native-edge-to-edge react-native-nit
 
 Make sure you follow the documentation to configure your project and use these components.
 
-> **Note**: Migration to Unistyles v3 is currently in progress.
-
 ## Getting Started
 
 The fastest way to get started is with the CLI tool:
