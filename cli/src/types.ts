@@ -9,4 +9,5 @@ export interface ComponentInfo {
 export interface InstallOptions {
   componentName: string;
   force?: boolean;
+  all?: boolean;
 }

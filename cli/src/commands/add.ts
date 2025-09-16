@@ -37,11 +37,13 @@ export async function addCommand(
   if (!componentInfo) {
     spinner.fail(`Component ${chalk.red(componentName)} not found`);
 
-    // Show available components
-    const available = await getAvailableComponents();
-    if (available.length > 0) {
-      console.log(chalk.blue("\nAvailable components:"));
-      available.forEach((comp) => console.log(`  - ${comp}`));
+    // Show available components only if not using --all flag
+    if (!options.all) {
+      const available = await getAvailableComponents();
+      if (available.length > 0) {
+        console.log(chalk.blue("\nAvailable components:"));
+        available.forEach((comp) => console.log(`  - ${comp}`));
+      }
     }
     return;
   }

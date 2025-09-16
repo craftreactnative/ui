@@ -18,6 +18,8 @@ npx @craftreactnative/ui init
 ```bash
 npx @craftreactnative/ui add Button
 npx @craftreactnative/ui add Avatar Card
+# or install all components at once
+npx @craftreactnative/ui add --all
 ```
 
 ## Commands
@@ -44,14 +46,21 @@ npx @craftreactnative/ui list
 npx @craftreactnative/ui ls
 ```
 
-### `add <components...>`
+### `add [components...]`
 
 Add one or more components to your project.
 
 ```bash
 npx @craftreactnative/ui add Button
 npx @craftreactnative/ui add Avatar Card Slider
+# or install all components at once
+npx @craftreactnative/ui add --all
 ```
+
+**Options:**
+
+- `--force` - Overwrite existing components
+- `--all` - Install all available components
 
 ## Available Components
 

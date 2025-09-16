@@ -45,6 +45,8 @@ The fastest way to get started is with the CLI tool:
    ```bash
    npx @craftreactnative/ui add Button
    npx @craftreactnative/ui add Avatar Card Slider
+   # or install all components at once
+   npx @craftreactnative/ui add --all
    ```
 
 3. **Start building** with fully typed, theme-aware components!
