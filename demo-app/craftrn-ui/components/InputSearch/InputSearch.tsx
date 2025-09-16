@@ -7,7 +7,7 @@ import {
   TextInputProps,
   View,
 } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 export const config = {
   medium: 48,
@@ -45,7 +45,7 @@ export const InputSearch = forwardRef<TextInput, Props & TextInputProps>(
     },
     ref,
   ) {
-    const { styles, theme } = useStyles(stylesheet);
+    const { theme } = useUnistyles();
     const [isFocused, setIsFocused] = useState(false);
     const isActive = isFocused || !!value;
     const isReadOnly = !props.editable && !!props.readOnly;
@@ -103,7 +103,7 @@ export const InputSearch = forwardRef<TextInput, Props & TextInputProps>(
   },
 );
 
-const stylesheet = createStyleSheet(({ colors, borderRadius, spacing }) => ({
+const styles = StyleSheet.create(({ colors, borderRadius, spacing }) => ({
   container: {
     shadowColor: colors.contentTertiary,
     shadowOffset: { width: 0, height: 2 },

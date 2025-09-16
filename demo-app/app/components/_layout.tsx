@@ -1,10 +1,10 @@
 import { NavigationBackButton } from '@/components/NavigationBackButton/NavigationBackButton';
 import { Stack } from 'expo-router';
 import { View } from 'react-native';
-import { useStyles } from 'react-native-unistyles';
+import { useUnistyles } from 'react-native-unistyles';
 
 export default function ComponentsLayout() {
-  const { theme } = useStyles();
+  const { theme } = useUnistyles();
 
   return (
     <Stack

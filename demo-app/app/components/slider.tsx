@@ -4,10 +4,9 @@ import { Text } from '@/craftrn-ui/components/Text';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 
 export default function SliderScreen() {
-  const { styles } = useStyles(stylesheet);
   const [sliderValue, setSliderValue] = useState(25);
 
   return (
@@ -48,7 +47,7 @@ export default function SliderScreen() {
   );
 }
 
-const stylesheet = createStyleSheet(theme => ({
+const styles = StyleSheet.create(theme => ({
   container: {
     paddingHorizontal: theme.spacing.large,
     paddingVertical: theme.spacing.medium,

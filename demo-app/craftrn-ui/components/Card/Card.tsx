@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet as RNStyleSheet, View, ViewProps } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 /**
  * Props for the Card component.
@@ -8,15 +8,14 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 export type Props = Pick<ViewProps, 'children' | 'style'>;
 
 export const Card = ({ children, style, ...viewProps }: Props) => {
-  const { styles } = useStyles(stylesheet);
   return (
-    <View style={[styles.card, StyleSheet.flatten(style)]} {...viewProps}>
+    <View style={[styles.card, RNStyleSheet.flatten(style)]} {...viewProps}>
       {children}
     </View>
   );
 };
 
-const stylesheet = createStyleSheet(({ colors, borderRadius }) => ({
+const styles = StyleSheet.create(({ colors, borderRadius }) => ({
   card: {
     backgroundColor: colors.surfacePrimary,
     borderRadius: borderRadius.large,

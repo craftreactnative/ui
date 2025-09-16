@@ -1,10 +1,7 @@
 {
   "name": "Radio",
   "description": "Animated radio button component with checked/unchecked states",
-  "externalDependencies": [
-    "react-native-reanimated",
-    "react-native-unistyles"
-  ],
+  "externalDependencies": ["react-native-reanimated", "react-native-unistyles"],
   "craftrnUiComponents": [],
   "tetrislyIcons": []
 }

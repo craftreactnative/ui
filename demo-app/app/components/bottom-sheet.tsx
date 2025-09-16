@@ -6,13 +6,13 @@ import { Stack } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import {
-  createStyleSheet,
+  StyleSheet,
   UnistylesRuntime,
-  useStyles,
+  useUnistyles,
 } from 'react-native-unistyles';
 
 export default function BottomSheetScreen() {
-  const { styles } = useStyles(stylesheet);
+  const { theme } = useUnistyles();
   const [bottomSheetVisible1, setBottomSheetVisible1] = useState(false);
   const [bottomSheetVisible2, setBottomSheetVisible2] = useState(false);
   const [bottomSheetVisible3, setBottomSheetVisible3] = useState(false);
@@ -106,7 +106,7 @@ export default function BottomSheetScreen() {
   );
 }
 
-const stylesheet = createStyleSheet(theme => ({
+const styles = StyleSheet.create(theme => ({
   container: {
     paddingHorizontal: theme.spacing.large,
     paddingVertical: theme.spacing.medium,

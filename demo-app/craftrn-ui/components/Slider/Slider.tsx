@@ -7,7 +7,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 
 const config = {
   knobSize: 20,
@@ -87,7 +87,6 @@ export const Slider = ({
   step = 1,
   accessibilityStep = step,
 }: Props) => {
-  const { styles } = useStyles(stylesheet);
   const sliderWidth = width - config.knobSize;
   const [accessibilityValue, setAccessibilityValue] = useState(initialValue);
 
@@ -248,7 +247,7 @@ export const Slider = ({
   );
 };
 
-const stylesheet = createStyleSheet(({ borderRadius, colors }) => ({
+const styles = StyleSheet.create(({ borderRadius, colors }) => ({
   container: {
     minHeight: config.sliderHeight + config.knobSize,
     paddingTop: config.knobSize / 2,

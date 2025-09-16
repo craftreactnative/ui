@@ -2,11 +2,10 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import React from 'react';
 import { View } from 'react-native';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 
 export default function TemplateScreen() {
   const local = useLocalSearchParams();
-  const { styles } = useStyles(stylesheet);
   const player = useVideoPlayer(
     `https://www.craftreactnative.com/videos/templates/${local.template}.mp4`,
     player => {
@@ -28,7 +27,7 @@ export default function TemplateScreen() {
   );
 }
 
-const stylesheet = createStyleSheet(({ borderRadius, colors, spacing }) => ({
+const styles = StyleSheet.create(({ borderRadius, colors, spacing }) => ({
   container: {
     flex: 1,
     marginHorizontal: spacing.large,

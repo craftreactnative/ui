@@ -9,7 +9,7 @@ import Animated, {
   useAnimatedStyle,
   useScrollViewOffset,
 } from 'react-native-reanimated';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 const HEADER_HEIGHT = 200;
 
@@ -18,7 +18,7 @@ type Props = PropsWithChildren<{
 }>;
 
 export default function ParallaxScrollView({ children, title }: Props) {
-  const { styles, theme } = useStyles(stylesheet);
+  const { theme } = useUnistyles();
   const colorScheme = useColorScheme();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
@@ -72,7 +72,7 @@ export default function ParallaxScrollView({ children, title }: Props) {
   );
 }
 
-const stylesheet = createStyleSheet(theme => ({
+const styles = StyleSheet.create(theme => ({
   header: {
     height: HEADER_HEIGHT,
     overflow: 'hidden',
