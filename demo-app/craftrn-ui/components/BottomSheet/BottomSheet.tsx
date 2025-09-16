@@ -228,7 +228,7 @@ export const BottomSheet = ({
                   maxHeight: bottomSheetMaxHeight,
                   backgroundColor:
                     variant === 'primary'
-                      ? undefined
+                      ? theme.colors.surfacePrimary
                       : theme.colors.surfaceSecondary,
                 }),
                 bottomSheetAnimatedStyle,
