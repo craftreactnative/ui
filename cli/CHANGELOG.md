@@ -1,5 +1,11 @@
 # @craftreactnative/ui
 
+## 1.0.5
+
+### Patch Changes
+
+- [#1](https://github.com/craftreactnative/ui/pull/1) [`06dbb16`](https://github.com/craftreactnative/ui/commit/06dbb16071df0ea389f2061c9b98ed0f6eb52db7) Thanks [@alexmngn](https://github.com/alexmngn)! - Update to unistyles v3
+
 ## 1.0.4
 
 ### Patch Changes
