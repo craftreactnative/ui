@@ -1,5 +1,13 @@
 # @craftreactnative/ui
 
+## 1.0.6
+
+### Patch Changes
+
+- [#1](https://github.com/craftreactnative/ui/pull/1) [`63a31d7`](https://github.com/craftreactnative/ui/commit/63a31d76e9ac2a7ca497447c1e735da372886c71) Thanks [@alexmngn](https://github.com/alexmngn)! - Update to unistyles v3
+
+- [`141af06`](https://github.com/craftreactnative/ui/commit/141af06512000ac91ed371ef356cff37d3a0eb9f) Thanks [@alexmngn](https://github.com/alexmngn)! - add command to support new --all option
+
 ## 1.0.5
 
 ### Patch Changes
