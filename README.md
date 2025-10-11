@@ -22,12 +22,6 @@ CraftReactNative UI provides production-ready React Native components designed s
 - **Theme-aware**: Built-in dark/light mode support
 - **Customizable**: Modify anything without breaking updates
 
-## Prerequisites
-
-```bash
-npm install react-native-unistyles@^3 react-native-edge-to-edge react-native-nitro-modules@0.29.4 react-native-gesture-handler@^2 react-native-reanimated@^3 react-native-svg@^14
-```
-
 Make sure you follow the documentation to configure your project and use these components.
 
 ## Getting Started
