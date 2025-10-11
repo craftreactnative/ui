@@ -146,6 +146,11 @@ export const BottomSheet = ({
     }
   }, [visible, translateY, overlayOpacity, contentHeight, onClose]);
 
+  const closeGestureThreshold = useMemo(() => {
+    const currentContentHeight = contentHeight ?? 100;
+    return Math.max(50, Math.min(100, currentContentHeight * 0.3));
+  }, [contentHeight]);
+
   const gesture = Gesture.Pan()
     .enabled(enableSwipeToClose && !isScreenReaderEnabled)
     .onStart(() => {
@@ -157,14 +162,15 @@ export const BottomSheet = ({
       if (newTranslateY >= 0) {
         translateY.value = newTranslateY;
         overlayOpacity.value = withTiming(
-          0.5 * (1 - Math.min(newTranslateY / 100, 1)),
+          0.5 * (1 - Math.min(newTranslateY / (contentHeight ?? 200), 1)),
           { duration: 50 },
         );
       }
     })
     .onEnd(event => {
       gestureActive.value = false;
-      if (event.translationY > 100) {
+
+      if (event.translationY > closeGestureThreshold) {
         translateY.value = withTiming(
           contentHeight ?? windowHeight,
           withTimingConfig,
@@ -271,8 +277,8 @@ const styles = StyleSheet.create(({ colors, borderRadius, spacing }) => ({
   sheet: ({ maxHeight, backgroundColor }) => ({
     backgroundColor: backgroundColor ?? colors.backgroundPrimary,
     zIndex: 2,
-    borderTopLeftRadius: borderRadius.large,
-    borderTopRightRadius: borderRadius.large,
+    borderTopLeftRadius: borderRadius.xlarge,
+    borderTopRightRadius: borderRadius.xlarge,
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -286,7 +292,7 @@ const styles = StyleSheet.create(({ colors, borderRadius, spacing }) => ({
     alignItems: 'center',
     paddingVertical: spacing.medium,
     marginTop: -spacing.large,
-    paddingTop: spacing.medium,
+    paddingTop: spacing.small,
   },
   handleBar: {
     width: 36,

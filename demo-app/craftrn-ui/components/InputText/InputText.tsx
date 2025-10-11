@@ -1,4 +1,10 @@
-import React, { forwardRef, useCallback, useRef, useState } from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   NativeSyntheticEvent,
   Platform,
@@ -31,13 +37,9 @@ export const config = {
 } as const;
 
 /**
- * Props for the InputText component.
+ * Base props for the InputText component.
  */
-export type Props = {
-  /**
-   * The label to display above the input.
-   */
-  label?: string;
+type BaseProps = {
   /**
    * The size of the input.
    * @default 'medium'
@@ -60,6 +62,34 @@ export type Props = {
    */
   error?: string;
 };
+
+/**
+ * Props for InputText with label (placeholder will be ignored).
+ */
+type PropsWithLabel = BaseProps & {
+  /**
+   * The label to display above the input.
+   */
+  label?: string;
+  placeholder?: never;
+};
+
+/**
+ * Props for InputText with placeholder (no label).
+ */
+type PropsWithPlaceholder = BaseProps & {
+  label?: never;
+  /**
+   * Placeholder text to display when input is empty.
+   */
+  placeholder?: string;
+};
+
+/**
+ * Props for the InputText component.
+ * Either use label OR placeholder, but not both.
+ */
+export type Props = PropsWithLabel | PropsWithPlaceholder;
 
 export const InputText = forwardRef<TextInput, Props & TextInputProps>(
   function InputText(
@@ -87,7 +117,7 @@ export const InputText = forwardRef<TextInput, Props & TextInputProps>(
     const isActiveShared = useSharedValue(false);
 
     // Fix Fabric timing issue - always use requestAnimationFrame for consistency
-    React.useEffect(() => {
+    useEffect(() => {
       requestAnimationFrame(() => {
         isActiveShared.value = isActive;
       });

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   AccessibilityActionEvent,
   AccessibilityInfo,
@@ -20,7 +20,7 @@ export type Props = {
    */
   onValueChange: (value: number) => void;
   /**
-   * The maximum value of the counter.
+   * The minimum value of the counter.
    * @default 0
    */
   minValue?: number;
@@ -30,11 +30,11 @@ export type Props = {
    */
   maxValue?: number;
   /**
-   * The initial value of the counter.
+   * The controlled value of the counter.
+   * When provided, the component can be controlled.
    * Must be between minValue and maxValue
-   * @default 0
    */
-  initialValue?: number;
+  value?: number;
   /**
    * The increment value of the counter.
    * @default 1
@@ -51,17 +51,27 @@ type CounterProps = Props & AccessibilityProps;
 
 export const Counter = ({
   onValueChange,
-  initialValue = 0,
+  value,
   minValue = 0,
   maxValue = 10,
   increment = 1,
   emptyLabel = '0',
   ...accessibilityProps
 }: CounterProps) => {
-  const [count, setCount] = useState(
-    Math.min(Math.max(initialValue, minValue), maxValue),
+  const [internalCount, setInternalCount] = useState(
+    value !== undefined
+      ? Math.min(Math.max(value, minValue), maxValue)
+      : minValue,
   );
   const { theme } = useUnistyles();
+
+  useEffect(() => {
+    if (value !== undefined) {
+      setInternalCount(Math.min(Math.max(value, minValue), maxValue));
+    }
+  }, [value, minValue, maxValue]);
+
+  const count = Math.min(Math.max(internalCount, minValue), maxValue);
   const canIncrease = count < maxValue;
   const canDecrease = count > minValue;
 
@@ -69,7 +79,7 @@ export const Counter = ({
     (action: 'increment' | 'decrement') => {
       const newValue =
         count + (action === 'increment' ? increment : -increment);
-      setCount(newValue);
+      setInternalCount(newValue);
       onValueChange(newValue);
       AccessibilityInfo.announceForAccessibility(`${newValue}`);
     },
@@ -161,7 +171,7 @@ const styles = StyleSheet.create(({ spacing }) => ({
   },
   countContainer: {
     minWidth: 50,
-    paddingHorizontal: spacing.small,
+    paddingHorizontal: spacing.medium,
     alignItems: 'center',
   },
   countText: {

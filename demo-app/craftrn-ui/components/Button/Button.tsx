@@ -17,10 +17,12 @@ export const config = {
   },
   large: {
     buttonMinWidth: 44,
-    buttonMinHeight: 50,
+    buttonMinHeight: 48,
     hitSlop: 0,
   },
 };
+
+const borderWidth = StyleSheet.hairlineWidth * 2;
 
 type Size = 'large' | 'regular' | 'small';
 type Variant = 'solid' | 'outlined' | 'subtle' | 'text';
@@ -75,7 +77,7 @@ const getButtonStyles = (
       backgroundColor:
         variant === 'text' ? 'transparent' : colors.backgroundTertiary,
       ...(variant === 'outlined' && {
-        borderWidth: 1,
+        borderWidth: StyleSheet.hairlineWidth,
         borderColor: colors.backgroundTertiary,
       }),
     };
@@ -141,13 +143,13 @@ const getButtonStyles = (
         case 'primary':
           return {
             backgroundColor: pressed ? colors.accentQuaternary : 'transparent',
-            borderWidth: 1,
+            borderWidth,
             borderColor: colors.accentPrimary,
           };
         case 'secondary':
           return {
             backgroundColor: pressed ? colors.surfaceSecondary : 'transparent',
-            borderWidth: 1,
+            borderWidth,
             borderColor: colors.contentSecondary,
           };
         case 'positive':
@@ -155,7 +157,7 @@ const getButtonStyles = (
             backgroundColor: pressed
               ? colors.positiveQuaternary
               : 'transparent',
-            borderWidth: 1,
+            borderWidth,
             borderColor: colors.positivePrimary,
           };
         case 'negative':
@@ -163,7 +165,7 @@ const getButtonStyles = (
             backgroundColor: pressed
               ? colors.negativeQuaternary
               : 'transparent',
-            borderWidth: 1,
+            borderWidth,
             borderColor: colors.negativePrimary,
           };
       }
@@ -269,7 +271,6 @@ export const Button = ({
 
 const styles = StyleSheet.create(({ borderRadius, spacing, textVariants }) => ({
   button: (params: { disabled: boolean; size: Size }) => ({
-    borderRadius: borderRadius.medium,
     justifyContent: 'center',
     opacity: params.disabled ? 0.5 : 1,
     ...(params.size === 'large' && {
@@ -277,36 +278,36 @@ const styles = StyleSheet.create(({ borderRadius, spacing, textVariants }) => ({
       paddingVertical: spacing.medium,
       minHeight: config.large.buttonMinHeight,
       minWidth: config.large.buttonMinWidth,
-      borderRadius: borderRadius.large,
+      borderRadius: borderRadius.xlarge,
     }),
     ...(params.size === 'regular' && {
       paddingHorizontal: spacing.medium,
       paddingVertical: spacing.small,
       minHeight: config.regular.buttonMinHeight,
       minWidth: config.regular.buttonMinWidth,
-      borderRadius: borderRadius.medium,
+      borderRadius: borderRadius.large,
     }),
     ...(params.size === 'small' && {
       paddingHorizontal: spacing.small,
       paddingVertical: spacing.xsmall,
       minHeight: config.small.buttonMinHeight,
       minWidth: config.small.buttonMinWidth,
-      borderRadius: borderRadius.small,
+      borderRadius: borderRadius.medium,
     }),
   }),
   text: (params: { size: Size }) => ({
     textAlign: 'center',
     fontWeight: 'bold',
+    ...(params.size === 'large' && {
+      ...textVariants.body1,
+      fontWeight: 'bold',
+    }),
     ...(params.size === 'regular' && {
       ...textVariants.body2,
       fontWeight: 'bold',
     }),
     ...(params.size === 'small' && {
       ...textVariants.body3,
-      fontWeight: 'bold',
-    }),
-    ...(params.size === 'large' && {
-      ...textVariants.body2,
       fontWeight: 'bold',
     }),
   }),

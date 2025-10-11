@@ -14,11 +14,11 @@ export const config = {
     indicatorSize: 10,
   },
   medium: {
-    avatarSize: 38,
+    avatarSize: 40,
     indicatorSize: 10,
   },
   large: {
-    avatarSize: 44,
+    avatarSize: 48,
     indicatorSize: 12,
   },
 };
@@ -27,6 +27,15 @@ export const config = {
  * Color of the avatar when the image cannot be loaded.
  */
 export type AvatarColor = 0 | 1 | 2 | 3;
+
+/**
+ * Text variant mapping based on avatar size
+ */
+const textVariantBySize = {
+  small: 'body3',
+  medium: 'body2',
+  large: 'body1',
+} as const;
 
 /**
  * A component that displays an avatar.
@@ -90,7 +99,7 @@ export const Avatar = ({
     >
       <View style={styles.fallbackContainer}>
         {(!source || !imageLoaded) && (
-          <Text variant="body2" style={styles.text}>
+          <Text variant={textVariantBySize[size]} style={styles.text}>
             {fallbackInitials}
           </Text>
         )}

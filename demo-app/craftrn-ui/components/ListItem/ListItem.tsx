@@ -1,6 +1,6 @@
 import React from 'react';
 import { AccessibilityProps, Pressable, View, ViewProps } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, withUnistyles } from 'react-native-unistyles';
 import { Text } from '../Text';
 
 /**
@@ -11,6 +11,10 @@ export type Props = Pick<ViewProps, 'style'> & {
    * Left accessory element. Will be placed before the content.
    */
   itemLeft?: React.ReactElement;
+  /**
+   * Text to display above the main text.
+   */
+  textAbove?: string;
   /**
    * Main text to display.
    */
@@ -39,8 +43,9 @@ export type Props = Pick<ViewProps, 'style'> & {
 
 type ListItemProps = Props & AccessibilityProps;
 
-export const ListItem = ({
+const ListItemComponent = ({
   itemLeft,
+  textAbove,
   text,
   textBelow,
   itemRight,
@@ -67,13 +72,17 @@ export const ListItem = ({
           >
             {itemLeft}
             <View style={styles.itemContent}>
+              {textAbove && (
+                <Text variant="body3" color="contentSecondary">
+                  {textAbove}
+                </Text>
+              )}
               <Text
                 variant="body2"
-                style={[
-                  variant === 'primary'
-                    ? styles.itemText
-                    : styles.itemTextDanger,
-                ]}
+                color={
+                  variant === 'danger' ? 'negativeSecondary' : 'contentPrimary'
+                }
+                style={styles.itemText}
               >
                 {text}
               </Text>
@@ -92,6 +101,8 @@ export const ListItem = ({
   );
 };
 
+export const ListItem = withUnistyles(ListItemComponent);
+
 const styles = StyleSheet.create(({ colors, spacing }) => ({
   itemContainer: {
     flexDirection: 'row',
@@ -105,15 +116,11 @@ const styles = StyleSheet.create(({ colors, spacing }) => ({
   itemContent: {
     flex: 1,
     flexShrink: 1,
+    minWidth: 100,
     gap: spacing.xxsmall,
   },
   itemText: {
     fontWeight: 'bold',
-    color: colors.contentPrimary,
-  },
-  itemTextDanger: {
-    fontWeight: 'bold',
-    color: colors.negativeSecondary,
   },
   itemDivider: {
     borderBottomColor: colors.surfaceSecondary,
