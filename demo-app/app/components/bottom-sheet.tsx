@@ -1,105 +1,143 @@
 import { BottomSheet } from '@/craftrn-ui/components/BottomSheet';
 import { Button } from '@/craftrn-ui/components/Button';
 import { Card } from '@/craftrn-ui/components/Card';
+import { ListItem } from '@/craftrn-ui/components/ListItem';
+import { Switch } from '@/craftrn-ui/components/Switch';
 import { Text } from '@/craftrn-ui/components/Text';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
-import { ScrollView, View } from 'react-native';
-import {
-  StyleSheet,
-  UnistylesRuntime,
-  useUnistyles,
-} from 'react-native-unistyles';
+import { View } from 'react-native';
+import { StyleSheet, UnistylesRuntime } from 'react-native-unistyles';
+
+type BottomSheetVariant = 'primary' | 'secondary';
 
 export default function BottomSheetScreen() {
-  const { theme } = useUnistyles();
-  const [bottomSheetVisible1, setBottomSheetVisible1] = useState(false);
-  const [bottomSheetVisible2, setBottomSheetVisible2] = useState(false);
-  const [bottomSheetVisible3, setBottomSheetVisible3] = useState(false);
+  const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
+  const [enableSwipeToClose, setEnableSwipeToClose] = useState(false);
+  const [enableOverlayTapToClose, setEnableOverlayTapToClose] = useState(false);
+  const [showHandleBar, setShowHandleBar] = useState(false);
+  const [variant, setVariant] = useState<BottomSheetVariant>('primary');
+
+  const variants: BottomSheetVariant[] = ['primary', 'secondary'];
 
   return (
     <>
-      <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.container}>
         <Stack.Screen
           options={{
             title: 'BottomSheet',
           }}
         />
-        <View style={styles.content}>
-          <Text variant="body2" style={styles.heading}>
-            Default
-          </Text>
-          <Card style={styles.componentContainer}>
-            <Button
-              onPress={() => setBottomSheetVisible1(!bottomSheetVisible1)}
-            >
-              Open bottom sheet
+
+        {/* Demo Section */}
+        <View style={styles.demoSection}>
+          <Card style={styles.demoContainer}>
+            <Button size="large" onPress={() => setBottomSheetVisible(true)}>
+              Open Bottom Sheet
             </Button>
           </Card>
         </View>
-        <View style={styles.content}>
-          <Text variant="body2" style={styles.heading}>
-            Swipe down to close
-          </Text>
-          <Card style={styles.componentContainer}>
-            <Button
-              onPress={() => setBottomSheetVisible2(!bottomSheetVisible2)}
-            >
-              Open bottom sheet
-            </Button>
-          </Card>
-        </View>
-        <View style={styles.content}>
-          <Text variant="body2" style={styles.heading}>
-            Tap overlay to dismiss
-          </Text>
-          <Card style={styles.componentContainer}>
-            <Button
-              onPress={() => setBottomSheetVisible3(!bottomSheetVisible1)}
-            >
-              Open bottom sheet
-            </Button>
-          </Card>
-        </View>
-      </ScrollView>
+
+        {/* Controls */}
+        <Card style={styles.controlsCard}>
+          {/* Variant Selector */}
+          <View style={styles.controlSection}>
+            <ListItem text="Variant" />
+            <View style={styles.toggleGroup}>
+              {variants.map(v => (
+                <Button
+                  key={v}
+                  size="small"
+                  variant="subtle"
+                  intent={variant === v ? 'primary' : 'secondary'}
+                  onPress={() => setVariant(v)}
+                >
+                  {v.charAt(0).toUpperCase() + v.slice(1)}
+                </Button>
+              ))}
+            </View>
+          </View>
+          <View style={styles.divider} />
+
+          {/* Toggle Controls */}
+          <View style={styles.listSection}>
+            <ListItem
+              text="Swipe to Close"
+              textBelow="Enable swipe down gesture to close"
+              itemRight={
+                <Switch
+                  value={enableSwipeToClose}
+                  onValueChange={setEnableSwipeToClose}
+                />
+              }
+              divider
+            />
+            <ListItem
+              text="Overlay Tap to Close"
+              textBelow="Tap overlay background to close"
+              itemRight={
+                <Switch
+                  value={enableOverlayTapToClose}
+                  onValueChange={setEnableOverlayTapToClose}
+                />
+              }
+              divider
+            />
+            <ListItem
+              text="Show Handle Bar"
+              textBelow="Display drag handle at the top"
+              itemRight={
+                <Switch
+                  value={showHandleBar}
+                  onValueChange={setShowHandleBar}
+                />
+              }
+            />
+          </View>
+        </Card>
+      </View>
+
       <BottomSheet
-        visible={bottomSheetVisible1}
-        onRequestClose={() => setBottomSheetVisible1(false)}
+        visible={bottomSheetVisible}
+        onRequestClose={() => setBottomSheetVisible(false)}
+        enableSwipeToClose={enableSwipeToClose}
+        enableOverlayTapToClose={enableOverlayTapToClose}
+        showHandleBar={showHandleBar}
+        variant={variant}
       >
         <View style={styles.bottomSheetContent}>
           <View style={styles.bottomSheetHeading}>
-            <Text variant="heading3">Now close me</Text>
+            <Text variant="heading3">Bottom Sheet Demo</Text>
             <Text variant="body2">
-              Tap the button to close the bottom sheet
+              Configure the options above to see how they affect this bottom
+              sheet
             </Text>
           </View>
-          <Button onPress={() => setBottomSheetVisible1(false)}>Close</Button>
-        </View>
-      </BottomSheet>
-      <BottomSheet
-        visible={bottomSheetVisible2}
-        onRequestClose={() => setBottomSheetVisible2(false)}
-        enableSwipeToClose
-      >
-        <View style={styles.bottomSheetContent}>
-          <View style={styles.bottomSheetHeading}>
-            <Text variant="heading3">Now close me</Text>
-            <Text variant="body2">Swipe down to close the bottom sheet</Text>
-          </View>
-        </View>
-      </BottomSheet>
-      <BottomSheet
-        visible={bottomSheetVisible3}
-        onRequestClose={() => setBottomSheetVisible3(false)}
-        enableOverlayTapToClose
-      >
-        <View style={styles.bottomSheetContent}>
-          <View style={styles.bottomSheetHeading}>
-            <Text variant="heading3">Now close me</Text>
-            <Text variant="body2">
-              Tap the overlay to close the bottom sheet
+
+          <Text variant="body2">Current configuration:</Text>
+
+          <View style={styles.configList}>
+            <Text variant="body3">• Variant: {variant}</Text>
+            <Text variant="body3">
+              • Swipe to close: {enableSwipeToClose ? 'true' : 'false'}
+            </Text>
+            <Text variant="body3">
+              • Overlay tap to close:{' '}
+              {enableOverlayTapToClose ? 'true' : 'false'}
+            </Text>
+            <Text variant="body3">
+              • Handle bar: {showHandleBar ? 'true' : 'false'}
             </Text>
           </View>
+
+          <Text variant="body2">
+            This bottom sheet component provides a smooth way to display
+            additional content that slides up from the bottom of the screen. You
+            can experiment with different configurations using the controls
+            above.
+          </Text>
+
+          <Button onPress={() => setBottomSheetVisible(false)}>Close</Button>
         </View>
       </BottomSheet>
     </>
@@ -108,19 +146,41 @@ export default function BottomSheetScreen() {
 
 const styles = StyleSheet.create(theme => ({
   container: {
+    flex: 1,
     paddingHorizontal: theme.spacing.large,
-    paddingVertical: theme.spacing.medium,
+    paddingTop: theme.spacing.medium,
+    paddingBottom: UnistylesRuntime.insets.bottom + theme.spacing.medium,
   },
-  content: {
-    gap: theme.spacing.small,
-    marginTop: theme.spacing.large,
+  demoSection: {
+    flex: 1,
+    marginBottom: theme.spacing.large,
   },
-  heading: {
-    fontWeight: 'bold',
+  demoContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  componentContainer: {
-    gap: theme.spacing.xxsmall,
-    padding: theme.spacing.medium,
+  controlsCard: {
+    padding: theme.spacing.large,
+    gap: theme.spacing.large,
+  },
+  controlSection: {
+    gap: theme.spacing.medium,
+  },
+  toggleGroup: {
+    flexDirection: 'row',
+    gap: theme.spacing.xsmall,
+    flexWrap: 'wrap',
+  },
+  listSection: {
+    backgroundColor: theme.colors.surfacePrimary,
+    gap: theme.spacing.medium,
+    overflow: 'hidden',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: theme.colors.surfaceSecondary,
+    marginVertical: theme.spacing.xsmall,
   },
   bottomSheetContent: {
     paddingHorizontal: theme.spacing.large,
@@ -130,5 +190,9 @@ const styles = StyleSheet.create(theme => ({
   },
   bottomSheetHeading: {
     paddingBottom: theme.spacing.large,
+  },
+  configList: {
+    gap: theme.spacing.small,
+    paddingLeft: theme.spacing.medium,
   },
 }));

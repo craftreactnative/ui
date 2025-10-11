@@ -1,58 +1,84 @@
 import { Card } from '@/craftrn-ui/components/Card';
 import { InputOTP } from '@/craftrn-ui/components/InputOTP';
 import { Text } from '@/craftrn-ui/components/Text';
+import { useHeaderHeight } from '@react-navigation/elements';
 import { Stack } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import { StyleSheet, UnistylesRuntime } from 'react-native-unistyles';
 
 export default function InputOTPScreen() {
-  const { theme } = useUnistyles();
+  const headerHeight = useHeaderHeight();
+
   const [otp, setOtp] = useState('');
 
+  const handleOtpChange = useCallback((value: string) => {
+    setOtp(value);
+  }, []);
+
   return (
-    <ScrollView
-      contentContainerStyle={styles.container}
-      keyboardShouldPersistTaps="handled"
+    <KeyboardAvoidingView
+      behavior="padding"
+      keyboardVerticalOffset={headerHeight}
+      style={styles.keyboardView}
     >
-      <Stack.Screen
-        options={{
-          title: 'InputOTP',
-        }}
-      />
-      <View style={styles.content}>
-        <Text variant="body2" style={styles.heading}>
-          Default
-        </Text>
-        <Card style={styles.componentContainer}>
-          <InputOTP onChange={setOtp} />
-        </Card>
-        <Text variant="body2">OTP entered is: {otp}</Text>
-      </View>
-    </ScrollView>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="interactive"
+      >
+        <Stack.Screen
+          options={{
+            title: 'InputOTP',
+          }}
+        />
+
+        {/* Demo OTP */}
+        <View style={styles.demoSection}>
+          <Card style={styles.demoContainer}>
+            <InputOTP onChange={handleOtpChange} />
+            {otp && (
+              <Text
+                variant="body3"
+                color="contentSecondary"
+                style={styles.otpValue}
+              >
+                Entered: {otp}
+              </Text>
+            )}
+          </Card>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create(theme => ({
   container: {
+    flexGrow: 1,
     paddingHorizontal: theme.spacing.large,
-    paddingVertical: theme.spacing.medium,
+    paddingTop: theme.spacing.medium,
+    paddingBottom: UnistylesRuntime.insets.bottom + theme.spacing.medium,
   },
-  content: {
-    gap: theme.spacing.small,
-    marginTop: theme.spacing.large,
+  demoSection: {
+    flex: 1,
   },
-  heading: {
-    fontWeight: 'bold',
+  demoContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: theme.spacing.large,
+    gap: theme.spacing.medium,
   },
-  componentContainer: {
-    gap: theme.spacing.small,
-    padding: theme.spacing.medium,
+  otpValue: {
+    marginTop: theme.spacing.small,
   },
-  leftAccessory: {
-    marginRight: theme.spacing.small,
+  keyboardView: {
+    flex: 1,
   },
-  rightAccessory: {
-    marginLeft: theme.spacing.small,
+  scrollView: {
+    flex: 1,
   },
 }));

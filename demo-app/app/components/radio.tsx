@@ -1,65 +1,74 @@
 import { Card } from '@/craftrn-ui/components/Card';
+import { ListItem } from '@/craftrn-ui/components/ListItem';
 import { Radio } from '@/craftrn-ui/components/Radio';
-import { Text } from '@/craftrn-ui/components/Text';
+import { Switch } from '@/craftrn-ui/components/Switch';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
-import { ScrollView, View } from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { View } from 'react-native';
+import { StyleSheet, UnistylesRuntime } from 'react-native-unistyles';
 
 export default function RadioScreen() {
-  const { theme } = useUnistyles();
-  const [checked1, setChecked1] = useState(false);
-  const [checked2, setChecked2] = useState(true);
-
-  const handlePress = () => {
-    setChecked1(!checked1);
-    setChecked2(!checked2);
-  };
+  const [checked, setChecked] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <Stack.Screen
         options={{
           title: 'Radio',
         }}
       />
-      <View style={styles.content}>
-        <Text variant="body2" style={styles.heading}>
-          Default
-        </Text>
-        <Card style={styles.componentContainer}>
-          <Radio checked={checked1} onPress={handlePress} />
-          <Radio checked={checked2} onPress={handlePress} />
+
+      {/* Demo Section */}
+      <View style={styles.demoSection}>
+        <Card style={styles.demoContainer}>
+          <Radio
+            checked={checked}
+            disabled={disabled}
+            onPress={() => !disabled && setChecked(!checked)}
+          />
         </Card>
       </View>
-      <View style={styles.content}>
-        <Text variant="body2" style={styles.heading}>
-          Disabled
-        </Text>
-        <Card style={styles.componentContainer}>
-          <Radio checked={false} disabled />
-          <Radio checked={true} disabled />
-        </Card>
-      </View>
-    </ScrollView>
+
+      {/* Controls */}
+      <Card style={styles.controlsCard}>
+        {/* Checked State Toggle */}
+        <ListItem
+          text="Checked"
+          textBelow="Toggle the checked state"
+          itemRight={<Switch value={checked} onValueChange={setChecked} />}
+          divider
+        />
+
+        {/* Disabled Switch */}
+        <ListItem
+          text="Disabled"
+          textBelow="Disable radio interactions"
+          itemRight={<Switch value={disabled} onValueChange={setDisabled} />}
+        />
+      </Card>
+    </View>
   );
 }
 
 const styles = StyleSheet.create(theme => ({
   container: {
+    flex: 1,
     paddingHorizontal: theme.spacing.large,
-    paddingVertical: theme.spacing.medium,
+    paddingTop: theme.spacing.medium,
+    paddingBottom: UnistylesRuntime.insets.bottom + theme.spacing.medium,
   },
-  content: {
-    gap: theme.spacing.small,
-    marginTop: theme.spacing.large,
+  demoSection: {
+    flex: 1,
+    marginBottom: theme.spacing.large,
   },
-  heading: {
-    fontWeight: 'bold',
+  demoContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  componentContainer: {
-    flexDirection: 'row',
-    gap: theme.spacing.small,
-    padding: theme.spacing.medium,
+  controlsCard: {
+    padding: theme.spacing.large,
+    gap: theme.spacing.large,
   },
 }));

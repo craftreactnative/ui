@@ -3,11 +3,14 @@ import {
   ContextMenu,
   ContextMenuItem,
 } from '@/craftrn-ui/components/ContextMenu';
-import { Text } from '@/craftrn-ui/components/Text';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { Alert, Pressable, View } from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import {
+  StyleSheet,
+  UnistylesRuntime,
+  useUnistyles,
+} from 'react-native-unistyles';
 import { ChevronRight } from '../../tetrisly-icons/ChevronRight';
 
 export default function ContextMenuScreen() {
@@ -46,11 +49,10 @@ export default function ContextMenuScreen() {
           title: 'Context Menu',
         }}
       />
-      <View style={styles.centeredContent}>
-        <Text variant="body2" style={styles.heading}>
-          All Anchor Positions
-        </Text>
-        <Card style={styles.componentContainer}>
+
+      {/* Demo Section */}
+      <View style={styles.demoSection}>
+        <Card style={styles.demoContainer}>
           <View style={styles.gridContainer}>
             <View style={styles.gridRow}>
               <ContextMenu
@@ -126,22 +128,22 @@ const styles = StyleSheet.create(theme => ({
   container: {
     flex: 1,
     paddingHorizontal: theme.spacing.large,
+    paddingTop: theme.spacing.medium,
+    paddingBottom: UnistylesRuntime.insets.bottom + theme.spacing.medium,
   },
-  centeredContent: {
+  demoSection: {
     flex: 1,
+    justifyContent: 'center',
+  },
+  demoContainer: {
+    flex: 1,
+    padding: theme.spacing.large,
     justifyContent: 'center',
     alignItems: 'center',
     gap: theme.spacing.medium,
   },
   heading: {
     fontWeight: 'bold',
-  },
-  description: {
-    marginBottom: theme.spacing.medium,
-  },
-  componentContainer: {
-    gap: theme.spacing.medium,
-    padding: theme.spacing.large,
   },
   gridContainer: {
     gap: theme.spacing.medium,
@@ -192,15 +194,5 @@ const styles = StyleSheet.create(theme => ({
   bottomRight: {
     bottom: theme.spacing.small,
     right: theme.spacing.small,
-  },
-  pressableArea: {
-    backgroundColor: theme.colors.surfaceSecondary,
-    borderRadius: theme.borderRadius.medium,
-    paddingVertical: theme.spacing.large,
-    paddingHorizontal: theme.spacing.medium,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: theme.colors.borderPrimary,
   },
 }));

@@ -1,8 +1,9 @@
 import CraftRNLogoDark from '@/assets/images/craftrn-dark.png';
 import CraftRNLogoLight from '@/assets/images/craftrn-light.png';
+import { useTheme } from '@/contexts/ThemeContext';
 import { Text } from '@/craftrn-ui/components/Text/Text';
 import type { PropsWithChildren } from 'react';
-import { Image, useColorScheme, View } from 'react-native';
+import { Image, View } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedRef,
@@ -19,7 +20,7 @@ type Props = PropsWithChildren<{
 
 export default function ParallaxScrollView({ children, title }: Props) {
   const { theme } = useUnistyles();
-  const colorScheme = useColorScheme();
+  const { theme: currentTheme } = useTheme();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
   const headerAnimatedStyle = useAnimatedStyle(() => {
@@ -60,7 +61,7 @@ export default function ParallaxScrollView({ children, title }: Props) {
         <View style={styles.parallaxHeader}>
           <Image
             source={
-              colorScheme === 'light' ? CraftRNLogoLight : CraftRNLogoDark
+              currentTheme === 'light' ? CraftRNLogoLight : CraftRNLogoDark
             }
             style={styles.headerLogo}
           />

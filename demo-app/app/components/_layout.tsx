@@ -2,6 +2,7 @@ import { NavigationBackButton } from '@/components/NavigationBackButton/Navigati
 import { Stack } from 'expo-router';
 import { View } from 'react-native';
 import { useUnistyles } from 'react-native-unistyles';
+import { ThemeToggleButton } from '../../components/ThemeToggleButton/ThemeToggleButton';
 
 export default function ComponentsLayout() {
   const { theme } = useUnistyles();
@@ -21,6 +22,7 @@ export default function ComponentsLayout() {
               <NavigationBackButton onPress={navigation.goBack} />
             </View>
           ) : undefined,
+        headerRight: () => <ThemeToggleButton />,
       })}
     />
   );

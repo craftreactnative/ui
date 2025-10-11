@@ -1,63 +1,153 @@
+import { Button } from '@/craftrn-ui/components/Button';
 import { Card } from '@/craftrn-ui/components/Card';
 import { Counter } from '@/craftrn-ui/components/Counter';
-import { Text } from '@/craftrn-ui/components/Text';
+import { InputText } from '@/craftrn-ui/components/InputText';
+import { ListItem } from '@/craftrn-ui/components/ListItem';
+import { Switch } from '@/craftrn-ui/components/Switch';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
-import { ScrollView, View } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
+import { View } from 'react-native';
+import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
+import { StyleSheet, UnistylesRuntime } from 'react-native-unistyles';
 
 export default function CounterScreen() {
-  const [counter1Value, setCounter1Value] = useState(0);
-  const [counter2Value, setCounter2Value] = useState(0);
+  const [, setCounterValue] = useState(0);
+  const [controlledValue, setControlledValue] = useState<number | undefined>(0);
+  const [increment, setIncrement] = useState(1);
+  const [hasEmptyLabel, setHasEmptyLabel] = useState(false);
+  const [emptyLabel, setEmptyLabel] = useState('Any');
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <Stack.Screen
         options={{
           title: 'Counter',
         }}
       />
-      <View style={styles.content}>
-        <Text variant="body2" style={styles.heading}>
-          Default
-        </Text>
-        <Card style={styles.componentContainer}>
+
+      {/* Demo Section */}
+      <View style={styles.demoSection}>
+        <Card style={styles.demoContainer}>
           <Counter
-            initialValue={counter1Value}
-            onValueChange={setCounter1Value}
+            value={controlledValue}
+            increment={increment}
+            onValueChange={setCounterValue}
+            emptyLabel={hasEmptyLabel ? emptyLabel : undefined}
           />
         </Card>
       </View>
-      <View style={styles.content}>
-        <Text variant="body2" style={styles.heading}>
-          With empty label
-        </Text>
-        <Card style={styles.componentContainer}>
-          <Counter
-            initialValue={counter2Value}
-            onValueChange={setCounter2Value}
-            emptyLabel="Any"
+
+      {/* Controls */}
+      <Card style={styles.controlsCard}>
+        {/* Set Value Controls */}
+        <View style={styles.controlSection}>
+          <ListItem
+            text="Set Value"
+            textBelow="Set counter to specific value"
           />
-        </Card>
-      </View>
-    </ScrollView>
+          <View style={styles.toggleGroup}>
+            {[0, 1, 5, 10].map(value => (
+              <Button
+                key={value}
+                size="small"
+                variant="subtle"
+                intent={controlledValue === value ? 'primary' : 'secondary'}
+                onPress={() => setControlledValue(value)}
+              >
+                {String(value)}
+              </Button>
+            ))}
+          </View>
+        </View>
+        <View style={styles.divider} />
+
+        {/* Increment Step */}
+        <View style={styles.controlSection}>
+          <ListItem
+            text="Increment Step"
+            textBelow="How much to increase/decrease by"
+          />
+          <View style={styles.toggleGroup}>
+            {[1, 2, 5].map(value => (
+              <Button
+                key={value}
+                size="small"
+                variant="subtle"
+                intent={increment === value ? 'primary' : 'secondary'}
+                onPress={() => setIncrement(value)}
+              >
+                {String(value)}
+              </Button>
+            ))}
+          </View>
+        </View>
+        <View style={styles.divider} />
+
+        {/* Empty Label Toggle */}
+        <ListItem
+          text="Custom Empty Label"
+          textBelow="Show custom label when counter is at min value"
+          itemRight={
+            <Switch value={hasEmptyLabel} onValueChange={setHasEmptyLabel} />
+          }
+          divider={hasEmptyLabel}
+        />
+
+        {/* Empty Label Text (only shown when enabled) */}
+        {hasEmptyLabel && (
+          <Animated.View
+            key="empty-label-input"
+            layout={LinearTransition.duration(300)}
+            entering={FadeIn.duration(300)}
+            style={styles.controlSection}
+          >
+            <ListItem
+              text="Empty Label Text"
+              textBelow="Text to show when counter is at minimum"
+            />
+            <InputText
+              value={emptyLabel}
+              onChangeText={setEmptyLabel}
+              placeholder="Enter empty label text"
+            />
+          </Animated.View>
+        )}
+      </Card>
+    </View>
   );
 }
 
 const styles = StyleSheet.create(theme => ({
   container: {
+    flex: 1,
     paddingHorizontal: theme.spacing.large,
-    paddingVertical: theme.spacing.medium,
+    paddingTop: theme.spacing.medium,
+    paddingBottom: UnistylesRuntime.insets.bottom + theme.spacing.medium,
   },
-  content: {
-    gap: theme.spacing.small,
-    marginTop: theme.spacing.large,
+  demoSection: {
+    flex: 1,
+    marginBottom: theme.spacing.large,
   },
-  heading: {
-    fontWeight: 'bold',
+  demoContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  componentContainer: {
-    gap: theme.spacing.xxsmall,
-    padding: theme.spacing.medium,
+  controlsCard: {
+    padding: theme.spacing.large,
+    gap: theme.spacing.large,
+  },
+  controlSection: {
+    gap: theme.spacing.medium,
+  },
+  toggleGroup: {
+    flexDirection: 'row',
+    gap: theme.spacing.xsmall,
+    flexWrap: 'wrap',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: theme.colors.surfaceSecondary,
+    marginVertical: theme.spacing.xsmall,
   },
 }));

@@ -1,83 +1,133 @@
 import { ButtonRound } from '@/craftrn-ui/components/ButtonRound';
 import { Card } from '@/craftrn-ui/components/Card';
 import { InputSearch } from '@/craftrn-ui/components/InputSearch';
-import { Text } from '@/craftrn-ui/components/Text';
+import { ListItem } from '@/craftrn-ui/components/ListItem';
+import { Switch } from '@/craftrn-ui/components/Switch';
 import { Search } from '@/tetrisly-icons/Search';
 import { Slider } from '@/tetrisly-icons/Slider';
+import { useHeaderHeight } from '@react-navigation/elements';
 import { Stack } from 'expo-router';
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import {
+  StyleSheet,
+  UnistylesRuntime,
+  useUnistyles,
+} from 'react-native-unistyles';
 
 export default function InputSearchScreen() {
   const { theme } = useUnistyles();
+  const headerHeight = useHeaderHeight();
+
+  const [hasLeftAccessory, setHasLeftAccessory] = useState(false);
+  const [hasRightAccessory, setHasRightAccessory] = useState(false);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Stack.Screen
-        options={{
-          title: 'InputSearch',
-        }}
-      />
-      <View style={styles.content}>
-        <Text variant="body2" style={styles.heading}>
-          Default
-        </Text>
-        <Card style={styles.componentContainer}>
-          <InputSearch
-            placeholder="Search for a destination"
-            selectionColor={theme.colors.accentPrimary}
-          />
-        </Card>
-      </View>
-      <View style={styles.content}>
-        <Text variant="body2" style={styles.heading}>
-          With left and right accessories
-        </Text>
-        <Card style={styles.componentContainer}>
-          <InputSearch
-            placeholder="Search for a destination"
-            leftAccessory={
-              <View style={styles.leftAccessory}>
-                <Search color={theme.colors.contentTertiary} />
-              </View>
-            }
-            rightAccessory={
-              <ButtonRound
-                renderContent={({ iconSize }) => (
-                  <Slider
-                    size={iconSize}
-                    color={theme.colors.contentTertiary}
+    <KeyboardAvoidingView
+      behavior="padding"
+      keyboardVerticalOffset={headerHeight}
+      style={styles.keyboardView}
+    >
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="interactive"
+      >
+        <Stack.Screen
+          options={{
+            title: 'InputSearch',
+          }}
+        />
+
+        {/* Demo InputSearch */}
+        <View style={styles.demoSection}>
+          <Card style={styles.demoContainer}>
+            <InputSearch
+              placeholder="Search for a destination"
+              leftAccessory={
+                hasLeftAccessory ? (
+                  <View style={styles.leftAccessory}>
+                    <Search color={theme.colors.contentTertiary} />
+                  </View>
+                ) : undefined
+              }
+              rightAccessory={
+                hasRightAccessory ? (
+                  <ButtonRound
+                    renderContent={({ iconSize }) => (
+                      <Slider
+                        size={iconSize}
+                        color={theme.colors.contentTertiary}
+                      />
+                    )}
+                    onPress={() => {}}
                   />
-                )}
-                onPress={() => {}}
+                ) : undefined
+              }
+              selectionColor={theme.colors.accentPrimary}
+            />
+          </Card>
+        </View>
+
+        {/* Controls */}
+        <Card style={styles.controlsCard}>
+          <ListItem
+            text="Left Accessory"
+            textBelow="Show search icon on the left"
+            itemRight={
+              <Switch
+                value={hasLeftAccessory}
+                onValueChange={setHasLeftAccessory}
               />
             }
-            selectionColor={theme.colors.accentPrimary}
+            divider
+          />
+
+          <ListItem
+            text="Right Accessory"
+            textBelow="Show filter button on the right"
+            itemRight={
+              <Switch
+                value={hasRightAccessory}
+                onValueChange={setHasRightAccessory}
+              />
+            }
           />
         </Card>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create(theme => ({
   container: {
+    flexGrow: 1,
     paddingHorizontal: theme.spacing.large,
-    paddingVertical: theme.spacing.medium,
+    paddingTop: theme.spacing.medium,
+    paddingBottom: UnistylesRuntime.insets.bottom + theme.spacing.medium,
   },
-  content: {
-    gap: theme.spacing.small,
-    marginTop: theme.spacing.large,
+  demoSection: {
+    flex: 1,
+    marginBottom: theme.spacing.large,
   },
-  heading: {
-    fontWeight: 'bold',
+  demoContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: theme.spacing.large,
   },
-  componentContainer: {
-    gap: theme.spacing.small,
-    padding: theme.spacing.medium,
+  controlsCard: {
+    padding: theme.spacing.large,
+    gap: theme.spacing.large,
   },
   leftAccessory: {
     marginHorizontal: theme.spacing.xsmall,
+  },
+  keyboardView: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
   },
 }));

@@ -1,162 +1,155 @@
 import { Button } from '@/craftrn-ui/components/Button';
 import { Card } from '@/craftrn-ui/components/Card';
-import { Text } from '@/craftrn-ui/components/Text';
+import { ListItem } from '@/craftrn-ui/components/ListItem';
+import { Switch } from '@/craftrn-ui/components/Switch';
 import { Stack } from 'expo-router';
-import React from 'react';
-import { ScrollView, View } from 'react-native';
+import React, { useState } from 'react';
+import { View } from 'react-native';
 import { StyleSheet, UnistylesRuntime } from 'react-native-unistyles';
 
+type ButtonVariant = 'solid' | 'subtle' | 'outlined' | 'text';
+type ButtonIntent = 'primary' | 'secondary' | 'positive' | 'negative';
+type ButtonSize = 'small' | 'regular' | 'large';
+
 export default function ButtonScreen() {
+  const [variant, setVariant] = useState<ButtonVariant>('solid');
+  const [intent, setIntent] = useState<ButtonIntent>('primary');
+  const [size, setSize] = useState<ButtonSize>('regular');
+  const [disabled, setDisabled] = useState(false);
+
+  const variants: ButtonVariant[] = ['solid', 'subtle', 'outlined', 'text'];
+  const intents: ButtonIntent[] = [
+    'primary',
+    'secondary',
+    'positive',
+    'negative',
+  ];
+  const sizes: ButtonSize[] = ['small', 'regular', 'large'];
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <Stack.Screen
         options={{
           title: 'Button',
         }}
       />
-      <View style={styles.content}>
-        <Text variant="body2" style={styles.heading}>
-          Variants
-        </Text>
-        <Card style={styles.componentContainer}>
-          <Button onPress={() => {}}>Solid</Button>
-          <Button variant="subtle" onPress={() => {}}>
-            Subtle
-          </Button>
-          <Button variant="outlined" onPress={() => {}}>
-            Outlined
-          </Button>
-          <Button variant="text" onPress={() => {}}>
-            Text
+
+      {/* Demo Button */}
+      <View style={styles.demoSection}>
+        <Card style={styles.demoContainer}>
+          <Button
+            variant={variant === 'solid' ? undefined : variant}
+            intent={intent}
+            size={size}
+            disabled={disabled}
+            onPress={() => {}}
+          >
+            Sample Button
           </Button>
         </Card>
       </View>
-      <View style={styles.content}>
-        <Text variant="body2" style={styles.heading}>
-          Intent / Solid
-        </Text>
-        <Card style={styles.componentContainer}>
-          <Button intent="primary" onPress={() => {}}>
-            Primary
-          </Button>
-          <Button intent="secondary" onPress={() => {}}>
-            Secondary
-          </Button>
-          <Button intent="positive" onPress={() => {}}>
-            Positive
-          </Button>
-          <Button intent="negative" onPress={() => {}}>
-            Negative
-          </Button>
-        </Card>
-        <Text variant="body2" style={styles.heading}>
-          Intent / Subtle
-        </Text>
-        <Card style={styles.componentContainer}>
-          <Button intent="primary" variant="subtle" onPress={() => {}}>
-            Primary
-          </Button>
-          <Button intent="secondary" variant="subtle" onPress={() => {}}>
-            Secondary
-          </Button>
-          <Button intent="positive" variant="subtle" onPress={() => {}}>
-            Positive
-          </Button>
-          <Button intent="negative" variant="subtle" onPress={() => {}}>
-            Negative
-          </Button>
-        </Card>
-        <Text variant="body2" style={styles.heading}>
-          Intent / Outlined
-        </Text>
-        <Card style={styles.componentContainer}>
-          <Button intent="primary" variant="outlined" onPress={() => {}}>
-            Primary
-          </Button>
-          <Button intent="secondary" variant="outlined" onPress={() => {}}>
-            Secondary
-          </Button>
-          <Button intent="positive" variant="outlined" onPress={() => {}}>
-            Positive
-          </Button>
-          <Button intent="negative" variant="outlined" onPress={() => {}}>
-            Negative
-          </Button>
-        </Card>
-        <Text variant="body2" style={styles.heading}>
-          Intent / Text
-        </Text>
-        <Card style={styles.componentContainer}>
-          <Button intent="primary" variant="text" onPress={() => {}}>
-            Primary
-          </Button>
-          <Button intent="secondary" variant="text" onPress={() => {}}>
-            Secondary
-          </Button>
-          <Button intent="positive" variant="text" onPress={() => {}}>
-            Positive
-          </Button>
-          <Button intent="negative" variant="text" onPress={() => {}}>
-            Negative
-          </Button>
-        </Card>
-      </View>
-      <View style={styles.content}>
-        <Text variant="body2" style={styles.heading}>
-          Disabled
-        </Text>
-        <Card style={styles.componentContainer}>
-          <Button disabled onPress={() => {}}>
-            Solid
-          </Button>
-          <Button variant="subtle" disabled onPress={() => {}}>
-            Subtle
-          </Button>
-          <Button variant="outlined" disabled onPress={() => {}}>
-            Outlined
-          </Button>
-          <Button variant="text" disabled onPress={() => {}}>
-            Text
-          </Button>
-        </Card>
-      </View>
-      <View style={styles.content}>
-        <Text variant="body2" style={styles.heading}>
-          Sizes
-        </Text>
-        <Card style={styles.componentContainer}>
-          <Button size="small" onPress={() => {}}>
-            Small
-          </Button>
-          <Button size="regular" onPress={() => {}}>
-            Regular
-          </Button>
-          <Button size="large" onPress={() => {}}>
-            Large
-          </Button>
-        </Card>
-      </View>
-    </ScrollView>
+
+      {/* Controls */}
+      <Card style={styles.controlsCard}>
+        {/* Variant Selector */}
+        <View style={styles.controlSection}>
+          <ListItem text="Variant" />
+          <View style={styles.toggleGroup}>
+            {variants.map(v => (
+              <Button
+                key={v}
+                size="small"
+                variant="subtle"
+                intent={variant === v ? 'primary' : 'secondary'}
+                onPress={() => setVariant(v)}
+              >
+                {v.charAt(0).toUpperCase() + v.slice(1)}
+              </Button>
+            ))}
+          </View>
+        </View>
+        <View style={styles.divider} />
+
+        {/* Intent Selector */}
+        <View style={styles.controlSection}>
+          <ListItem text="Intent" />
+          <View style={styles.toggleGroup}>
+            {intents.map(i => (
+              <Button
+                key={i}
+                size="small"
+                variant="subtle"
+                intent={intent === i ? 'primary' : 'secondary'}
+                onPress={() => setIntent(i)}
+              >
+                {i.charAt(0).toUpperCase() + i.slice(1)}
+              </Button>
+            ))}
+          </View>
+        </View>
+        <View style={styles.divider} />
+
+        {/* Size Selector */}
+        <View style={styles.controlSection}>
+          <ListItem text="Size" />
+          <View style={styles.toggleGroup}>
+            {sizes.map(s => (
+              <Button
+                key={s}
+                size="small"
+                variant="subtle"
+                intent={size === s ? 'primary' : 'secondary'}
+                onPress={() => setSize(s)}
+              >
+                {s.charAt(0).toUpperCase() + s.slice(1)}
+              </Button>
+            ))}
+          </View>
+        </View>
+        <View style={styles.divider} />
+
+        {/* Disabled Switch */}
+        <ListItem
+          text="Disabled"
+          textBelow="Disable button interactions"
+          itemRight={<Switch value={disabled} onValueChange={setDisabled} />}
+        />
+      </Card>
+    </View>
   );
 }
 
 const styles = StyleSheet.create(theme => ({
   container: {
+    flex: 1,
     paddingHorizontal: theme.spacing.large,
-    paddingVertical: theme.spacing.medium,
-    paddingBottom: UnistylesRuntime.insets.bottom + theme.spacing.xlarge,
+    paddingTop: theme.spacing.medium,
+    paddingBottom: UnistylesRuntime.insets.bottom + theme.spacing.medium,
   },
-  content: {
-    gap: theme.spacing.small,
-    marginTop: theme.spacing.large,
+  demoSection: {
+    flex: 1,
+    marginBottom: theme.spacing.large,
   },
-  heading: {
-    fontWeight: 'bold',
+  demoContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  componentContainer: {
+  controlsCard: {
+    padding: theme.spacing.large,
+    gap: theme.spacing.large,
+  },
+  controlSection: {
+    gap: theme.spacing.medium,
+  },
+  toggleGroup: {
     flexDirection: 'row',
-    gap: theme.spacing.small,
-    padding: theme.spacing.medium,
+    gap: theme.spacing.xsmall,
     flexWrap: 'wrap',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: theme.colors.surfaceSecondary,
+    marginVertical: theme.spacing.xsmall,
   },
 }));

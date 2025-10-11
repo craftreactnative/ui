@@ -1,5 +1,7 @@
 import { HapticTab } from '@/components/HapticTab/HapticTab';
+import { ThemeToggleButton } from '@/components/ThemeToggleButton/ThemeToggleButton';
 import { Tabs } from 'expo-router';
+import { View } from 'react-native';
 import Svg, { Path, SvgProps } from 'react-native-svg';
 import { useUnistyles } from 'react-native-unistyles';
 
@@ -25,7 +27,13 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: theme.colors.accentPrimary,
-        headerShown: false,
+        headerTransparent: true,
+        headerRight: () => (
+          <View style={{ marginRight: 16 }}>
+            <ThemeToggleButton intent="secondary" />
+          </View>
+        ),
+        headerTitle: '',
         tabBarButton: HapticTab,
         sceneStyle: {
           backgroundColor: theme.colors.backgroundSecondary,

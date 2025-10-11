@@ -2,12 +2,11 @@ import { ButtonRound } from '@/craftrn-ui/components/ButtonRound/ButtonRound';
 import { ChevronLeft } from '@/tetrisly-icons/ChevronLeft';
 import React, { ComponentProps } from 'react';
 import { Platform, View } from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 
 export const NavigationBackButton = (
   props: Partial<ComponentProps<typeof ButtonRound>>,
 ) => {
-  const { theme } = useUnistyles();
   const { intent, variant, ...restProps } = props;
   return (
     <View style={styles.container}>

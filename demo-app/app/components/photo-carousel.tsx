@@ -1,10 +1,11 @@
+import { Button } from '@/craftrn-ui/components/Button';
 import { Card } from '@/craftrn-ui/components/Card';
+import { ListItem } from '@/craftrn-ui/components/ListItem';
 import { PhotoCarousel } from '@/craftrn-ui/components/PhotoCarousel';
-import { Text } from '@/craftrn-ui/components/Text';
 import { Stack } from 'expo-router';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { StyleSheet, UnistylesRuntime } from 'react-native-unistyles';
 
 const photos = [
   {
@@ -25,49 +26,91 @@ const photos = [
   },
 ];
 
+type DotsPosition = 'top' | 'bottom';
+
 export default function PhotoCarouselScreen() {
-  const { theme } = useUnistyles();
+  const [dotsPosition, setDotsPosition] = useState<DotsPosition>('bottom');
+
+  const positions: DotsPosition[] = ['top', 'bottom'];
+
+  const handlePositionChange = useCallback((position: DotsPosition) => {
+    setDotsPosition(position);
+  }, []);
+
+  const getDotsStyle = () => {
+    return dotsPosition === 'top' ? { top: 10 } : undefined;
+  };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      style={styles.scrollView}
+      contentContainerStyle={styles.container}
+    >
       <Stack.Screen
         options={{
           title: 'PhotoCarousel',
         }}
       />
-      <View style={styles.content}>
-        <Text variant="body2" style={styles.heading}>
-          Default
-        </Text>
-        <Card style={styles.componentContainer}>
-          <PhotoCarousel photos={photos} />
+
+      {/* Demo PhotoCarousel */}
+      <View style={styles.demoSection}>
+        <Card style={styles.demoContainer}>
+          <PhotoCarousel photos={photos} dotsStyle={getDotsStyle()} />
         </Card>
       </View>
-      <View style={styles.content}>
-        <Text variant="body2" style={styles.heading}>
-          With custom dots positioning
-        </Text>
-        <Card style={styles.componentContainer}>
-          <PhotoCarousel photos={photos} dotsStyle={{ top: 10 }} />
-        </Card>
-      </View>
+
+      {/* Controls */}
+      <Card style={styles.controlsCard}>
+        <View style={styles.controlSection}>
+          <ListItem text="Dots Position" />
+          <View style={styles.toggleGroup}>
+            {positions.map(position => (
+              <Button
+                key={position}
+                size="small"
+                variant="subtle"
+                intent={dotsPosition === position ? 'primary' : 'secondary'}
+                onPress={() => handlePositionChange(position)}
+              >
+                {position.charAt(0).toUpperCase() + position.slice(1)}
+              </Button>
+            ))}
+          </View>
+        </View>
+      </Card>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create(theme => ({
   container: {
+    flexGrow: 1,
     paddingHorizontal: theme.spacing.large,
-    paddingVertical: theme.spacing.medium,
+    paddingTop: theme.spacing.medium,
+    paddingBottom: UnistylesRuntime.insets.bottom + theme.spacing.medium,
   },
-  content: {
-    gap: theme.spacing.small,
-    marginTop: theme.spacing.large,
+  demoSection: {
+    flex: 1,
+    marginBottom: theme.spacing.large,
   },
-  heading: {
-    fontWeight: 'bold',
-  },
-  componentContainer: {
+  demoContainer: {
+    flex: 1,
+    justifyContent: 'center',
     padding: theme.spacing.medium,
+  },
+  controlsCard: {
+    padding: theme.spacing.large,
+    gap: theme.spacing.large,
+  },
+  controlSection: {
+    gap: theme.spacing.medium,
+  },
+  toggleGroup: {
+    flexDirection: 'row',
+    gap: theme.spacing.xsmall,
+    flexWrap: 'wrap',
+  },
+  scrollView: {
+    flex: 1,
   },
 }));

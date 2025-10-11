@@ -1,51 +1,43 @@
 import { Card } from '@/craftrn-ui/components/Card';
-import { Text } from '@/craftrn-ui/components/Text';
 import { Stack } from 'expo-router';
 import React from 'react';
-import { ScrollView, View } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
+import { View } from 'react-native';
+import { StyleSheet, UnistylesRuntime } from 'react-native-unistyles';
+import { Text } from '../../craftrn-ui/components/Text';
 
 export default function CardScreen() {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <Stack.Screen
         options={{
           title: 'Card',
         }}
       />
-      <View style={styles.content}>
-        <Text variant="body2" style={styles.heading}>
-          Default
-        </Text>
-        <Card style={styles.componentContainer}></Card>
-      </View>
-      <View style={styles.content}>
-        <Text variant="body2" style={styles.heading}>
-          With content
-        </Text>
-        <Card style={styles.componentContainer}>
-          <Text variant="heading3">Title</Text>
-          <Text variant="body2">Subtitle</Text>
+
+      {/* Demo Button */}
+      <View style={styles.demoSection}>
+        <Card style={styles.demoContainer}>
+          <Text variant="body3">Just a card</Text>
         </Card>
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create(theme => ({
   container: {
+    flex: 1,
     paddingHorizontal: theme.spacing.large,
-    paddingVertical: theme.spacing.medium,
+    paddingTop: theme.spacing.medium,
+    paddingBottom: UnistylesRuntime.insets.bottom + theme.spacing.medium,
   },
-  content: {
-    gap: theme.spacing.small,
-    marginTop: theme.spacing.large,
+  demoSection: {
+    flex: 1,
+    marginBottom: theme.spacing.large,
   },
-  heading: {
-    fontWeight: 'bold',
-  },
-  componentContainer: {
-    gap: theme.spacing.xxsmall,
-    padding: theme.spacing.medium,
+  demoContainer: {
+    flex: 0.5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }));

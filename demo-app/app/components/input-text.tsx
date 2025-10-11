@@ -1,95 +1,159 @@
+import { Button } from '@/craftrn-ui/components/Button';
 import { Card } from '@/craftrn-ui/components/Card';
 import { InputText } from '@/craftrn-ui/components/InputText';
-import { Text } from '@/craftrn-ui/components/Text';
+import { ListItem } from '@/craftrn-ui/components/ListItem';
+import { Switch } from '@/craftrn-ui/components/Switch';
 import { Search } from '@/tetrisly-icons/Search';
 import { Slider } from '@/tetrisly-icons/Slider';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { Stack } from 'expo-router';
-import React from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { ScrollView, View } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import {
   StyleSheet,
   UnistylesRuntime,
   useUnistyles,
 } from 'react-native-unistyles';
 
+type InputTextSize = 'small' | 'medium' | 'large';
+
 export default function InputTextScreen() {
   const { theme } = useUnistyles();
   const headerHeight = useHeaderHeight();
 
+  const [size, setSize] = useState<InputTextSize>('medium');
+  const [hasLabel, setHasLabel] = useState(true);
+  const [hasLeftAccessory, setHasLeftAccessory] = useState(false);
+  const [hasRightAccessory, setHasRightAccessory] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const [value, setValue] = useState('');
+
+  const sizes: InputTextSize[] = ['small', 'medium', 'large'];
+
+  const handleSizeChange = useCallback((newSize: InputTextSize) => {
+    setSize(newSize);
+    if (newSize === 'small') {
+      setHasLabel(false);
+    }
+  }, []);
+
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior="padding"
       keyboardVerticalOffset={headerHeight}
-      style={{ flex: 1 }}
+      style={styles.keyboardView}
     >
       <ScrollView
+        style={styles.scrollView}
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="interactive"
       >
         <Stack.Screen
           options={{
             title: 'InputText',
           }}
         />
-        <View style={styles.content}>
-          <Text variant="body2" style={styles.heading}>
-            Sizes
-          </Text>
-          <Card style={styles.componentContainer}>
-            <InputText size="small" />
-            <InputText label="First name" size="medium" />
-            <InputText label="First name" size="large" />
-          </Card>
-        </View>
-        <View style={styles.content}>
-          <Text variant="body2" style={styles.heading}>
-            Prefilled
-          </Text>
-          <Card style={styles.componentContainer}>
-            <InputText size="small" value="Thomas" />
-            <InputText label="First name" size="medium" value="Charlotte" />
-            <InputText label="First name" size="large" value="Hugo" />
-          </Card>
-        </View>
-        <View style={styles.content}>
-          <Text variant="body2" style={styles.heading}>
-            With left accessory
-          </Text>
-          <Card style={styles.componentContainer}>
+
+        {/* Demo Input */}
+        <View style={styles.demoSection}>
+          <Card style={styles.demoContainer}>
             <InputText
-              label="Contact name"
+              size={size}
+              {...(hasLabel && size !== 'small'
+                ? { label: 'Sample Label' }
+                : { placeholder: 'Enter text here...' })}
               leftAccessory={
-                <View style={styles.leftAccessory}>
-                  <Search color={theme.colors.contentPrimary} />
-                </View>
+                hasLeftAccessory ? (
+                  <View style={styles.leftAccessory}>
+                    <Search color={theme.colors.contentPrimary} />
+                  </View>
+                ) : undefined
               }
-            />
-          </Card>
-        </View>
-        <View style={styles.content}>
-          <Text variant="body2" style={styles.heading}>
-            With right accessory
-          </Text>
-          <Card style={styles.componentContainer}>
-            <InputText
-              label="Messages"
               rightAccessory={
-                <View style={styles.rightAccessory}>
-                  <Slider color={theme.colors.contentPrimary} />
-                </View>
+                hasRightAccessory ? (
+                  <View style={styles.rightAccessory}>
+                    <Slider color={theme.colors.contentPrimary} />
+                  </View>
+                ) : undefined
               }
+              error={hasError ? 'This field is required' : undefined}
+              value={value}
+              onChangeText={setValue}
             />
           </Card>
         </View>
-        <View style={styles.content}>
-          <Text variant="body2" style={styles.heading}>
-            With error
-          </Text>
-          <Card style={styles.componentContainer}>
-            <InputText label="Last name" error="This field is required" />
-          </Card>
-        </View>
+
+        {/* Controls */}
+        <Card style={styles.controlsCard}>
+          {/* Size Selector */}
+          <View style={styles.controlSection}>
+            <ListItem text="Size" />
+            <View style={styles.toggleGroup}>
+              {sizes.map(s => (
+                <Button
+                  key={s}
+                  size="small"
+                  variant="subtle"
+                  intent={size === s ? 'primary' : 'secondary'}
+                  onPress={() => handleSizeChange(s)}
+                >
+                  {s.charAt(0).toUpperCase() + s.slice(1)}
+                </Button>
+              ))}
+            </View>
+          </View>
+          <View style={styles.divider} />
+
+          {/* Toggle Controls */}
+          <ListItem
+            text="Label"
+            textBelow={
+              size === 'small'
+                ? 'Not available for small size'
+                : 'Show label above input'
+            }
+            itemRight={
+              <Switch
+                value={hasLabel}
+                onValueChange={setHasLabel}
+                disabled={size === 'small'}
+              />
+            }
+            divider
+          />
+
+          <ListItem
+            text="Left Accessory"
+            textBelow="Show search icon on the left"
+            itemRight={
+              <Switch
+                value={hasLeftAccessory}
+                onValueChange={setHasLeftAccessory}
+              />
+            }
+            divider
+          />
+
+          <ListItem
+            text="Right Accessory"
+            textBelow="Show slider icon on the right"
+            itemRight={
+              <Switch
+                value={hasRightAccessory}
+                onValueChange={setHasRightAccessory}
+              />
+            }
+            divider
+          />
+
+          <ListItem
+            text="Error State"
+            textBelow="Show input with error message"
+            itemRight={<Switch value={hasError} onValueChange={setHasError} />}
+          />
+        </Card>
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -97,25 +161,47 @@ export default function InputTextScreen() {
 
 const styles = StyleSheet.create(theme => ({
   container: {
+    flexGrow: 1,
     paddingHorizontal: theme.spacing.large,
     paddingTop: theme.spacing.medium,
-    paddingBottom: UnistylesRuntime.insets.bottom,
+    paddingBottom: UnistylesRuntime.insets.bottom + theme.spacing.medium,
   },
-  content: {
-    gap: theme.spacing.small,
-    marginTop: theme.spacing.large,
+  demoSection: {
+    flex: 1,
+    marginBottom: theme.spacing.large,
   },
-  heading: {
-    fontWeight: 'bold',
+  demoContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: theme.spacing.large,
   },
-  componentContainer: {
-    gap: theme.spacing.small,
-    padding: theme.spacing.medium,
+  controlsCard: {
+    padding: theme.spacing.large,
+    gap: theme.spacing.large,
+  },
+  controlSection: {
+    gap: theme.spacing.medium,
+  },
+  toggleGroup: {
+    flexDirection: 'row',
+    gap: theme.spacing.xsmall,
+    flexWrap: 'wrap',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: theme.colors.surfaceSecondary,
+    marginVertical: theme.spacing.xsmall,
   },
   leftAccessory: {
     marginRight: theme.spacing.small,
   },
   rightAccessory: {
     marginLeft: theme.spacing.small,
+  },
+  keyboardView: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
   },
 }));
