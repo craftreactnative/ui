@@ -1,6 +1,7 @@
 import { Card } from '@/craftrn-ui/components/Card';
 import { ListItem } from '@/craftrn-ui/components/ListItem';
 import { Text } from '@/craftrn-ui/components/Text';
+import { CheckLarge } from '@/tetrisly-icons/CheckLarge';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
@@ -15,10 +16,12 @@ type TextColor =
   | 'contentSecondary'
   | 'contentTertiary'
   | 'contentAccent'
-  | 'positivePrimary'
-  | 'positiveSecondary'
-  | 'negativePrimary'
-  | 'negativeSecondary';
+  | 'interactivePrimaryContent'
+  | 'interactiveSecondaryContent'
+  | 'sentimentPositive'
+  | 'sentimentSecondaryPositive'
+  | 'sentimentNegative'
+  | 'sentimentSecondaryNegative';
 
 export default function TextScreen() {
   const { theme } = useUnistyles();
@@ -47,24 +50,34 @@ export default function TextScreen() {
       value: theme.colors.contentAccent,
     },
     {
-      key: 'positivePrimary',
-      label: 'Positive Primary',
-      value: theme.colors.positivePrimary,
+      key: 'interactivePrimaryContent',
+      label: 'Interactive Primary',
+      value: theme.colors.interactivePrimaryContent,
     },
     {
-      key: 'positiveSecondary',
-      label: 'Positive Secondary',
-      value: theme.colors.positiveSecondary,
+      key: 'interactiveSecondaryContent',
+      label: 'Interactive Secondary',
+      value: theme.colors.interactiveSecondaryContent,
     },
     {
-      key: 'negativePrimary',
-      label: 'Negative Primary',
-      value: theme.colors.negativePrimary,
+      key: 'sentimentPositive',
+      label: 'Sentiment Positive',
+      value: theme.colors.sentimentPositive,
     },
     {
-      key: 'negativeSecondary',
-      label: 'Negative Secondary',
-      value: theme.colors.negativeSecondary,
+      key: 'sentimentSecondaryPositive',
+      label: 'Sentiment Positive Secondary',
+      value: theme.colors.sentimentSecondaryPositive,
+    },
+    {
+      key: 'sentimentNegative',
+      label: 'Sentiment Negative',
+      value: theme.colors.sentimentNegative,
+    },
+    {
+      key: 'sentimentSecondaryNegative',
+      label: 'Sentiment Negative Secondary',
+      value: theme.colors.sentimentSecondaryNegative,
     },
   ];
 
@@ -115,13 +128,15 @@ export default function TextScreen() {
               {colors.map(color => (
                 <Pressable
                   key={color.key}
-                  style={[
-                    styles.colorButton,
-                    { backgroundColor: color.value },
-                    selectedColor === color.key && styles.selectedColorButton,
-                  ]}
+                  style={[styles.colorButton, { backgroundColor: color.value }]}
                   onPress={() => setSelectedColor(color.key)}
-                />
+                >
+                  {selectedColor === color.key && (
+                    <View style={styles.checkmarkContainer}>
+                      <CheckLarge color={theme.colors.baseLight} size={20} />
+                    </View>
+                  )}
+                </Pressable>
               ))}
             </View>
           </ScrollView>
@@ -168,16 +183,17 @@ const styles = StyleSheet.create(theme => ({
     flexDirection: 'row',
     gap: theme.spacing.small,
     alignItems: 'center',
+    paddingVertical: theme.spacing.small,
   },
   colorButton: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    borderWidth: 2,
-    borderColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  selectedColorButton: {
-    borderColor: theme.colors.contentPrimary,
-    borderWidth: 2,
+  checkmarkContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }));

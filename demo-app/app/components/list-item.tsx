@@ -13,14 +13,14 @@ import {
   UnistylesRuntime,
   useUnistyles,
 } from 'react-native-unistyles';
+import { Divider } from '../../craftrn-ui/components/Divider';
 
 export default function ListItemScreen() {
   const { theme } = useUnistyles();
-
   const [hasTextAbove, setHasTextAbove] = useState(false);
   const [hasTextBelow, setHasTextBelow] = useState(false);
-  const [hasLeftAccessory, setHasLeftAccessory] = useState(false);
-  const [hasRightAccessory, setHasRightAccessory] = useState(false);
+  const [hasLeftItem, setHasLeftItem] = useState(false);
+  const [hasRightItem, setHasRightItem] = useState(false);
   const [isPressable, setIsPressable] = useState(false);
   const [hasDivider, setHasDivider] = useState(false);
   const [padding, setPadding] = useState(16);
@@ -32,13 +32,13 @@ export default function ListItemScreen() {
       ...(hasTextAbove && { textAbove: 'Label' }),
       text: 'Charlotte',
       ...(hasTextBelow && { textBelow: 'Additional info' }),
-      itemLeft: hasLeftAccessory ? (
-        <View style={styles.leftAccessory}>
+      itemLeft: hasLeftItem ? (
+        <View style={styles.leftItem}>
           <SliderIcon color={theme.colors.contentPrimary} />
         </View>
       ) : undefined,
-      itemRight: hasRightAccessory ? (
-        <View style={styles.rightAccessory}>
+      itemRight: hasRightItem ? (
+        <View style={styles.rightItem}>
           <ChevronDown color={theme.colors.contentPrimary} />
         </View>
       ) : undefined,
@@ -71,45 +71,37 @@ export default function ListItemScreen() {
           <View style={styles.toggleGroup}>
             <Button
               size="small"
-              variant="subtle"
-              intent={hasTextAbove ? 'primary' : 'secondary'}
+              variant={hasTextAbove ? 'secondary' : 'neutral'}
               onPress={() => setHasTextAbove(!hasTextAbove)}
             >
               Text above
             </Button>
             <Button
               size="small"
-              variant="subtle"
-              intent={hasTextBelow ? 'primary' : 'secondary'}
+              variant={hasTextBelow ? 'secondary' : 'neutral'}
               onPress={() => setHasTextBelow(!hasTextBelow)}
             >
               Text below
             </Button>
           </View>
         </View>
-        <View style={styles.divider} />
+        <Divider style={styles.divider} />
 
         {/* Toggle Controls */}
         <ListItem
-          text="Left Accessory"
+          text="Left item"
           textBelow="Show icon on the left side"
           itemRight={
-            <Switch
-              value={hasLeftAccessory}
-              onValueChange={setHasLeftAccessory}
-            />
+            <Switch value={hasLeftItem} onValueChange={setHasLeftItem} />
           }
           divider
         />
 
         <ListItem
-          text="Right Accessory"
+          text="Right item"
           textBelow="Show icon on the right side"
           itemRight={
-            <Switch
-              value={hasRightAccessory}
-              onValueChange={setHasRightAccessory}
-            />
+            <Switch value={hasRightItem} onValueChange={setHasRightItem} />
           }
           divider
         />
@@ -137,7 +129,7 @@ export default function ListItemScreen() {
             />
           </View>
         </View>
-        <View style={styles.divider} />
+        <Divider style={styles.divider} />
 
         <ListItem
           text="Divider"
@@ -168,10 +160,10 @@ const styles = StyleSheet.create(theme => ({
   },
   controlsCard: {
     padding: theme.spacing.large,
-    gap: theme.spacing.large,
+    gap: theme.spacing.small,
   },
   controlSection: {
-    gap: theme.spacing.medium,
+    gap: theme.spacing.small,
   },
   toggleGroup: {
     flexDirection: 'row',
@@ -184,14 +176,12 @@ const styles = StyleSheet.create(theme => ({
     alignItems: 'center',
   },
   divider: {
-    height: 1,
-    backgroundColor: theme.colors.surfaceSecondary,
     marginVertical: theme.spacing.xsmall,
   },
-  leftAccessory: {
+  leftItem: {
     marginRight: theme.spacing.medium,
   },
-  rightAccessory: {
+  rightItem: {
     marginLeft: theme.spacing.medium,
   },
   scrollView: {

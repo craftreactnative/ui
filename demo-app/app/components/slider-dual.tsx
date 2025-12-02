@@ -96,8 +96,7 @@ export default function SliderDualScreen() {
               <Button
                 key={currentRange}
                 size="small"
-                variant="subtle"
-                intent={range === currentRange ? 'primary' : 'secondary'}
+                variant={range === currentRange ? 'secondary' : 'neutral'}
                 onPress={() => handleRangeChange(currentRange)}
               >
                 {currentRange}
@@ -130,20 +129,15 @@ const styles = StyleSheet.create(theme => ({
   },
   controlsCard: {
     padding: theme.spacing.large,
-    gap: theme.spacing.large,
+    gap: theme.spacing.small,
   },
   controlSection: {
-    gap: theme.spacing.medium,
+    gap: theme.spacing.small,
   },
   toggleGroup: {
     flexDirection: 'row',
     gap: theme.spacing.xsmall,
     flexWrap: 'wrap',
-  },
-  divider: {
-    height: 1,
-    backgroundColor: theme.colors.surfaceSecondary,
-    marginVertical: theme.spacing.xsmall,
   },
   valueText: {
     textAlign: 'center',

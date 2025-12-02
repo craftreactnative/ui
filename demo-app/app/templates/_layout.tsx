@@ -1,7 +1,7 @@
 import { NavigationBackButton } from '@/components/NavigationBackButton/NavigationBackButton';
 import { Button } from '@/craftrn-ui/components/Button/Button';
 import { Stack } from 'expo-router';
-import { Linking, View } from 'react-native';
+import { Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
@@ -12,20 +12,16 @@ export default function TemplatesLayout() {
     <>
       <Stack
         screenOptions={({ navigation }) => ({
-          contentStyle: { backgroundColor: theme.colors.backgroundQuaternary }, // This sets the background color
-          headerStyle: { backgroundColor: theme.colors.backgroundSecondary },
+          contentStyle: { backgroundColor: theme.colors.backgroundScreen },
+          headerStyle: { backgroundColor: theme.colors.backgroundScreen },
           headerTintColor: theme.colors.contentPrimary,
           headerShadowVisible: false,
           headerLeft: ({ canGoBack }) =>
             canGoBack ? (
-              // The NativeStack adds some margins on the sides of the header.
-              // Those 16px compensates for that
-              <View style={{ marginLeft: -16 }}>
-                <NavigationBackButton
-                  onPress={navigation.goBack}
-                  intent="secondary"
-                />
-              </View>
+              <NavigationBackButton
+                onPress={navigation.goBack}
+                variant="neutral-secondary"
+              />
             ) : undefined,
         })}
       />
@@ -35,7 +31,7 @@ export default function TemplatesLayout() {
             Linking.openURL('https://craftreactnative.com/pricing')
           }
         >
-          Buy now
+          Get access now
         </Button>
       </SafeAreaView>
     </>
@@ -44,7 +40,7 @@ export default function TemplatesLayout() {
 
 const styles = StyleSheet.create(theme => ({
   safeArea: {
-    backgroundColor: theme.colors.backgroundQuaternary,
+    backgroundColor: theme.colors.backgroundScreen,
     paddingHorizontal: theme.spacing.large,
   },
 }));

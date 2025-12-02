@@ -1,6 +1,5 @@
 import { NavigationBackButton } from '@/components/NavigationBackButton/NavigationBackButton';
 import { Stack } from 'expo-router';
-import { View } from 'react-native';
 import { useUnistyles } from 'react-native-unistyles';
 import { ThemeToggleButton } from '../../components/ThemeToggleButton/ThemeToggleButton';
 
@@ -10,19 +9,18 @@ export default function ComponentsLayout() {
   return (
     <Stack
       screenOptions={({ navigation }) => ({
-        contentStyle: { backgroundColor: theme.colors.backgroundSecondary }, // This sets the background color
-        headerStyle: { backgroundColor: theme.colors.backgroundSecondary },
+        contentStyle: { backgroundColor: theme.colors.backgroundScreen },
+        headerStyle: { backgroundColor: theme.colors.backgroundScreen },
         headerTintColor: theme.colors.contentPrimary,
         headerShadowVisible: false,
         headerLeft: ({ canGoBack }) =>
           canGoBack ? (
-            // The NativeStack adds some margins on the sides of the header.
-            // Those 16px compensates for that
-            <View style={{ marginLeft: -16 }}>
-              <NavigationBackButton onPress={navigation.goBack} />
-            </View>
+            <NavigationBackButton
+              onPress={navigation.goBack}
+              variant="neutral-secondary"
+            />
           ) : undefined,
-        headerRight: () => <ThemeToggleButton />,
+        headerRight: () => <ThemeToggleButton variant="neutral-secondary" />,
       })}
     />
   );

@@ -37,7 +37,7 @@ const styles = StyleSheet.create(({ borderRadius, colors, spacing }) => ({
     width: '80%',
     aspectRatio: 9 / 19.5,
     overflow: 'hidden',
-    backgroundColor: colors.backgroundPrimary,
+    backgroundColor: colors.backgroundScreen,
     borderRadius: borderRadius.xlarge,
     alignSelf: 'center',
   },

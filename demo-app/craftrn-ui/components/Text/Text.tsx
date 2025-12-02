@@ -1,10 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet as RNStyleSheet,
-  Text as RNText,
-  TextProps,
-} from 'react-native';
-import { useUnistyles } from 'react-native-unistyles';
+import { Text as RNText, TextProps } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 /**
  * Props for the Text component.
@@ -21,15 +17,16 @@ export type Props = {
    * @default 'contentPrimary'
    */
   color?:
+    | 'interactivePrimaryContent'
+    | 'interactiveSecondaryContent'
     | 'contentPrimary'
     | 'contentSecondary'
     | 'contentTertiary'
-    | 'contentQuaternary'
     | 'contentAccent'
-    | 'positivePrimary'
-    | 'positiveSecondary'
-    | 'negativePrimary'
-    | 'negativeSecondary';
+    | 'sentimentPositive'
+    | 'sentimentSecondaryPositive'
+    | 'sentimentNegative'
+    | 'sentimentSecondaryNegative';
 };
 
 export const Text = ({
@@ -38,15 +35,31 @@ export const Text = ({
   style,
   ...props
 }: Props & TextProps) => {
-  const { theme } = useUnistyles();
-
-  const variantStyle = theme.textVariants[variant];
-  const colorStyle = { color: theme.colors[color] };
-
   return (
     <RNText
-      style={[variantStyle, colorStyle, RNStyleSheet.flatten(style)]}
+      style={[styles.text({ color, variant }), StyleSheet.flatten(style)]}
       {...props}
     />
   );
 };
+
+const styles = StyleSheet.create(theme => ({
+  text: ({
+    color,
+    variant,
+  }: {
+    color: NonNullable<Props['color']>;
+    variant: NonNullable<Props['variant']>;
+  }) => {
+    const variantStyle = theme.textVariants[variant];
+    return {
+      color: theme.colors[color],
+      fontSize: variantStyle.fontSize,
+      lineHeight: variantStyle.lineHeight,
+      fontWeight: variantStyle.fontWeight,
+      ...('letterSpacing' in variantStyle && {
+        letterSpacing: variantStyle.letterSpacing,
+      }),
+    };
+  },
+}));

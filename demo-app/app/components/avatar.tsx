@@ -3,6 +3,7 @@ import { Button } from '@/craftrn-ui/components/Button';
 import { Card } from '@/craftrn-ui/components/Card';
 import { ListItem } from '@/craftrn-ui/components/ListItem';
 import { Switch } from '@/craftrn-ui/components/Switch';
+import { CheckLarge } from '@/tetrisly-icons/CheckLarge';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
@@ -12,6 +13,7 @@ import {
   UnistylesRuntime,
   useUnistyles,
 } from 'react-native-unistyles';
+import { Divider } from '../../craftrn-ui/components/Divider';
 
 const AVATAR_URL = 'https://i.pravatar.cc/300?img=36';
 
@@ -28,10 +30,10 @@ export default function AvatarScreen() {
   const sizes: AvatarSize[] = ['small', 'medium', 'large'];
   const fallbackColors: AvatarColor[] = [0, 1, 2, 3];
   const themeColors = [
-    theme.colors.wineStrong,
-    theme.colors.berryStrong,
-    theme.colors.darkOliveStrong,
-    theme.colors.imperialBlueStrong,
+    theme.colors.purple,
+    theme.colors.maroon,
+    theme.colors.forest,
+    theme.colors.steel,
   ];
 
   return (
@@ -65,8 +67,7 @@ export default function AvatarScreen() {
               <Button
                 key={s}
                 size="small"
-                variant="subtle"
-                intent={size === s ? 'primary' : 'secondary'}
+                variant={size === s ? 'secondary' : 'neutral'}
                 onPress={() => setSize(s)}
               >
                 {s.charAt(0).toUpperCase() + s.slice(1)}
@@ -74,7 +75,7 @@ export default function AvatarScreen() {
             ))}
           </View>
         </View>
-        <View style={styles.divider} />
+        <Divider style={styles.divider} />
 
         {/* Toggle Controls */}
         <View style={styles.listSection}>
@@ -114,10 +115,18 @@ export default function AvatarScreen() {
                         {
                           backgroundColor: themeColors[index],
                         },
-                        fallbackColor === color && styles.selectedColorButton,
                       ]}
                       onPress={() => setFallbackColor(color)}
-                    />
+                    >
+                      {fallbackColor === color && (
+                        <View style={styles.checkmarkContainer}>
+                          <CheckLarge
+                            color={theme.colors.baseLight}
+                            size={20}
+                          />
+                        </View>
+                      )}
+                    </Pressable>
                   ))}
                 </View>
               }
@@ -147,10 +156,10 @@ const styles = StyleSheet.create(theme => ({
   },
   controlsCard: {
     padding: theme.spacing.large,
-    gap: theme.spacing.large,
+    gap: theme.spacing.small,
   },
   controlSection: {
-    gap: theme.spacing.medium,
+    gap: theme.spacing.small,
   },
   toggleGroup: {
     flexDirection: 'row',
@@ -166,21 +175,18 @@ const styles = StyleSheet.create(theme => ({
     width: 32,
     height: 32,
     borderRadius: 16,
-    borderWidth: 2,
-    borderColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  selectedColorButton: {
-    borderColor: theme.colors.contentPrimary,
-    borderWidth: 2,
+  checkmarkContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   listSection: {
-    backgroundColor: theme.colors.surfacePrimary,
     gap: theme.spacing.medium,
     overflow: 'hidden',
   },
   divider: {
-    height: 1,
-    backgroundColor: theme.colors.surfaceSecondary,
     marginVertical: theme.spacing.xsmall,
   },
 }));

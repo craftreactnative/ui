@@ -15,10 +15,10 @@ export const Card = ({ children, style, ...viewProps }: Props) => {
   );
 };
 
-const styles = StyleSheet.create(({ colors, borderRadius }) => ({
+const styles = StyleSheet.create(theme => ({
   card: {
-    backgroundColor: colors.surfacePrimary,
-    borderRadius: borderRadius.large,
+    backgroundColor: theme.colors.backgroundElevated,
+    borderRadius: theme.borderRadius.large,
     overflow: 'hidden',
   },
 }));

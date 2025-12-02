@@ -1,2 +1,2 @@
-export { Avatar, config as avatarConfig } from './Avatar';
+export { Avatar } from './Avatar';
 export type { AvatarColor, Props } from './Avatar';

@@ -10,12 +10,8 @@ import Animated, {
   useAnimatedScrollHandler,
   useSharedValue,
 } from 'react-native-reanimated';
-import { useUnistyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 import { AnimatedDot } from './AnimatedDot';
-
-const config = {
-  carouselHeight: 200,
-};
 
 type Photo = {
   id: string;
@@ -44,10 +40,9 @@ export type Props = {
 
 export const PhotoCarousel = ({
   photos,
-  carouselHeight = config.carouselHeight,
+  carouselHeight = 200,
   dotsStyle = {},
 }: Props): React.ReactElement => {
-  const { theme } = useUnistyles();
   const scrollX = useSharedValue(0);
   const flatListRef = useRef<Animated.FlatList<Photo>>(null);
   const [carouselWidth, setCarouselWidth] = useState(0);
@@ -105,11 +100,7 @@ export const PhotoCarousel = ({
 
   return (
     <View
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-      }}
+      style={styles.container}
       onLayout={event => setCarouselWidth(event.nativeEvent.layout.width)}
       accessible
       accessibilityRole="adjustable"
@@ -122,11 +113,10 @@ export const PhotoCarousel = ({
     >
       {carouselWidth > 0 && (
         <View
-          style={{
-            width: carouselWidth,
-            height: carouselHeight,
-            overflow: 'hidden',
-          }}
+          style={[
+            styles.carouselWrapper,
+            { width: carouselWidth, height: carouselHeight },
+          ]}
         >
           <Animated.FlatList
             ref={flatListRef}
@@ -142,18 +132,7 @@ export const PhotoCarousel = ({
             importantForAccessibility="no-hide-descendants"
           />
           <View
-            style={[
-              {
-                position: 'absolute',
-                bottom: theme.spacing.medium,
-                left: 0,
-                right: 0,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                gap: theme.spacing.xsmall,
-              },
-              RNStyleSheet.flatten(dotsStyle),
-            ]}
+            style={[styles.dotsContainer, RNStyleSheet.flatten(dotsStyle)]}
             accessible={false}
           >
             {photos.map((_, index) => (
@@ -170,3 +149,23 @@ export const PhotoCarousel = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create(theme => ({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  carouselWrapper: {
+    overflow: 'hidden',
+  },
+  dotsContainer: {
+    position: 'absolute',
+    bottom: theme.spacing.medium,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: theme.spacing.xsmall,
+  },
+}));

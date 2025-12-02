@@ -134,10 +134,10 @@ export default function ComponentsScreen() {
 const styles = StyleSheet.create(theme => ({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.backgroundSecondary,
+    backgroundColor: theme.colors.backgroundScreen,
   },
   scrollViewContent: {
-    backgroundColor: theme.colors.backgroundSecondary,
+    backgroundColor: theme.colors.backgroundScreen,
     paddingHorizontal: theme.spacing.large,
     paddingVertical: theme.spacing.large,
   },

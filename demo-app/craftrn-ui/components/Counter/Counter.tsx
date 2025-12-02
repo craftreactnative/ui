@@ -5,11 +5,24 @@ import {
   AccessibilityProps,
   View,
 } from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
+import { StyleSheet } from 'react-native-unistyles';
 import { ButtonRound } from '../ButtonRound';
 import { Text } from '../Text';
 import { Minus } from './Minus';
 import { Plus } from './Plus';
+
+const AnimatedText = Animated.createAnimatedComponent(Text);
+
+const animationConfig = {
+  duration: 100,
+  easing: Easing.ease,
+};
 
 /**
  * Props for the Counter component.
@@ -63,7 +76,10 @@ export const Counter = ({
       ? Math.min(Math.max(value, minValue), maxValue)
       : minValue,
   );
-  const { theme } = useUnistyles();
+
+  // Shared values for animation
+  const translateY = useSharedValue(0);
+  const opacity = useSharedValue(1);
 
   useEffect(() => {
     if (value !== undefined) {
@@ -79,11 +95,29 @@ export const Counter = ({
     (action: 'increment' | 'decrement') => {
       const newValue =
         count + (action === 'increment' ? increment : -increment);
-      setInternalCount(newValue);
+
+      // Determine animation direction: -1 = down, 1 = up
+      const direction = action === 'increment' ? -1 : 1;
+      const distance = 10; // Large enough to move text out of view with overflow: hidden
+
+      // Animate out
+      translateY.value = withTiming(direction * distance, animationConfig);
+      opacity.value = withTiming(0, animationConfig);
+
+      // Update value and animate in after exit animation completes
+      setTimeout(() => {
+        setInternalCount(newValue);
+        translateY.value = direction * -distance; // Start from opposite direction
+        opacity.value = 0;
+
+        translateY.value = withTiming(0, animationConfig);
+        opacity.value = withTiming(1, animationConfig);
+      }, animationConfig.duration / 2);
+
       onValueChange(newValue);
       AccessibilityInfo.announceForAccessibility(`${newValue}`);
     },
-    [count, onValueChange, increment],
+    [count, onValueChange, increment, translateY, opacity],
   );
 
   const increase = useCallback(() => {
@@ -112,6 +146,13 @@ export const Counter = ({
     [increase, decrease],
   );
 
+  const displayValue = count ? count : emptyLabel;
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: translateY.value }],
+    opacity: opacity.value,
+  }));
+
   return (
     <View
       style={styles.container}
@@ -139,23 +180,23 @@ export const Counter = ({
       <ButtonRound
         onPress={decrease}
         size="small"
-        intent="secondary"
+        variant="neutral"
         renderContent={({ iconSize }) => (
-          <Minus color={theme.colors.contentPrimary} size={iconSize} />
+          <Minus color={styles.icon.color} size={iconSize} />
         )}
         disabled={!canDecrease}
       />
       <View style={styles.countContainer}>
-        <Text variant="body2" style={styles.countText}>
-          {count ? count : emptyLabel}
-        </Text>
+        <AnimatedText variant="body2" style={[styles.countText, animatedStyle]}>
+          {displayValue}
+        </AnimatedText>
       </View>
       <ButtonRound
         onPress={increase}
         size="small"
-        intent="secondary"
+        variant="neutral"
         renderContent={({ iconSize }) => (
-          <Plus color={theme.colors.contentPrimary} size={iconSize} />
+          <Plus color={styles.icon.color} size={iconSize} />
         )}
         disabled={!canIncrease}
       />
@@ -163,18 +204,23 @@ export const Counter = ({
   );
 };
 
-const styles = StyleSheet.create(({ spacing }) => ({
+const styles = StyleSheet.create(theme => ({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
   countContainer: {
-    minWidth: 50,
-    paddingHorizontal: spacing.medium,
+    minWidth: 56,
+    paddingHorizontal: theme.spacing.medium,
     alignItems: 'center',
+    overflow: 'hidden',
+    position: 'relative',
   },
   countText: {
     fontWeight: 'bold',
+  },
+  icon: {
+    color: theme.colors.contentPrimary,
   },
 }));

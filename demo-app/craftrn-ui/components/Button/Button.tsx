@@ -1,57 +1,50 @@
-import React from 'react';
-import { AccessibilityProps, Pressable, View } from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
-import { darkTheme, lightTheme } from '../../themes/config';
-import { Text } from '../Text';
-
-export const config = {
-  small: {
-    buttonMinWidth: 44,
-    buttonMinHeight: 30,
-    hitSlop: 5,
-  },
-  regular: {
-    buttonMinWidth: 44,
-    buttonMinHeight: 40,
-    hitSlop: 2,
-  },
-  large: {
-    buttonMinWidth: 44,
-    buttonMinHeight: 48,
-    hitSlop: 0,
-  },
-};
-
-const borderWidth = StyleSheet.hairlineWidth * 2;
-
-type Size = 'large' | 'regular' | 'small';
-type Variant = 'solid' | 'outlined' | 'subtle' | 'text';
-type Intent = 'primary' | 'secondary' | 'positive' | 'negative';
+import React, { useMemo } from 'react';
+import { AccessibilityProps } from 'react-native';
+import Animated, {
+  interpolateColor,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
+import {
+  StyleSheet,
+  UnistylesRuntime,
+  useUnistyles,
+} from 'react-native-unistyles';
+import { PressableScale, type AnimationConfig } from '../PressableScale';
 
 /**
- * Props for the Button component.
- * @see AccessibilityProps
+ * Convert a hex color to grayscale using luminance formula (0.299*R + 0.587*G + 0.114*B)
  */
-export type Props = {
+const hexToGrayscale = (hex: string): string =>
+  `#${Math.round(
+    0.299 * parseInt(hex.slice(1, 3), 16) +
+      0.587 * parseInt(hex.slice(3, 5), 16) +
+      0.114 * parseInt(hex.slice(5, 7), 16),
+  )
+    .toString(16)
+    .padStart(2, '0')
+    .repeat(3)}${hex.length === 9 ? hex.slice(7) : ''}`;
+
+type Size = 'large' | 'regular' | 'small';
+type Variant =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'neutral'
+  | 'neutral-secondary'
+  | 'negative';
+
+const hitSlop = {
+  small: { top: 2, bottom: 2, left: 4, right: 4 },
+  regular: { top: 2, bottom: 2, left: 2, right: 2 },
+  large: { top: 0, bottom: 0, left: 0, right: 0 },
+} as const;
+
+type BaseProps = {
   /**
    * The text content of the button.
    */
   children: string | string[];
-  /**
-   * The visual style variant of the button.
-   * @default 'solid'
-   */
-  variant?: Variant;
-  /**
-   * The intent/purpose of the button.
-   * @default 'primary'
-   */
-  intent?: Intent;
-  /**
-   * The size of the button.
-   * @default 'regular'
-   */
-  size?: Size;
   /**
    * Callback function triggered when the button is pressed.
    */
@@ -61,254 +54,184 @@ export type Props = {
    * @default false
    */
   disabled?: boolean;
+  /**
+   * The size of the button.
+   * @default 'regular'
+   */
+  size?: Size;
+  /**
+   * The visual style variant of the button.
+   * @default 'primary'
+   */
+  variant?: Variant;
+  /**
+   * Animation configuration for press interactions
+   */
+  animationConfig?: AnimationConfig;
 };
 
-type ButtonProps = Props & AccessibilityProps;
-
-const getButtonStyles = (
-  variant: Variant,
-  intent: Intent,
-  pressed: boolean,
-  disabled: boolean,
-  colors: typeof lightTheme.colors | typeof darkTheme.colors,
-) => {
-  if (disabled) {
-    return {
-      backgroundColor:
-        variant === 'text' ? 'transparent' : colors.backgroundTertiary,
-      ...(variant === 'outlined' && {
-        borderWidth: StyleSheet.hairlineWidth,
-        borderColor: colors.backgroundTertiary,
-      }),
-    };
-  }
-
-  switch (variant) {
-    case 'solid':
-      switch (intent) {
-        case 'primary':
-          return {
-            backgroundColor: pressed
-              ? colors.accentSecondary
-              : colors.accentPrimary,
-          };
-        case 'secondary':
-          return {
-            backgroundColor: pressed
-              ? colors.surfaceQuaternary
-              : colors.surfaceTertiary,
-          };
-        case 'positive':
-          return {
-            backgroundColor: pressed
-              ? colors.positivePrimary
-              : colors.positiveSecondary,
-          };
-        case 'negative':
-          return {
-            backgroundColor: pressed
-              ? colors.negativePrimary
-              : colors.negativeSecondary,
-          };
-      }
-    case 'subtle':
-      switch (intent) {
-        case 'primary':
-          return {
-            backgroundColor: pressed
-              ? colors.accentTertiary
-              : colors.accentQuaternary,
-          };
-        case 'secondary':
-          return {
-            backgroundColor: pressed
-              ? colors.surfaceTertiary
-              : colors.surfaceSecondary,
-          };
-        case 'positive':
-          return {
-            backgroundColor: pressed
-              ? colors.positiveTertiary
-              : colors.positiveQuaternary,
-          };
-        case 'negative':
-          return {
-            backgroundColor: pressed
-              ? colors.negativeTertiary
-              : colors.negativeQuaternary,
-          };
-      }
-    case 'outlined':
-      switch (intent) {
-        case 'primary':
-          return {
-            backgroundColor: pressed ? colors.accentQuaternary : 'transparent',
-            borderWidth,
-            borderColor: colors.accentPrimary,
-          };
-        case 'secondary':
-          return {
-            backgroundColor: pressed ? colors.surfaceSecondary : 'transparent',
-            borderWidth,
-            borderColor: colors.contentSecondary,
-          };
-        case 'positive':
-          return {
-            backgroundColor: pressed
-              ? colors.positiveQuaternary
-              : 'transparent',
-            borderWidth,
-            borderColor: colors.positivePrimary,
-          };
-        case 'negative':
-          return {
-            backgroundColor: pressed
-              ? colors.negativeQuaternary
-              : 'transparent',
-            borderWidth,
-            borderColor: colors.negativePrimary,
-          };
-      }
-    case 'text':
-      switch (intent) {
-        case 'primary':
-          return {
-            backgroundColor: pressed ? colors.accentQuaternary : 'transparent',
-          };
-        case 'secondary':
-          return {
-            backgroundColor: pressed ? colors.surfaceSecondary : 'transparent',
-          };
-        case 'positive':
-          return {
-            backgroundColor: pressed
-              ? colors.positiveQuaternary
-              : 'transparent',
-          };
-        case 'negative':
-          return {
-            backgroundColor: pressed
-              ? colors.negativeQuaternary
-              : 'transparent',
-          };
-      }
-  }
-};
-
-const getTextColor = (
-  variant: Variant,
-  intent: Intent,
-  disabled: boolean,
-  colors: typeof lightTheme.colors | typeof darkTheme.colors,
-) => {
-  if (disabled) return colors.contentTertiary;
-
-  switch (variant) {
-    case 'solid':
-      switch (intent) {
-        case 'primary':
-        case 'positive':
-        case 'negative':
-          return colors.contentReversed;
-        case 'secondary':
-          return colors.contentPrimary;
-      }
-    case 'outlined':
-    case 'subtle':
-    case 'text':
-      switch (intent) {
-        case 'primary':
-          return colors.contentAccent;
-        case 'secondary':
-          return colors.contentPrimary;
-        case 'positive':
-          return colors.positivePrimary;
-        case 'negative':
-          return colors.negativePrimary;
-      }
-  }
-};
+/**
+ * Props for the Button component.
+ * @see AccessibilityProps
+ */
+export type Props = BaseProps & AccessibilityProps;
 
 export const Button = ({
   children,
   onPress,
-  variant = 'solid',
-  intent = 'primary',
   size = 'regular',
   disabled = false,
+  variant = 'primary',
+  animationConfig,
   ...accessibilityProps
-}: ButtonProps) => {
+}: Props) => {
   const { theme } = useUnistyles();
+  const pressProgress = useSharedValue(0);
+
+  // Compute colors in useMemo - theme object changes on theme switch
+  const colorConfig = useMemo(() => {
+    let backgroundUnpressed: string;
+    let backgroundPressed: string;
+    let textUnpressed: string;
+    let textPressed: string;
+
+    switch (variant) {
+      case 'primary':
+        backgroundUnpressed = theme.colors.interactivePrimary;
+        backgroundPressed = theme.colors.interactivePrimaryPress;
+        textUnpressed = theme.colors.interactivePrimaryContent;
+        textPressed = theme.colors.interactivePrimaryContentPress;
+        break;
+      case 'secondary':
+        backgroundUnpressed = theme.colors.interactiveSecondary;
+        backgroundPressed = theme.colors.interactiveSecondaryPress;
+        textUnpressed = theme.colors.interactiveSecondaryContent;
+        textPressed = theme.colors.interactiveSecondaryContentPress;
+        break;
+      case 'tertiary':
+        backgroundUnpressed = `${theme.colors.interactiveSecondary}00`;
+        backgroundPressed = theme.colors.interactiveSecondary;
+        textUnpressed = theme.colors.interactiveSecondaryContent;
+        textPressed = theme.colors.interactiveSecondaryContentPress;
+        break;
+      case 'neutral':
+        backgroundUnpressed = theme.colors.interactiveNeutral;
+        backgroundPressed = theme.colors.interactiveNeutralPress;
+        textUnpressed = theme.colors.interactiveNeutralContent;
+        textPressed = theme.colors.interactiveNeutralContentPress;
+        break;
+      case 'neutral-secondary':
+        backgroundUnpressed = theme.colors.interactiveNeutralSecondary;
+        backgroundPressed = theme.colors.interactiveNeutralSecondaryPress;
+        textUnpressed = theme.colors.interactiveNeutralContent;
+        textPressed = theme.colors.interactiveNeutralContentPress;
+        break;
+      case 'negative':
+        backgroundUnpressed = theme.colors.sentimentNegative;
+        backgroundPressed = theme.colors.sentimentNegativePress;
+        textUnpressed = theme.colors.sentimentSecondaryNegative;
+        textPressed = theme.colors.sentimentSecondaryNegativePress;
+        break;
+    }
+
+    if (disabled) {
+      backgroundUnpressed = hexToGrayscale(backgroundUnpressed);
+      textUnpressed = hexToGrayscale(textUnpressed);
+    }
+
+    return {
+      backgroundUnpressed,
+      backgroundPressed,
+      textUnpressed,
+      textPressed,
+    };
+  }, [variant, disabled, theme]);
+
+  const backgroundStyle = useAnimatedStyle(
+    () => ({
+      backgroundColor: interpolateColor(
+        pressProgress.value,
+        [0, 1],
+        [colorConfig.backgroundUnpressed, colorConfig.backgroundPressed],
+      ),
+    }),
+    [colorConfig.backgroundUnpressed, colorConfig.backgroundPressed],
+  );
+
+  const textStyle = useAnimatedStyle(
+    () => ({
+      color: interpolateColor(
+        pressProgress.value,
+        [0, 1],
+        [colorConfig.textUnpressed, colorConfig.textPressed],
+      ),
+    }),
+    [colorConfig.textUnpressed, colorConfig.textPressed],
+  );
 
   return (
-    <Pressable
+    <PressableScale
       onPress={onPress}
-      hitSlop={{ top: config[size].hitSlop, bottom: config[size].hitSlop }}
       disabled={disabled}
+      hitSlop={hitSlop[size]}
       role="button"
+      animationConfig={animationConfig}
+      pressProgress={pressProgress}
       {...accessibilityProps}
     >
-      {({ pressed }) => (
-        <View
-          style={[
-            styles.button({ disabled, size }),
-            getButtonStyles(variant, intent, pressed, disabled, theme.colors),
-          ]}
+      <Animated.View
+        key={`button-bg-${UnistylesRuntime.themeName}`}
+        style={[styles.button({ size, disabled }), backgroundStyle]}
+      >
+        <Animated.Text
+          key={`button-text-${UnistylesRuntime.themeName}`}
+          style={[styles.text({ size }), textStyle]}
         >
-          <Text
-            style={[
-              styles.text({ size }),
-              { color: getTextColor(variant, intent, disabled, theme.colors) },
-            ]}
-          >
-            {children}
-          </Text>
-        </View>
-      )}
-    </Pressable>
+          {children}
+        </Animated.Text>
+      </Animated.View>
+    </PressableScale>
   );
 };
 
-const styles = StyleSheet.create(({ borderRadius, spacing, textVariants }) => ({
-  button: (params: { disabled: boolean; size: Size }) => ({
-    justifyContent: 'center',
-    opacity: params.disabled ? 0.5 : 1,
-    ...(params.size === 'large' && {
-      paddingHorizontal: spacing.large,
-      paddingVertical: spacing.medium,
-      minHeight: config.large.buttonMinHeight,
-      minWidth: config.large.buttonMinWidth,
-      borderRadius: borderRadius.xlarge,
-    }),
-    ...(params.size === 'regular' && {
-      paddingHorizontal: spacing.medium,
-      paddingVertical: spacing.small,
-      minHeight: config.regular.buttonMinHeight,
-      minWidth: config.regular.buttonMinWidth,
-      borderRadius: borderRadius.large,
-    }),
-    ...(params.size === 'small' && {
-      paddingHorizontal: spacing.small,
-      paddingVertical: spacing.xsmall,
-      minHeight: config.small.buttonMinHeight,
-      minWidth: config.small.buttonMinWidth,
-      borderRadius: borderRadius.medium,
-    }),
-  }),
-  text: (params: { size: Size }) => ({
+const styles = StyleSheet.create(theme => ({
+  button: ({ size, disabled }: { size: Size; disabled: boolean }) => {
+    return {
+      justifyContent: 'center',
+      alignItems: 'center',
+      opacity: disabled ? 0.5 : 1,
+      borderRadius: theme.borderRadius.full,
+      ...(size === 'small' && {
+        minHeight: 30,
+        minWidth: 44,
+        paddingHorizontal: theme.spacing.small,
+        paddingVertical: theme.spacing.xsmall,
+      }),
+      ...(size === 'regular' && {
+        minHeight: 40,
+        minWidth: 44,
+        paddingHorizontal: theme.spacing.medium,
+        paddingVertical: theme.spacing.small,
+      }),
+      ...(size === 'large' && {
+        minHeight: 48,
+        minWidth: 44,
+        paddingHorizontal: theme.spacing.large,
+        paddingVertical: theme.spacing.medium,
+      }),
+    };
+  },
+  text: ({ size }: { size: Size }) => ({
     textAlign: 'center',
-    fontWeight: 'bold',
-    ...(params.size === 'large' && {
-      ...textVariants.body1,
-      fontWeight: 'bold',
+    ...(size === 'small' && {
+      ...theme.textVariants.body3,
     }),
-    ...(params.size === 'regular' && {
-      ...textVariants.body2,
-      fontWeight: 'bold',
+    ...(size === 'regular' && {
+      ...theme.textVariants.body2,
     }),
-    ...(params.size === 'small' && {
-      ...textVariants.body3,
-      fontWeight: 'bold',
+    ...(size === 'large' && {
+      ...theme.textVariants.body1,
     }),
+    fontWeight: '700',
   }),
 }));

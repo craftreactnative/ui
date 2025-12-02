@@ -9,16 +9,11 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { StyleSheet, UnistylesRuntime } from 'react-native-unistyles';
 
-type BottomSheetVariant = 'primary' | 'secondary';
-
 export default function BottomSheetScreen() {
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [enableSwipeToClose, setEnableSwipeToClose] = useState(false);
   const [enableOverlayTapToClose, setEnableOverlayTapToClose] = useState(false);
   const [showHandleBar, setShowHandleBar] = useState(false);
-  const [variant, setVariant] = useState<BottomSheetVariant>('primary');
-
-  const variants: BottomSheetVariant[] = ['primary', 'secondary'];
 
   return (
     <>
@@ -40,25 +35,6 @@ export default function BottomSheetScreen() {
 
         {/* Controls */}
         <Card style={styles.controlsCard}>
-          {/* Variant Selector */}
-          <View style={styles.controlSection}>
-            <ListItem text="Variant" />
-            <View style={styles.toggleGroup}>
-              {variants.map(v => (
-                <Button
-                  key={v}
-                  size="small"
-                  variant="subtle"
-                  intent={variant === v ? 'primary' : 'secondary'}
-                  onPress={() => setVariant(v)}
-                >
-                  {v.charAt(0).toUpperCase() + v.slice(1)}
-                </Button>
-              ))}
-            </View>
-          </View>
-          <View style={styles.divider} />
-
           {/* Toggle Controls */}
           <View style={styles.listSection}>
             <ListItem
@@ -103,7 +79,6 @@ export default function BottomSheetScreen() {
         enableSwipeToClose={enableSwipeToClose}
         enableOverlayTapToClose={enableOverlayTapToClose}
         showHandleBar={showHandleBar}
-        variant={variant}
       >
         <View style={styles.bottomSheetContent}>
           <View style={styles.bottomSheetHeading}>
@@ -117,7 +92,6 @@ export default function BottomSheetScreen() {
           <Text variant="body2">Current configuration:</Text>
 
           <View style={styles.configList}>
-            <Text variant="body3">• Variant: {variant}</Text>
             <Text variant="body3">
               • Swipe to close: {enableSwipeToClose ? 'true' : 'false'}
             </Text>
@@ -162,10 +136,10 @@ const styles = StyleSheet.create(theme => ({
   },
   controlsCard: {
     padding: theme.spacing.large,
-    gap: theme.spacing.large,
+    gap: theme.spacing.small,
   },
   controlSection: {
-    gap: theme.spacing.medium,
+    gap: theme.spacing.small,
   },
   toggleGroup: {
     flexDirection: 'row',
@@ -173,14 +147,8 @@ const styles = StyleSheet.create(theme => ({
     flexWrap: 'wrap',
   },
   listSection: {
-    backgroundColor: theme.colors.surfacePrimary,
     gap: theme.spacing.medium,
     overflow: 'hidden',
-  },
-  divider: {
-    height: 1,
-    backgroundColor: theme.colors.surfaceSecondary,
-    marginVertical: theme.spacing.xsmall,
   },
   bottomSheetContent: {
     paddingHorizontal: theme.spacing.large,
