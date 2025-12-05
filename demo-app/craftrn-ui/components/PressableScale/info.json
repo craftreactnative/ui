@@ -1,0 +1,7 @@
+{
+  "name": "PressableScale",
+  "description": "Pressable wrapper with animated scale effect on press",
+  "externalDependencies": ["react-native-reanimated"],
+  "craftrnUiComponents": [],
+  "tetrislyIcons": []
+}

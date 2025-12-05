@@ -26,17 +26,17 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: theme.colors.accentPrimary,
+        tabBarActiveTintColor: theme.colors.contentAccentSecondary,
         headerTransparent: true,
         headerRight: () => (
           <View style={{ marginRight: 16 }}>
-            <ThemeToggleButton intent="secondary" />
+            <ThemeToggleButton variant="neutral" />
           </View>
         ),
         headerTitle: '',
         tabBarButton: HapticTab,
         sceneStyle: {
-          backgroundColor: theme.colors.backgroundSecondary,
+          backgroundColor: theme.colors.backgroundScreen,
         },
       }}
     >

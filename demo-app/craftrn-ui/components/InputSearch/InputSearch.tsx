@@ -1,6 +1,7 @@
 import React, { forwardRef, useCallback, useRef, useState } from 'react';
 import {
   NativeSyntheticEvent,
+  Platform,
   Pressable,
   TextInput,
   TextInputFocusEventData,
@@ -8,10 +9,6 @@ import {
   View,
 } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
-
-export const config = {
-  medium: 48,
-} as const;
 
 /**
  * Props for the InputSearch component.
@@ -23,26 +20,18 @@ export type Props = {
    */
   onPress?: () => void;
   /**
-   * Left accessory element. Will be placed before the input.
+   * Left element. Will be placed before the input.
    */
-  leftAccessory?: React.ReactNode;
+  itemLeft?: React.ReactNode;
   /**
-   * Right accessory element. Will be placed after the input.
+   * Right element. Will be placed after the input.
    */
-  rightAccessory?: React.ReactNode;
+  itemRight?: React.ReactNode;
 };
 
 export const InputSearch = forwardRef<TextInput, Props & TextInputProps>(
   function InputSearch(
-    {
-      onPress,
-      onFocus,
-      onBlur,
-      value,
-      leftAccessory,
-      rightAccessory,
-      ...props
-    },
+    { onPress, onFocus, onBlur, value, itemLeft, itemRight, ...props },
     ref,
   ) {
     const { theme } = useUnistyles();
@@ -84,7 +73,7 @@ export const InputSearch = forwardRef<TextInput, Props & TextInputProps>(
             active: isActive,
           })}
         >
-          {leftAccessory}
+          {itemLeft}
           <TextInput
             style={styles.textInput({ readOnly: isReadOnly })}
             onFocus={handleFocus}
@@ -92,42 +81,44 @@ export const InputSearch = forwardRef<TextInput, Props & TextInputProps>(
             value={value}
             ref={ref}
             placeholderTextColor={theme.colors.contentTertiary}
+            selectionColor={theme.colors.contentAccentSecondary}
             textAlignVertical="center"
             role="searchbox"
             {...props}
           />
-          {rightAccessory}
+          {itemRight}
         </View>
       </Pressable>
     );
   },
 );
 
-const styles = StyleSheet.create(({ colors, borderRadius, spacing }) => ({
-  container: {
-    shadowColor: colors.contentTertiary,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 1,
-    shadowOpacity: 0.05,
-    width: '100%',
-  },
-  inputContainer: ({ active }) => ({
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: borderRadius.full,
-    backgroundColor: colors.backgroundPrimary,
-    borderWidth: 1,
-    borderColor: active ? colors.accentPrimary : colors.borderPrimary,
-    paddingHorizontal: spacing.small,
-    paddingVertical: spacing.xsmall,
-    height: config.medium,
-  }),
-  textInput: ({ readOnly }) => ({
-    flexGrow: 1,
-    padding: 0,
-    marginHorizontal: spacing.small,
-    height: config.medium - 2,
-    pointerEvents: readOnly ? 'none' : 'auto',
-    color: colors.contentPrimary,
-  }),
-}));
+const styles = StyleSheet.create(theme => {
+  return {
+    container: {
+      width: '100%',
+    },
+    inputContainer: ({ active }: { active: boolean }) => ({
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderRadius: theme.borderRadius.full,
+      borderWidth: 1,
+      borderColor: active
+        ? theme.colors.contentAccentSecondary
+        : theme.colors.borderNeutralSecondary,
+      paddingHorizontal: theme.spacing.small,
+      paddingVertical: theme.spacing.xsmall,
+      height: 48,
+      backgroundColor: theme.colors.backgroundElevated,
+    }),
+    textInput: ({ readOnly }: { readOnly: boolean }) => ({
+      flexGrow: 1,
+      padding: 0,
+      marginHorizontal: theme.spacing.small,
+      height: 48 - 2,
+      pointerEvents: readOnly ? 'none' : 'auto',
+      color: theme.colors.contentPrimary,
+      lineHeight: Platform.OS === 'ios' ? 0 : undefined,
+    }),
+  };
+});

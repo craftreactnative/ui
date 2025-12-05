@@ -68,8 +68,7 @@ export default function PhotoCarouselScreen() {
               <Button
                 key={position}
                 size="small"
-                variant="subtle"
-                intent={dotsPosition === position ? 'primary' : 'secondary'}
+                variant={dotsPosition === position ? 'secondary' : 'neutral'}
                 onPress={() => handlePositionChange(position)}
               >
                 {position.charAt(0).toUpperCase() + position.slice(1)}
@@ -100,10 +99,10 @@ const styles = StyleSheet.create(theme => ({
   },
   controlsCard: {
     padding: theme.spacing.large,
-    gap: theme.spacing.large,
+    gap: theme.spacing.small,
   },
   controlSection: {
-    gap: theme.spacing.medium,
+    gap: theme.spacing.small,
   },
   toggleGroup: {
     flexDirection: 'row',

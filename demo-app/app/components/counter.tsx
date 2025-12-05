@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
 import { StyleSheet, UnistylesRuntime } from 'react-native-unistyles';
+import { Divider } from '../../craftrn-ui/components/Divider';
 
 export default function CounterScreen() {
   const [, setCounterValue] = useState(0);
@@ -50,8 +51,7 @@ export default function CounterScreen() {
               <Button
                 key={value}
                 size="small"
-                variant="subtle"
-                intent={controlledValue === value ? 'primary' : 'secondary'}
+                variant={controlledValue === value ? 'secondary' : 'neutral'}
                 onPress={() => setControlledValue(value)}
               >
                 {String(value)}
@@ -59,7 +59,7 @@ export default function CounterScreen() {
             ))}
           </View>
         </View>
-        <View style={styles.divider} />
+        <Divider style={styles.divider} />
 
         {/* Increment Step */}
         <View style={styles.controlSection}>
@@ -72,8 +72,7 @@ export default function CounterScreen() {
               <Button
                 key={value}
                 size="small"
-                variant="subtle"
-                intent={increment === value ? 'primary' : 'secondary'}
+                variant={increment === value ? 'secondary' : 'neutral'}
                 onPress={() => setIncrement(value)}
               >
                 {String(value)}
@@ -81,7 +80,7 @@ export default function CounterScreen() {
             ))}
           </View>
         </View>
-        <View style={styles.divider} />
+        <Divider style={styles.divider} />
 
         {/* Empty Label Toggle */}
         <ListItem
@@ -135,10 +134,10 @@ const styles = StyleSheet.create(theme => ({
   },
   controlsCard: {
     padding: theme.spacing.large,
-    gap: theme.spacing.large,
+    gap: theme.spacing.small,
   },
   controlSection: {
-    gap: theme.spacing.medium,
+    gap: theme.spacing.small,
   },
   toggleGroup: {
     flexDirection: 'row',
@@ -146,8 +145,6 @@ const styles = StyleSheet.create(theme => ({
     flexWrap: 'wrap',
   },
   divider: {
-    height: 1,
-    backgroundColor: theme.colors.surfaceSecondary,
     marginVertical: theme.spacing.xsmall,
   },
 }));

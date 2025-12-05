@@ -1,0 +1,7 @@
+{
+  "name": "Divider",
+  "description": "Divider component for separating content with horizontal or vertical lines",
+  "externalDependencies": ["react-native-unistyles"],
+  "craftrnUiComponents": [],
+  "tetrislyIcons": []
+}

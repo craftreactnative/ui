@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Animated, {
   Easing,
   useAnimatedReaction,
@@ -7,9 +7,29 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { type Theme } from '../../themes/config';
 
-const config = {
-  dotSize: 16,
+const createPinDotTokens = (theme: Theme) => {
+  return {
+    size: 16,
+    colors: {
+      filled: theme.colors.contentAccentSecondary,
+      empty: theme.colors.borderNeutralSecondary,
+    },
+    borderRadius: theme.borderRadius.full,
+    animation: {
+      scaleUp: {
+        duration: 100,
+        easing: Easing.out(Easing.cubic),
+        scale: 1.5,
+      },
+      scaleDown: {
+        duration: 400,
+        easing: Easing.out(Easing.cubic),
+        scale: 1,
+      },
+    },
+  };
 };
 
 /**
@@ -24,6 +44,7 @@ export type Props = {
 
 export const PinDot = ({ filled }: Props) => {
   const { theme } = useUnistyles();
+  const pinDotTokens = useMemo(() => createPinDotTokens(theme), [theme]);
   const scale = useSharedValue(1);
   const filledStatus = useSharedValue(filled ? 1 : 0);
 
@@ -36,34 +57,42 @@ export const PinDot = ({ filled }: Props) => {
     (currentStatus, previousStatus) => {
       if (currentStatus === 1 && previousStatus === 0) {
         scale.value = withTiming(
-          1.5,
-          { duration: 100, easing: Easing.out(Easing.cubic) },
+          pinDotTokens.animation.scaleUp.scale,
+          {
+            duration: pinDotTokens.animation.scaleUp.duration,
+            easing: pinDotTokens.animation.scaleUp.easing,
+          },
           () => {
-            scale.value = withTiming(1, {
-              duration: 400,
-              easing: Easing.out(Easing.cubic),
+            scale.value = withTiming(pinDotTokens.animation.scaleDown.scale, {
+              duration: pinDotTokens.animation.scaleDown.duration,
+              easing: pinDotTokens.animation.scaleDown.easing,
             });
           },
         );
       }
     },
+    [pinDotTokens.animation],
   );
 
   const dotAnimatedStyle = useAnimatedStyle(() => ({
     backgroundColor: filledStatus.value
-      ? theme.colors.contentAccent
-      : theme.colors.contentTertiary,
+      ? pinDotTokens.colors.filled
+      : pinDotTokens.colors.empty,
     transform: [{ scale: scale.value }],
   }));
 
   return <Animated.View style={[styles.pinDot, dotAnimatedStyle]} />;
 };
 
-const styles = StyleSheet.create(({ colors, borderRadius }) => ({
-  pinDot: {
-    width: config.dotSize,
-    height: config.dotSize,
-    borderRadius: borderRadius.full,
-    backgroundColor: colors.contentPrimary,
-  },
-}));
+const styles = StyleSheet.create(theme => {
+  const pinDotTokens = createPinDotTokens(theme);
+
+  return {
+    pinDot: {
+      width: pinDotTokens.size,
+      height: pinDotTokens.size,
+      borderRadius: pinDotTokens.borderRadius,
+      backgroundColor: pinDotTokens.colors.empty,
+    },
+  };
+});

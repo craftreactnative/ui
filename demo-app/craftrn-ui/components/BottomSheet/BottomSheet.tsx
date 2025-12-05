@@ -24,10 +24,40 @@ import Animated, {
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
+  withSpring,
+  WithSpringConfig,
   withTiming,
   WithTimingConfig,
 } from 'react-native-reanimated';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+
+const animationConfig = {
+  sheetOpen: {
+    damping: 20,
+    stiffness: 220,
+    mass: 0.8,
+    overshootClamping: false,
+  } satisfies WithSpringConfig,
+  sheetClose: {
+    duration: 400,
+    easing: Easing.inOut(Easing.cubic),
+  } satisfies WithTimingConfig,
+  swipeToDismiss: {
+    velocity: 0,
+    damping: 100,
+    stiffness: 500,
+    mass: 0.5,
+    overshootClamping: true,
+  } satisfies WithSpringConfig,
+  overlayDrag: {
+    duration: 50,
+    easing: Easing.inOut(Easing.cubic),
+  } satisfies WithTimingConfig,
+  overlayFadeOut: {
+    duration: 200,
+    easing: Easing.inOut(Easing.cubic),
+  } satisfies WithTimingConfig,
+};
 
 /**
  * Props for the BottomSheet component.
@@ -48,8 +78,9 @@ export type Props = {
   onClose?: () => void;
   /**
    * The content to display inside the bottom sheet.
+   * Must be a single React element.
    */
-  children: ReactElement | ReactElement[];
+  children: ReactElement;
   /**
    * The maximum height of the bottom sheet.
    */
@@ -65,11 +96,6 @@ export type Props = {
    */
   enableOverlayTapToClose?: boolean;
   /**
-   * The visual style variant of the bottom sheet.
-   * @default 'primary'
-   */
-  variant?: 'primary' | 'secondary';
-  /**
    * Whether to show the handle bar at the top of the bottom sheet.
    * @default false
    */
@@ -77,11 +103,6 @@ export type Props = {
 };
 
 type BottomSheetProps = Props & AccessibilityProps;
-
-const withTimingConfig = {
-  duration: 400,
-  easing: Easing.inOut(Easing.cubic),
-} satisfies WithTimingConfig;
 
 export const BottomSheet = ({
   visible,
@@ -91,7 +112,6 @@ export const BottomSheet = ({
   maxHeight,
   enableSwipeToClose = false,
   enableOverlayTapToClose = false,
-  variant = 'primary',
   showHandleBar = false,
   ...accessibilityProps
 }: BottomSheetProps) => {
@@ -116,23 +136,19 @@ export const BottomSheet = ({
   }, [visible]);
 
   useEffect(() => {
-    const checkScreenReaderStatus = async () => {
-      const enabled = await AccessibilityInfo.isScreenReaderEnabled();
+    AccessibilityInfo.isScreenReaderEnabled().then(enabled => {
       setIsScreenReaderEnabled(enabled);
-    };
-
-    checkScreenReaderStatus();
+    });
   }, []);
 
   useEffect(() => {
     if (contentHeight) {
-      translateY.value = withTiming(
-        visible ? 0 : contentHeight,
-        withTimingConfig,
-      );
+      translateY.value = visible
+        ? withSpring(0, animationConfig.sheetOpen)
+        : withTiming(contentHeight, animationConfig.sheetClose);
       overlayOpacity.value = withTiming(
         visible ? 0.5 : 0,
-        withTimingConfig,
+        visible ? animationConfig.sheetClose : animationConfig.sheetClose,
         () => {
           if (!visible) {
             runOnJS(setShowModal)(false);
@@ -163,25 +179,34 @@ export const BottomSheet = ({
         translateY.value = newTranslateY;
         overlayOpacity.value = withTiming(
           0.5 * (1 - Math.min(newTranslateY / (contentHeight ?? 200), 1)),
-          { duration: 50 },
+          animationConfig.overlayDrag,
         );
       }
     })
     .onEnd(event => {
       gestureActive.value = false;
 
-      if (event.translationY > closeGestureThreshold) {
-        translateY.value = withTiming(
+      // Check if should close by velocity or distance
+      const shouldClose =
+        event.velocityY > 500 || event.translationY > closeGestureThreshold;
+
+      if (shouldClose) {
+        // Use spring with high damping to avoid bounce, but respect velocity
+        translateY.value = withSpring(
           contentHeight ?? windowHeight,
-          withTimingConfig,
+          {
+            ...animationConfig.swipeToDismiss,
+            velocity: event.velocityY,
+          },
           () => {
             runOnJS(onRequestClose)();
           },
         );
-        overlayOpacity.value = withTiming(0, withTimingConfig);
+        overlayOpacity.value = withTiming(0, animationConfig.overlayFadeOut);
       } else {
-        translateY.value = withTiming(0, withTimingConfig);
-        overlayOpacity.value = withTiming(0.5, withTimingConfig);
+        // Snap back to open position
+        translateY.value = withTiming(0, animationConfig.sheetClose);
+        overlayOpacity.value = withTiming(0.5, animationConfig.sheetClose);
       }
     });
 
@@ -232,10 +257,6 @@ export const BottomSheet = ({
               style={[
                 styles.sheet({
                   maxHeight: bottomSheetMaxHeight,
-                  backgroundColor:
-                    variant === 'primary'
-                      ? theme.colors.surfacePrimary
-                      : theme.colors.surfaceSecondary,
                 }),
                 bottomSheetAnimatedStyle,
               ]}
@@ -247,13 +268,28 @@ export const BottomSheet = ({
               onAccessibilityEscape={onRequestClose}
               {...accessibilityProps}
             >
-              <View style={styles.content}>
+              <View style={styles.contentWrapper}>
                 {showHandleBar && (
                   <View style={styles.handleBarContainer}>
                     <View style={styles.handleBar} />
                   </View>
                 )}
-                {children}
+                {React.isValidElement(children)
+                  ? React.cloneElement(children, {
+                      style: [
+                        (
+                          children.props as unknown as {
+                            style?: unknown;
+                          }
+                        ).style,
+                        {
+                          paddingTop: showHandleBar
+                            ? theme.spacing.xlarge
+                            : theme.spacing.large,
+                        },
+                      ],
+                    } as Partial<unknown>)
+                  : children}
               </View>
             </Animated.View>
           </View>
@@ -263,41 +299,44 @@ export const BottomSheet = ({
   );
 };
 
-const styles = StyleSheet.create(({ colors, borderRadius, spacing }) => ({
+const styles = StyleSheet.create(theme => ({
   container: {
     flex: 1,
   },
   overlay: {
     zIndex: 1,
-    backgroundColor: colors.overlay,
+    backgroundColor: theme.colors.backgroundOverlay,
   },
   overlayContent: {
     flex: 1,
   },
-  sheet: ({ maxHeight, backgroundColor }) => ({
-    backgroundColor: backgroundColor ?? colors.backgroundPrimary,
+  sheet: ({ maxHeight }: { maxHeight: number }) => ({
+    backgroundColor: theme.colors.backgroundElevated,
     zIndex: 2,
-    borderTopLeftRadius: borderRadius.xlarge,
-    borderTopRightRadius: borderRadius.xlarge,
+    borderTopLeftRadius: theme.borderRadius.xlarge,
+    borderTopRightRadius: theme.borderRadius.xlarge,
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    bottom: -50,
+    left: theme.spacing.small,
+    right: theme.spacing.small,
     maxHeight,
+    overflow: 'hidden',
   }),
-  content: {
-    paddingTop: spacing.large,
+  contentWrapper: {
+    paddingBottom: 50,
   },
   handleBarContainer: {
     alignItems: 'center',
-    paddingVertical: spacing.medium,
-    marginTop: -spacing.large,
-    paddingTop: spacing.small,
+    paddingVertical: theme.spacing.small,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
   },
   handleBar: {
     width: 36,
     height: 4,
-    backgroundColor: colors.contentQuaternary,
-    borderRadius: 2,
+    backgroundColor: theme.colors.interactiveNeutral,
+    borderRadius: theme.borderRadius.full,
   },
 }));

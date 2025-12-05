@@ -1,6 +1,6 @@
 {
   "name": "InputSearch",
-  "description": "Search input component with left and right accessory support",
+  "description": "Search input component with left and right item support",
   "externalDependencies": ["react-native-unistyles"],
   "craftrnUiComponents": [],
   "tetrislyIcons": []

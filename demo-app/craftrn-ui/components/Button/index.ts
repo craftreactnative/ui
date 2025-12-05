@@ -1,2 +1,2 @@
-export { Button, config as buttonConfig } from './Button';
+export { Button } from './Button';
 export type { Props } from './Button';

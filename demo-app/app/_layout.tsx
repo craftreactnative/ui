@@ -18,12 +18,10 @@ import 'react-native-reanimated';
 SplashScreen.preventAutoHideAsync();
 
 function AppContent() {
-  const { theme } = useTheme();
+  const { mode } = useTheme();
 
   return (
-    <NavigationThemeProvider
-      value={theme === 'dark' ? DarkTheme : DefaultTheme}
-    >
+    <NavigationThemeProvider value={mode === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="+not-found" />

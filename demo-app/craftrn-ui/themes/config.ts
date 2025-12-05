@@ -1,47 +1,79 @@
 export const colors = {
-  stone50: '#fafaf9',
-  stone100: '#f5f5f4',
-  stone150: '#f0efec',
-  stone200: '#e7e5e4',
-  stone300: '#d6d3d1',
-  stone400: '#beb9b6',
-  stone500: '#837b75',
-  stone600: '#57534e',
-  stone700: '#44403c',
-  stone800: '#292524',
-  stone900: '#1c1917',
-  stone950: '#110e0c',
+  brightTeal100: '#c1f2f2',
+  brightTeal200: '#9de2e2',
+  brightTeal300: '#6ED1D1',
+  brightTeal400: '#48B8B8',
 
-  teal150: '#d4edf0',
-  teal300: '#a3d6da',
-  teal400: '#6bbbc4',
-  teal500: '#048391',
-  teal600: '#007884',
-  teal700: '#006771',
-  teal800: '#004247',
-  teal900: '#00282c',
+  darkTeal500: '#228c98',
+  darkTeal600: '#157183',
+  darkTeal700: '#105161',
+  darkTeal800: '#09414f',
+  darkTeal900: '#072829',
+  darkTeal950: '#031a1d',
 
-  // Semantic colors
-  green150: '#d2f2dd',
-  green300: '#86efac',
-  green500: '#22c55e',
-  green700: '#15803d',
-  green800: '#166534',
+  brightOrange100: '#f4d9ad',
+  brightOrange200: '#efc685',
+  brightOrange300: '#e8b05f',
+  brightOrange400: '#df9940',
 
-  red150: '#f0dada',
-  red300: '#d19a9a',
-  red500: '#c44e4e',
-  red700: '#9b3535',
-  red800: '#7a2828',
+  darkOrange500: '#b8824a',
+  darkOrange600: '#9a652e',
+  darkOrange700: '#7a4a1d',
+  darkOrange800: '#5d3715',
+  darkOrange900: '#3f240e',
+  darkOrange950: '#241407',
 
-  blue300: '#6aa7f1',
-  blue700: '#1d4ed8',
+  slate10: '#fcfcff',
+  slate50: '#f9f9fb',
+  slate100: '#e0e0e6',
+  slate200: '#d0d0d8',
+  slate300: '#c0c0c9',
+  slate400: '#b0b0ba',
+  slate500: '#9696a4',
+  slate600: '#7c7c93',
+  slate700: '#636375',
+  slate800: '#4a4a5b',
+  slate900: '#353545',
+  slate950: '#202029',
+  slate990: '#121217',
+
+  stone10: '#fdfcfa',
+  stone50: '#faf9f7',
+  stone100: '#ebe8e4',
+  stone200: '#dcd8d2',
+  stone300: '#cdc7c0',
+  stone400: '#beb6ae',
+  stone500: '#a59c93',
+  stone600: '#8a827a',
+  stone700: '#6f6962',
+  stone800: '#54504a',
+  stone900: '#3e3b36',
+  stone950: '#282623',
+  stone990: '#191715',
+
+  negative50: '#ffe5e5',
+  negative100: '#e6c1c1',
+  negative200: '#d09090',
+  negative400: '#b30000',
+  negative500: '#800000',
+  negative900: '#330000',
+  negative950: '#1a0000',
+
+  positive50: '#effae7',
+  positive100: '#e2f6d3',
+  positive200: '#c5e9a8',
+  positive400: '#427b18',
+  positive500: '#305911',
+  positive900: '#0f1b05',
+  positive950: '#070e03',
 
   // Non-semantic colors
-  grape600: '#544171',
-  eggplant600: '#714148',
-  fjord600: '#415171',
-  olive600: '#456138',
+  blue300: '#6aa7f1',
+  blue700: '#1d4ed8',
+  purple600: '#544171',
+  maroon600: '#714148',
+  steel600: '#415171',
+  forest600: '#456138',
   sunshine200: '#f5be0a',
 } as const;
 
@@ -60,75 +92,31 @@ const fontSizes = {
   },
   medium: {
     fontSize: 16,
-    lineHeight: 21,
+    lineHeight: 20,
   },
   small: {
     fontSize: 14,
-    lineHeight: 19,
+    lineHeight: 18,
   },
   xsmall: {
-    fontSize: 13,
-    lineHeight: 16,
+    fontSize: 12,
+    lineHeight: 15,
   },
 } as const;
 
-export const lightTheme = {
+const baseTheme = {
   colors: {
-    backgroundPrimary: colors.stone100,
-    backgroundSecondary: colors.stone200,
-    backgroundTertiary: colors.stone300,
-    backgroundQuaternary: colors.stone400,
-
-    surfacePrimary: colors.stone100,
-    surfaceSecondary: colors.stone200,
-    surfaceTertiary: colors.stone300,
-    surfaceQuaternary: colors.stone500,
-
-    surfaceReversedPrimary: colors.stone800,
-    surfaceReversedSecondary: colors.stone700,
-
-    accentPrimary: colors.teal700,
-    accentSecondary: colors.teal800,
-    accentTertiary: colors.teal300,
-    accentQuaternary: colors.teal150,
-
-    contentPrimary: colors.stone950,
-    contentSecondary: colors.stone800,
-    contentTertiary: colors.stone600,
-    contentQuaternary: colors.stone500,
-    contentReversed: colors.stone50,
-    contentAccent: colors.teal700,
-
-    borderPrimary: colors.stone300,
-    borderSecondary: colors.stone200,
-
-    shadowPrimary: colors.stone800,
-
-    overlay: colors.stone600,
-
     transparent: 'transparent',
-
-    // Semantic colors
-    informativePrimary: colors.blue700,
-
-    positivePrimary: colors.green800,
-    positiveSecondary: colors.green700,
-    positiveTertiary: colors.green300,
-    positiveQuaternary: colors.green150,
-
-    negativePrimary: colors.red800,
-    negativeSecondary: colors.red700,
-    negativeTertiary: colors.red300,
-    negativeQuaternary: colors.red150,
-
-    // Non-semantic colors
-    white: colors.stone50,
-    black: colors.stone950,
-    berryStrong: colors.grape600,
-    wineStrong: colors.eggplant600,
-    imperialBlueStrong: colors.fjord600,
-    darkOliveStrong: colors.olive600,
-    sunshineStrong: colors.sunshine200,
+    white: colors.stone10,
+    black: colors.stone900,
+    purple: colors.purple600,
+    maroon: colors.maroon600,
+    steel: colors.steel600,
+    forest: colors.forest600,
+    sunshine: colors.sunshine200,
+    red: colors.negative500,
+    green: colors.positive500,
+    blue: colors.blue700,
   },
   borderRadius: {
     xsmall: 4,
@@ -136,6 +124,7 @@ export const lightTheme = {
     medium: 12,
     large: 16,
     xlarge: 24,
+    xxlarge: 32,
     full: 999,
   },
   fontSizes,
@@ -151,79 +140,266 @@ export const lightTheme = {
   textVariants: {
     heading1: {
       ...fontSizes.xxlarge,
-      fontWeight: '900',
+      fontWeight: '900' as const,
       letterSpacing: -1,
     },
     heading2: {
       ...fontSizes.xlarge,
-      fontWeight: '800',
+      fontWeight: '800' as const,
     },
     heading3: {
       ...fontSizes.large,
-      fontWeight: '700',
+      fontWeight: '700' as const,
     },
     body1: {
       ...fontSizes.medium,
-      fontWeight: '400',
+      fontWeight: '400' as const,
     },
     body2: {
       ...fontSizes.small,
-      fontWeight: '400',
+      fontWeight: '400' as const,
     },
     body3: {
       ...fontSizes.xsmall,
-      fontWeight: '400',
+      fontWeight: '400' as const,
     },
   },
 } as const;
 
-export const darkTheme = {
-  ...lightTheme,
+const baseLight = {
+  ...baseTheme,
   colors: {
-    ...lightTheme.colors,
+    ...baseTheme.colors,
 
-    backgroundPrimary: colors.stone900,
-    backgroundSecondary: colors.stone950,
-    backgroundTertiary: colors.stone800,
-    backgroundQuaternary: colors.stone600,
+    informativePrimary: colors.blue700,
 
-    surfacePrimary: colors.stone800,
-    surfaceSecondary: colors.stone700,
-    surfaceTertiary: colors.stone600,
-    surfaceQuaternary: colors.stone500,
+    sentimentNegative: colors.negative400,
+    sentimentNegativePress: colors.negative500,
 
-    surfaceReversedPrimary: colors.stone100,
-    surfaceReversedSecondary: colors.stone200,
+    sentimentSecondaryNegative: colors.negative50,
+    sentimentSecondaryNegativePress: colors.negative100,
 
-    accentPrimary: colors.teal600,
-    accentSecondary: colors.teal700,
-    accentTertiary: colors.teal800,
-    accentQuaternary: colors.teal900,
+    sentimentPositive: colors.positive400,
+    sentimentPositivePress: colors.positive500,
 
-    contentPrimary: colors.stone50,
-    contentSecondary: colors.stone300,
-    contentTertiary: colors.stone400,
-    contentAccent: colors.teal400,
-    contentReversed: colors.stone900,
-
-    borderPrimary: colors.stone700,
-    borderSecondary: colors.stone900,
-
-    shadowPrimary: colors.stone600,
-
-    overlay: colors.stone600,
-
-    // Semantic colors
-    informativePrimary: colors.blue300,
-
-    positivePrimary: colors.green300,
-    positiveSecondary: colors.green150,
-    positiveTertiary: colors.green700,
-    positiveQuaternary: colors.green800,
-
-    negativePrimary: colors.red300,
-    negativeSecondary: colors.red150,
-    negativeTertiary: colors.red700,
-    negativeQuaternary: colors.red800,
+    sentimentSecondaryPositive: colors.positive50,
+    sentimentSecondaryPositivePress: colors.positive100,
   },
 } as const;
+
+const baseDark = {
+  ...baseTheme,
+  colors: {
+    ...baseTheme.colors,
+
+    informativePrimary: colors.blue300,
+
+    sentimentNegative: colors.negative200,
+    sentimentNegativePress: colors.negative100,
+
+    sentimentSecondaryNegative: colors.negative950,
+    sentimentSecondaryNegativePress: colors.negative900,
+
+    sentimentPositive: colors.positive200,
+    sentimentPositivePress: colors.positive500,
+
+    sentimentSecondaryPositive: colors.positive950,
+    sentimentSecondaryPositivePress: colors.positive900,
+  },
+} as const;
+
+export const lightTealTheme = {
+  ...baseLight,
+  colors: {
+    ...baseLight.colors,
+    interactivePrimary: colors.brightTeal200,
+    interactivePrimaryPress: colors.brightTeal300,
+    interactivePrimaryContent: colors.darkTeal900,
+    interactivePrimaryContentPress: colors.darkTeal950,
+
+    interactiveSecondary: colors.brightTeal100,
+    interactiveSecondaryPress: colors.brightTeal200,
+    interactiveSecondaryContent: colors.darkTeal800,
+    interactiveSecondaryContentPress: colors.darkTeal900,
+
+    interactiveNeutral: colors.slate100,
+    interactiveNeutralPress: colors.slate200,
+    interactiveNeutralContent: colors.slate900,
+    interactiveNeutralContentPress: colors.slate990,
+
+    interactiveNeutralSecondary: colors.slate10,
+    interactiveNeutralSecondaryPress: colors.slate200,
+
+    interactiveNeutralReversed: colors.slate990,
+    interactiveNeutralReversedPress: colors.slate900,
+    interactiveNeutralReversedContent: colors.slate50,
+    interactiveNeutralReversedContentPress: colors.slate10,
+
+    backgroundScreen: colors.slate100,
+    backgroundScreenSecondary: colors.slate10,
+    backgroundElevated: colors.slate10,
+    backgroundNeutral: `${colors.slate950}15`,
+    backgroundOverlay: `${colors.slate950}80`,
+
+    baseLight: colors.slate10,
+    baseDark: colors.slate990,
+
+    borderNeutral: `${colors.slate950}10`,
+    borderNeutralSecondary: `${colors.slate950}30`,
+
+    contentPrimary: colors.slate990,
+    contentSecondary: colors.slate900,
+    contentTertiary: colors.slate700,
+    contentAccent: colors.darkTeal800,
+    contentAccentSecondary: colors.darkTeal500,
+  },
+} as const;
+
+export const darkTealTheme = {
+  ...baseDark,
+  colors: {
+    ...baseDark.colors,
+
+    interactivePrimary: colors.brightTeal300,
+    interactivePrimaryPress: colors.brightTeal200,
+    interactivePrimaryContent: colors.darkTeal900,
+    interactivePrimaryContentPress: colors.darkTeal800,
+
+    interactiveSecondary: colors.darkTeal800,
+    interactiveSecondaryPress: colors.darkTeal600,
+    interactiveSecondaryContent: colors.brightTeal300,
+    interactiveSecondaryContentPress: colors.brightTeal100,
+
+    interactiveNeutral: colors.slate900,
+    interactiveNeutralPress: colors.slate800,
+    interactiveNeutralContent: colors.slate100,
+    interactiveNeutralContentPress: colors.slate50,
+
+    interactiveNeutralSecondary: colors.slate950,
+    interactiveNeutralSecondaryPress: colors.slate900,
+
+    interactiveNeutralReversed: colors.slate10,
+    interactiveNeutralReversedPress: colors.slate100,
+    interactiveNeutralReversedContent: colors.slate900,
+    interactiveNeutralReversedContentPress: colors.slate990,
+
+    backgroundScreen: colors.slate990,
+    backgroundScreenSecondary: colors.slate950,
+    backgroundElevated: `${colors.slate950}`,
+    backgroundNeutral: `${colors.slate200}15`,
+    backgroundOverlay: `${colors.slate100}80`,
+
+    borderNeutral: `${colors.slate10}10`,
+    borderNeutralSecondary: `${colors.slate10}30`,
+
+    baseLight: colors.slate10,
+    baseDark: colors.slate990,
+
+    contentPrimary: colors.slate10,
+    contentSecondary: colors.slate100,
+    contentTertiary: colors.slate300,
+    contentAccent: colors.brightTeal200,
+    contentAccentSecondary: colors.brightTeal400,
+  },
+} as const;
+
+export const lightOrangeTheme = {
+  ...baseLight,
+  colors: {
+    ...baseLight.colors,
+    interactivePrimary: colors.brightOrange200,
+    interactivePrimaryPress: colors.brightOrange300,
+    interactivePrimaryContent: colors.darkOrange900,
+    interactivePrimaryContentPress: colors.darkOrange950,
+
+    interactiveSecondary: colors.brightOrange100,
+    interactiveSecondaryPress: colors.brightOrange200,
+    interactiveSecondaryContent: colors.darkOrange800,
+    interactiveSecondaryContentPress: colors.darkOrange900,
+
+    interactiveNeutral: colors.stone100,
+    interactiveNeutralPress: colors.stone200,
+    interactiveNeutralContent: colors.stone900,
+    interactiveNeutralContentPress: colors.stone990,
+
+    interactiveNeutralSecondary: colors.stone10,
+    interactiveNeutralSecondaryPress: colors.stone200,
+
+    interactiveNeutralReversed: colors.stone990,
+    interactiveNeutralReversedPress: colors.stone900,
+    interactiveNeutralReversedContent: colors.stone50,
+    interactiveNeutralReversedContentPress: colors.stone10,
+
+    backgroundScreen: colors.stone100,
+    backgroundScreenSecondary: colors.stone10,
+    backgroundElevated: colors.stone10,
+    backgroundNeutral: `${colors.stone950}15`,
+    backgroundOverlay: `${colors.stone950}80`,
+
+    baseLight: colors.stone10,
+    baseDark: colors.stone990,
+
+    borderNeutral: `${colors.stone950}10`,
+    borderNeutralSecondary: `${colors.stone950}30`,
+
+    contentPrimary: colors.stone990,
+    contentSecondary: colors.stone900,
+    contentTertiary: colors.stone700,
+    contentAccent: colors.darkOrange800,
+    contentAccentSecondary: colors.darkOrange500,
+  },
+} as const;
+
+export const darkOrangeTheme = {
+  ...baseDark,
+  colors: {
+    ...baseDark.colors,
+
+    interactivePrimary: colors.brightOrange300,
+    interactivePrimaryPress: colors.brightOrange200,
+    interactivePrimaryContent: colors.darkOrange900,
+    interactivePrimaryContentPress: colors.darkOrange800,
+
+    interactiveSecondary: colors.darkOrange800,
+    interactiveSecondaryPress: colors.darkOrange600,
+    interactiveSecondaryContent: colors.brightOrange300,
+    interactiveSecondaryContentPress: colors.brightOrange100,
+
+    interactiveNeutral: colors.stone900,
+    interactiveNeutralPress: colors.stone800,
+    interactiveNeutralContent: colors.stone100,
+    interactiveNeutralContentPress: colors.stone50,
+
+    interactiveNeutralSecondary: colors.stone950,
+    interactiveNeutralSecondaryPress: colors.stone900,
+
+    interactiveNeutralReversed: colors.stone10,
+    interactiveNeutralReversedPress: colors.stone100,
+    interactiveNeutralReversedContent: colors.stone900,
+    interactiveNeutralReversedContentPress: colors.stone990,
+
+    backgroundScreen: colors.stone990,
+    backgroundScreenSecondary: colors.stone950,
+    backgroundElevated: `${colors.stone950}`,
+    backgroundNeutral: `${colors.stone200}15`,
+    backgroundOverlay: `${colors.stone100}80`,
+
+    baseLight: colors.stone10,
+    baseDark: colors.stone990,
+
+    borderNeutral: `${colors.stone10}10`,
+    borderNeutralSecondary: `${colors.stone10}30`,
+
+    contentPrimary: colors.stone10,
+    contentSecondary: colors.stone100,
+    contentTertiary: colors.stone300,
+    contentAccent: colors.brightOrange200,
+    contentAccentSecondary: colors.brightOrange400,
+  },
+} as const;
+
+export type Theme =
+  | typeof lightTealTheme
+  | typeof darkTealTheme
+  | typeof lightOrangeTheme
+  | typeof darkOrangeTheme;

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { type Theme } from '../../themes/config';
 import { Text } from '../Text';
 import { Backspace } from './Backspace';
 import { Key } from './Key';
@@ -8,6 +9,14 @@ import { PinDot } from './PinDot';
 
 const config = {
   pinLength: 6,
+};
+
+const createPasscodeEntryTokens = (theme: Theme) => {
+  return {
+    colors: {
+      keyContent: theme.colors.interactiveNeutralContent,
+    },
+  };
 };
 
 /**
@@ -23,6 +32,10 @@ export type Props = {
 export const PasscodeEntry = ({ onPasscodeEntered }: Props) => {
   const [pin, setPin] = useState<string>('');
   const { theme } = useUnistyles();
+  const passcodeEntryTokens = useMemo(
+    () => createPasscodeEntryTokens(theme),
+    [theme],
+  );
 
   const handlePinKeyPress = (value: number) => {
     if (pin.length < config.pinLength) {
@@ -92,7 +105,10 @@ export const PasscodeEntry = ({ onPasscodeEntered }: Props) => {
             <Text style={styles.pinKeyText}>0</Text>
           </Key>
           <Key onPress={handleBackspaceKeyPress} ariaLabel="Backspace">
-            <Backspace color={theme.colors.contentPrimary} size={28} />
+            <Backspace
+              color={passcodeEntryTokens.colors.keyContent}
+              size={28}
+            />
           </Key>
         </View>
       </View>
@@ -100,30 +116,34 @@ export const PasscodeEntry = ({ onPasscodeEntered }: Props) => {
   );
 };
 
-const styles = StyleSheet.create(({ spacing, textVariants }) => ({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  pinDotsContainer: {
-    flexDirection: 'row',
-    gap: spacing.medium,
-    paddingVertical: spacing.xxlarge,
-  },
-  pinKeysContainer: {
-    marginVertical: spacing.large,
-  },
-  pinKeysRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.xxlarge,
-    marginBottom: spacing.large,
-  },
-  pinKeysRowSpacer: {
-    width: 70,
-  },
-  pinKeyText: {
-    ...textVariants.heading3,
-  },
-}));
+const styles = StyleSheet.create(theme => {
+  const passcodeEntryTokens = createPasscodeEntryTokens(theme);
+  return {
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'space-around',
+    },
+    pinDotsContainer: {
+      flexDirection: 'row',
+      gap: theme.spacing.medium,
+      paddingVertical: theme.spacing.xxlarge,
+    },
+    pinKeysContainer: {
+      marginVertical: theme.spacing.large,
+    },
+    pinKeysRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: theme.spacing.xxlarge,
+      marginBottom: theme.spacing.large,
+    },
+    pinKeysRowSpacer: {
+      width: 70,
+    },
+    pinKeyText: {
+      color: passcodeEntryTokens.colors.keyContent,
+      ...theme.textVariants.heading3,
+    },
+  };
+});

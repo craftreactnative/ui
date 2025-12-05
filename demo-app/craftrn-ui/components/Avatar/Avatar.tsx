@@ -8,21 +8,6 @@ import {
 import { StyleSheet } from 'react-native-unistyles';
 import { Text } from '../Text';
 
-export const config = {
-  small: {
-    avatarSize: 32,
-    indicatorSize: 10,
-  },
-  medium: {
-    avatarSize: 40,
-    indicatorSize: 10,
-  },
-  large: {
-    avatarSize: 48,
-    indicatorSize: 12,
-  },
-};
-
 /**
  * Color of the avatar when the image cannot be loaded.
  */
@@ -84,26 +69,30 @@ export const Avatar = ({
 }: AvatarProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const avatarIndicatorSize = config[size].indicatorSize;
+  const hasValidSource =
+    source &&
+    (typeof source === 'number' ||
+      !('uri' in source) ||
+      (source.uri && source.uri.trim() !== ''));
 
   return (
     <View
       style={[
         styles.container({ size }),
-        (!source || !imageLoaded) &&
-          styles.containerFallback({ color: fallbackColor }),
+        (!hasValidSource || !imageLoaded) &&
+          styles.containerColor({ color: fallbackColor }),
       ]}
       accessible
       accessibilityHint={showOnlineIndicator ? 'online' : undefined}
       {...accessibilityProps}
     >
       <View style={styles.fallbackContainer}>
-        {(!source || !imageLoaded) && (
+        {(!hasValidSource || !imageLoaded) && (
           <Text variant={textVariantBySize[size]} style={styles.text}>
             {fallbackInitials}
           </Text>
         )}
-        {source && (
+        {hasValidSource && (
           <Image
             source={source}
             style={[styles.image, { opacity: imageLoaded ? 1 : 0 }]}
@@ -112,51 +101,44 @@ export const Avatar = ({
           />
         )}
       </View>
-      {showOnlineIndicator && (
-        <View
-          style={[
-            styles.indicator,
-            { width: avatarIndicatorSize, height: avatarIndicatorSize },
-          ]}
-        />
-      )}
+      {showOnlineIndicator && <View style={[styles.indicator({ size })]} />}
     </View>
   );
 };
 
-const styles = StyleSheet.create(({ borderRadius, colors, spacing }) => ({
+const styles = StyleSheet.create(theme => ({
   container: (params: { size: 'small' | 'medium' | 'large' }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
     ...(params.size === 'small' && {
-      width: config.small.avatarSize,
-      height: config.small.avatarSize,
-      borderRadius: borderRadius.small,
+      width: 32,
+      height: 32,
+      borderRadius: theme.borderRadius.full,
     }),
     ...(params.size === 'medium' && {
-      width: config.medium.avatarSize,
-      height: config.medium.avatarSize,
-      borderRadius: borderRadius.medium,
+      width: 44,
+      height: 44,
+      borderRadius: theme.borderRadius.full,
     }),
     ...(params.size === 'large' && {
-      width: config.large.avatarSize,
-      height: config.large.avatarSize,
-      borderRadius: borderRadius.medium,
+      width: 56,
+      height: 56,
+      borderRadius: theme.borderRadius.full,
     }),
   }),
-  containerFallback: (params: { color: number }) => ({
+  containerColor: (params: { color: AvatarColor }) => ({
     ...(params.color === 0 && {
-      backgroundColor: colors.wineStrong,
+      backgroundColor: theme.colors.purple,
     }),
     ...(params.color === 1 && {
-      backgroundColor: colors.berryStrong,
+      backgroundColor: theme.colors.maroon,
     }),
     ...(params.color === 2 && {
-      backgroundColor: colors.darkOliveStrong,
+      backgroundColor: theme.colors.forest,
     }),
     ...(params.color === 3 && {
-      backgroundColor: colors.imperialBlueStrong,
+      backgroundColor: theme.colors.steel,
     }),
   }),
   fallbackContainer: {
@@ -167,22 +149,34 @@ const styles = StyleSheet.create(({ borderRadius, colors, spacing }) => ({
     position: 'relative',
   },
   image: {
-    borderRadius: borderRadius.medium,
+    borderRadius: theme.borderRadius.full,
     width: '100%',
     height: '100%',
     position: 'absolute',
   },
   text: {
-    color: colors.white,
+    color: theme.colors.baseLight,
     fontWeight: 'bold',
   },
-  indicator: {
+  indicator: (params: { size: 'small' | 'medium' | 'large' }) => ({
     position: 'absolute',
-    bottom: -spacing.xsmall,
-    right: -spacing.xsmall,
-    borderRadius: borderRadius.full,
+    bottom: 0,
+    right: 0,
+    borderRadius: theme.borderRadius.full,
     borderWidth: 1,
-    borderColor: colors.white,
-    backgroundColor: colors.positivePrimary,
-  },
+    borderColor: theme.colors.baseLight,
+    backgroundColor: theme.colors.sentimentPositive,
+    ...(params.size === 'small' && {
+      width: 10,
+      height: 10,
+    }),
+    ...(params.size === 'medium' && {
+      width: 12,
+      height: 12,
+    }),
+    ...(params.size === 'large' && {
+      width: 14,
+      height: 14,
+    }),
+  }),
 }));

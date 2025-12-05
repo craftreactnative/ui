@@ -1,19 +1,20 @@
-import { default as React, useEffect } from 'react';
-import { AccessibilityProps, Pressable } from 'react-native';
+import React, { useEffect } from 'react';
+import { AccessibilityProps } from 'react-native';
 import Animated, {
-  Easing,
-  interpolateColor,
   useAnimatedStyle,
   useSharedValue,
-  withDelay,
-  withSequence,
   withTiming,
 } from 'react-native-reanimated';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { PressableScale, type AnimationConfig } from '../PressableScale';
 
-export const config = {
-  size: 24,
-  dotSize: 8,
+const animConfig = {
+  duration: 200,
+};
+
+const sizeConfig = {
+  container: 24,
+  dot: 10,
 };
 
 /**
@@ -32,6 +33,11 @@ export type Props = {
    * Callback when the radio is pressed.
    */
   onPress?: (isChecked: boolean) => void;
+  /**
+   * Animation configuration for press interactions
+   * @default { scaleIn: 1.1, durationIn: 150, durationOut: 150 }
+   */
+  animationConfig?: AnimationConfig;
 };
 
 type RadioProps = Props & AccessibilityProps;
@@ -40,80 +46,79 @@ export const Radio = ({
   checked = false,
   disabled = false,
   onPress,
+  animationConfig = {
+    scaleIn: 1.1,
+  },
   ...accessibilityProps
 }: RadioProps) => {
   const { theme } = useUnistyles();
-  const scale = useSharedValue(1);
-  const appearance = useSharedValue(0);
+  const appearance = useSharedValue(checked ? 1 : 0);
 
   useEffect(() => {
-    scale.value = withSequence(
-      withTiming(0.9, { duration: 100, easing: Easing.bounce }),
-      withTiming(1, { duration: 100 }),
-    );
+    appearance.value = withTiming(checked ? 1 : 0, {
+      duration: animConfig.duration,
+    });
+  }, [checked, appearance, animConfig.duration]);
 
-    appearance.value = withDelay(
-      30,
-      withTiming(checked ? 1 : 0, { duration: 200 }),
-    );
-  }, [checked, scale, appearance]);
-
-  const containerAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-    backgroundColor: interpolateColor(
-      appearance.value,
-      [0, 1],
-      [theme.colors.backgroundSecondary, theme.colors.accentPrimary],
-    ),
-    borderColor: interpolateColor(
-      appearance.value,
-      [0, 1],
-      [theme.colors.borderPrimary, theme.colors.accentPrimary],
-    ),
-  }));
-
-  const iconAnimatedStyle = useAnimatedStyle(() => ({
+  const checkedAnimatedStyle = useAnimatedStyle(() => ({
     opacity: appearance.value,
   }));
 
+  const dotAnimatedStyle = useAnimatedStyle(() => {
+    const size =
+      appearance.value * (sizeConfig.dot - sizeConfig.container) +
+      sizeConfig.container;
+
+    return {
+      width: size,
+      height: size,
+    };
+  });
+
   return (
-    <Pressable
+    <PressableScale
       onPress={() => onPress?.(!checked)}
       accessible
       role="radio"
       aria-checked={checked}
       disabled={disabled}
+      animationConfig={animationConfig}
       {...accessibilityProps}
     >
       <Animated.View
-        style={[
-          styles.container,
-          containerAnimatedStyle,
-          disabled && styles.containerDisabled,
-        ]}
+        style={[styles.container, disabled && styles.containerDisabled]}
       >
-        <Animated.View style={[styles.icon, iconAnimatedStyle]} />
+        <Animated.View style={[styles.checked, checkedAnimatedStyle]}>
+          <Animated.View style={[styles.dot, dotAnimatedStyle]} />
+        </Animated.View>
       </Animated.View>
-    </Pressable>
+    </PressableScale>
   );
 };
 
-const styles = StyleSheet.create(({ borderRadius, colors }) => ({
+const styles = StyleSheet.create(theme => ({
   container: {
-    borderRadius: borderRadius.full,
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: config.size,
-    height: config.size,
+    borderRadius: theme.borderRadius.full,
+    backgroundColor: theme.colors.interactiveNeutral,
+    overflow: 'hidden',
+    width: sizeConfig.container,
+    height: sizeConfig.container,
   },
   containerDisabled: {
     opacity: 0.5,
   },
-  icon: {
-    borderRadius: borderRadius.full,
-    backgroundColor: colors.white,
-    width: config.dotSize,
-    height: config.dotSize,
+  checked: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: theme.colors.contentAccentSecondary,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dot: {
+    borderRadius: theme.borderRadius.full,
+    backgroundColor: theme.colors.baseLight,
   },
 }));

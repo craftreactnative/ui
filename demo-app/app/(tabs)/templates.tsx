@@ -40,15 +40,12 @@ import ParallaxScrollView from '@/components/ParallaxScrollView/ParallaxScrollVi
 import { Card } from '@/craftrn-ui/components/Card/Card';
 import { ListItem } from '@/craftrn-ui/components/ListItem/ListItem';
 import { ChevronRight } from '@/tetrisly-icons/ChevronRight';
-import { Settings } from '@/tetrisly-icons/Settings';
 import { Href, useRouter } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import { ComponentType } from 'react';
 import {
   Image,
   ImageSourcePropType,
-  Linking,
-  Platform,
   Pressable,
   Text,
   useColorScheme,
@@ -77,14 +74,6 @@ export const MenuItem: ComponentType<{
       </Pressable>
     </Card>
   );
-};
-
-const openDeviceSettings = () => {
-  if (Platform.OS === 'ios') {
-    Linking.openURL('App-Prefs:root=DISPLAY');
-  } else if (Platform.OS === 'android') {
-    Linking.sendIntent('android.settings.DISPLAY_SETTINGS', []);
-  }
 };
 
 export default function TemplatesScreen() {
@@ -259,23 +248,6 @@ export default function TemplatesScreen() {
               colorScheme === 'light' ? tradingOrderLight : tradingOrderDark
             }
           />
-
-          <View style={styles.themeButtonContainer}>
-            <Card>
-              <ListItem
-                text="Change theme in Settings"
-                textBelow={`${colorScheme === 'dark' ? 'Dark' : 'Light'} mode enabled`}
-                style={styles.listItem}
-                itemLeft={
-                  <View style={styles.themeIconContainer}>
-                    <Settings color={theme.colors.contentPrimary} />
-                  </View>
-                }
-                itemRight={<ChevronRight color={theme.colors.contentPrimary} />}
-                onPress={openDeviceSettings}
-              />
-            </Card>
-          </View>
         </View>
       </ParallaxScrollView>
 
@@ -290,7 +262,7 @@ export default function TemplatesScreen() {
               WebBrowser.openBrowserAsync(
                 'https://www.craftreactnative.com/pricing',
                 {
-                  controlsColor: theme.colors.accentPrimary,
+                  controlsColor: theme.colors.contentAccentSecondary,
                   presentationStyle:
                     WebBrowser.WebBrowserPresentationStyle.PAGE_SHEET,
                 },
@@ -306,7 +278,7 @@ export default function TemplatesScreen() {
 const styles = StyleSheet.create(theme => ({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.backgroundSecondary,
+    backgroundColor: theme.colors.backgroundScreen,
   },
   scrollViewContent: {
     paddingHorizontal: theme.spacing.large,
@@ -316,10 +288,10 @@ const styles = StyleSheet.create(theme => ({
   listItem: {
     paddingVertical: theme.spacing.medium,
     paddingHorizontal: theme.spacing.medium,
-    backgroundColor: theme.colors.surfacePrimary,
+    backgroundColor: theme.colors.backgroundElevated,
   },
   menuItemCard: {
-    backgroundColor: theme.colors.surfacePrimary,
+    backgroundColor: theme.colors.backgroundElevated,
   },
   menuItem: {
     flexDirection: 'row',
@@ -343,11 +315,11 @@ const styles = StyleSheet.create(theme => ({
     color: theme.colors.contentSecondary,
   },
   fixedBottomContainer: {
-    backgroundColor: theme.colors.backgroundSecondary,
+    backgroundColor: theme.colors.backgroundScreen,
     paddingHorizontal: theme.spacing.large,
     paddingBottom: theme.spacing.large,
     paddingTop: theme.spacing.large,
-    shadowColor: theme.colors.shadowPrimary,
+    shadowColor: theme.colors.baseDark,
     shadowOffset: {
       width: 0,
       height: -4,

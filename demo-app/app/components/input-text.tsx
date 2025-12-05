@@ -1,10 +1,11 @@
 import { Button } from '@/craftrn-ui/components/Button';
 import { Card } from '@/craftrn-ui/components/Card';
+import { Divider } from '@/craftrn-ui/components/Divider';
 import { InputText } from '@/craftrn-ui/components/InputText';
 import { ListItem } from '@/craftrn-ui/components/ListItem';
 import { Switch } from '@/craftrn-ui/components/Switch';
-import { Search } from '@/tetrisly-icons/Search';
-import { Slider } from '@/tetrisly-icons/Slider';
+import { File } from '@/tetrisly-icons/File';
+import { Lock } from '@/tetrisly-icons/Lock';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { Stack } from 'expo-router';
 import React, { useCallback, useState } from 'react';
@@ -24,8 +25,8 @@ export default function InputTextScreen() {
 
   const [size, setSize] = useState<InputTextSize>('medium');
   const [hasLabel, setHasLabel] = useState(true);
-  const [hasLeftAccessory, setHasLeftAccessory] = useState(false);
-  const [hasRightAccessory, setHasRightAccessory] = useState(false);
+  const [hasItemLeft, setHasItemLeft] = useState(false);
+  const [hasItemRight, setHasItemRight] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [value, setValue] = useState('');
 
@@ -64,17 +65,17 @@ export default function InputTextScreen() {
               {...(hasLabel && size !== 'small'
                 ? { label: 'Sample Label' }
                 : { placeholder: 'Enter text here...' })}
-              leftAccessory={
-                hasLeftAccessory ? (
-                  <View style={styles.leftAccessory}>
-                    <Search color={theme.colors.contentPrimary} />
+              itemLeft={
+                hasItemLeft ? (
+                  <View style={styles.itemLeft}>
+                    <File color={theme.colors.contentTertiary} />
                   </View>
                 ) : undefined
               }
-              rightAccessory={
-                hasRightAccessory ? (
-                  <View style={styles.rightAccessory}>
-                    <Slider color={theme.colors.contentPrimary} />
+              itemRight={
+                hasItemRight ? (
+                  <View style={styles.itemRight}>
+                    <Lock color={theme.colors.contentTertiary} />
                   </View>
                 ) : undefined
               }
@@ -95,8 +96,7 @@ export default function InputTextScreen() {
                 <Button
                   key={s}
                   size="small"
-                  variant="subtle"
-                  intent={size === s ? 'primary' : 'secondary'}
+                  variant={size === s ? 'secondary' : 'neutral'}
                   onPress={() => handleSizeChange(s)}
                 >
                   {s.charAt(0).toUpperCase() + s.slice(1)}
@@ -104,7 +104,7 @@ export default function InputTextScreen() {
               ))}
             </View>
           </View>
-          <View style={styles.divider} />
+          <Divider style={styles.divider} />
 
           {/* Toggle Controls */}
           <ListItem
@@ -125,25 +125,19 @@ export default function InputTextScreen() {
           />
 
           <ListItem
-            text="Left Accessory"
-            textBelow="Show search icon on the left"
+            text="Item Left"
+            textBelow="Show icon on the left"
             itemRight={
-              <Switch
-                value={hasLeftAccessory}
-                onValueChange={setHasLeftAccessory}
-              />
+              <Switch value={hasItemLeft} onValueChange={setHasItemLeft} />
             }
             divider
           />
 
           <ListItem
-            text="Right Accessory"
-            textBelow="Show slider icon on the right"
+            text="Item Right"
+            textBelow="Show icon on the right"
             itemRight={
-              <Switch
-                value={hasRightAccessory}
-                onValueChange={setHasRightAccessory}
-              />
+              <Switch value={hasItemRight} onValueChange={setHasItemRight} />
             }
             divider
           />
@@ -167,7 +161,7 @@ const styles = StyleSheet.create(theme => ({
     paddingBottom: UnistylesRuntime.insets.bottom + theme.spacing.medium,
   },
   demoSection: {
-    flex: 1,
+    height: 300,
     marginBottom: theme.spacing.large,
   },
   demoContainer: {
@@ -177,10 +171,10 @@ const styles = StyleSheet.create(theme => ({
   },
   controlsCard: {
     padding: theme.spacing.large,
-    gap: theme.spacing.large,
+    gap: theme.spacing.small,
   },
   controlSection: {
-    gap: theme.spacing.medium,
+    gap: theme.spacing.small,
   },
   toggleGroup: {
     flexDirection: 'row',
@@ -188,15 +182,13 @@ const styles = StyleSheet.create(theme => ({
     flexWrap: 'wrap',
   },
   divider: {
-    height: 1,
-    backgroundColor: theme.colors.surfaceSecondary,
     marginVertical: theme.spacing.xsmall,
   },
-  leftAccessory: {
-    marginRight: theme.spacing.small,
+  itemLeft: {
+    marginRight: theme.spacing.xsmall,
   },
-  rightAccessory: {
-    marginLeft: theme.spacing.small,
+  itemRight: {
+    marginLeft: theme.spacing.xsmall,
   },
   keyboardView: {
     flex: 1,

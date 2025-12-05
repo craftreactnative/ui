@@ -1,28 +1,49 @@
-import React, { ReactElement } from 'react';
-import { AccessibilityProps, Pressable, View } from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import React, { ReactElement, useMemo } from 'react';
+import { AccessibilityProps } from 'react-native';
+import Animated, {
+  interpolateColor,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
+import {
+  StyleSheet,
+  UnistylesRuntime,
+  useUnistyles,
+} from 'react-native-unistyles';
+import { PressableScale, type AnimationConfig } from '../PressableScale';
+
+/**
+ * Convert a hex color to grayscale using luminance formula (0.299*R + 0.587*G + 0.114*B)
+ */
+const hexToGrayscale = (hex: string): string =>
+  `#${Math.round(
+    0.299 * parseInt(hex.slice(1, 3), 16) +
+      0.587 * parseInt(hex.slice(3, 5), 16) +
+      0.114 * parseInt(hex.slice(5, 7), 16),
+  )
+    .toString(16)
+    .padStart(2, '0')
+    .repeat(3)}${hex.length === 9 ? hex.slice(7) : ''}`;
 
 type Size = 'large' | 'medium' | 'small';
-type Intent = 'primary' | 'secondary';
-type Variant = 'default' | 'reversed' | 'accent';
+type Variant =
+  | 'primary'
+  | 'secondary'
+  | 'neutral'
+  | 'neutral-secondary'
+  | 'reversed';
 
-export const config = {
-  small: {
-    buttonSize: 24,
-    iconSize: 14,
-    hitSlop: 2,
-  },
-  medium: {
-    buttonSize: 32,
-    iconSize: 18,
-    hitSlop: 2,
-  },
-  large: {
-    buttonSize: 40,
-    iconSize: 24,
-    hitSlop: 2,
-  },
-};
+const hitSlop = {
+  small: 4,
+  medium: 2,
+  large: 2,
+} as const;
+
+const iconSize = {
+  small: 14,
+  medium: 18,
+  large: 24,
+} as const;
 
 type BaseProps = {
   /**
@@ -48,157 +69,139 @@ type BaseProps = {
    * @default 'medium'
    */
   size?: Size;
-};
-
-type DefaultVariantProps = BaseProps & {
   /**
    * The visual style variant of the button.
-   * @default 'default'
-   */
-  variant?: 'default';
-  /**
-   * The intent/purpose of the button.
    * @default 'primary'
    */
-  intent?: Intent;
-};
-
-type AccentVariantProps = BaseProps & {
+  variant?: Variant;
   /**
-   * The visual style variant of the button.
+   * Animation configuration for press interactions
+   * @default { scaleIn: 1, durationIn: 150, durationOut: 150, easing: Easing.out(Easing.cubic) }
    */
-  variant: 'accent';
-  /**
-   * Intent is not available for accent variant.
-   */
-  intent?: never;
-};
-
-type ReversedVariantProps = BaseProps & {
-  /**
-   * The visual style variant of the button.
-   */
-  variant: 'reversed';
-  /**
-   * Intent is not available for reversed variant.
-   */
-  intent?: never;
+  animationConfig?: AnimationConfig;
 };
 
 /**
  * Props for the ButtonRound component.
+ * @see AccessibilityProps
  */
-export type Props =
-  | DefaultVariantProps
-  | AccentVariantProps
-  | ReversedVariantProps;
-
-type ButtonRoundProps = Props & AccessibilityProps;
-
-const getButtonStyles = (
-  intent: Intent | undefined,
-  variant: Variant,
-  pressed: boolean,
-  disabled: boolean,
-  colors: Record<string, string>,
-) => {
-  if (disabled) {
-    return {
-      backgroundColor: colors.surfaceSecondary,
-    };
-  }
-
-  switch (variant) {
-    case 'accent':
-      return {
-        backgroundColor: pressed
-          ? colors.accentSecondary
-          : colors.accentPrimary,
-      };
-    case 'reversed':
-      return {
-        backgroundColor: pressed
-          ? colors.surfaceReversedSecondary
-          : colors.surfaceReversedPrimary,
-      };
-    case 'default':
-      switch (intent ?? 'primary') {
-        case 'primary':
-          return {
-            backgroundColor: pressed
-              ? colors.surfaceTertiary
-              : colors.surfacePrimary,
-          };
-        case 'secondary':
-          return {
-            backgroundColor: pressed
-              ? colors.surfaceTertiary
-              : colors.surfaceSecondary,
-          };
-      }
-  }
-};
+export type Props = BaseProps & AccessibilityProps;
 
 export const ButtonRound = ({
   onPress,
   size = 'medium',
   disabled = false,
   renderContent,
-  intent = 'primary',
-  variant = 'default',
+  variant = 'primary',
+  animationConfig,
   ...accessibilityProps
-}: ButtonRoundProps) => {
+}: Props) => {
   const { theme } = useUnistyles();
-  const { iconSize, hitSlop } = config[size];
+  const pressProgress = useSharedValue(0);
 
-  const iconVariantColor = {
-    accent: theme.colors.white,
-    reversed: theme.colors.contentReversed,
-    default: theme.colors.contentPrimary,
-  };
+  const colorConfig = useMemo(() => {
+    let backgroundUnpressed: string;
+    let backgroundPressed: string;
+    let iconColor: string;
+
+    switch (variant) {
+      case 'primary':
+        backgroundUnpressed = theme.colors.interactivePrimary;
+        backgroundPressed = theme.colors.interactivePrimaryPress;
+        iconColor = theme.colors.interactivePrimaryContent;
+        break;
+      case 'secondary':
+        backgroundUnpressed = theme.colors.interactiveSecondary;
+        backgroundPressed = theme.colors.interactiveSecondaryPress;
+        iconColor = theme.colors.interactiveSecondaryContent;
+        break;
+      case 'neutral':
+        backgroundUnpressed = theme.colors.interactiveNeutral;
+        backgroundPressed = theme.colors.interactiveNeutralPress;
+        iconColor = theme.colors.interactiveNeutralContent;
+        break;
+      case 'neutral-secondary':
+        backgroundUnpressed = theme.colors.interactiveNeutralSecondary;
+        backgroundPressed = theme.colors.interactiveNeutralSecondaryPress;
+        iconColor = theme.colors.interactiveNeutralContent;
+        break;
+      case 'reversed':
+        backgroundUnpressed = theme.colors.interactiveNeutralReversed;
+        backgroundPressed = theme.colors.interactiveNeutralReversedPress;
+        iconColor = theme.colors.interactiveNeutralReversedContent;
+        break;
+    }
+
+    if (disabled) {
+      backgroundUnpressed = hexToGrayscale(backgroundUnpressed);
+      iconColor = hexToGrayscale(iconColor);
+    }
+
+    return {
+      backgroundUnpressed,
+      backgroundPressed,
+      iconColor,
+    };
+  }, [variant, disabled, theme]);
+
+  const backgroundStyle = useAnimatedStyle(
+    () => ({
+      backgroundColor: interpolateColor(
+        pressProgress.value,
+        [0, 1],
+        [colorConfig.backgroundUnpressed, colorConfig.backgroundPressed],
+      ),
+    }),
+    [colorConfig.backgroundUnpressed, colorConfig.backgroundPressed],
+  );
 
   return (
-    <Pressable
+    <PressableScale
       onPress={onPress}
       disabled={disabled}
-      hitSlop={hitSlop}
+      hitSlop={hitSlop[size]}
       role="button"
+      style={styles.pressable}
+      animationConfig={animationConfig}
+      pressProgress={pressProgress}
       {...accessibilityProps}
     >
-      {({ pressed }) => (
-        <View
-          style={[
-            styles.button({ disabled, size }),
-            getButtonStyles(intent, variant, pressed, disabled, theme.colors),
-          ]}
-        >
-          {renderContent({
-            iconSize,
-            iconColor: iconVariantColor[variant],
-          })}
-        </View>
-      )}
-    </Pressable>
+      <Animated.View
+        key={`button-round-${UnistylesRuntime.themeName}`}
+        style={[styles.button({ disabled, size }), backgroundStyle]}
+      >
+        {renderContent({
+          iconSize: iconSize[size],
+          iconColor: colorConfig.iconColor,
+        })}
+      </Animated.View>
+    </PressableScale>
   );
 };
 
-const styles = StyleSheet.create(({ borderRadius }) => ({
-  button: ({ disabled, size }: { disabled: boolean; size: Size }) => ({
+const styles = StyleSheet.create(theme => ({
+  pressable: {
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: borderRadius.full,
-    opacity: disabled ? 0.5 : 1,
-    ...(size === 'small' && {
-      width: config.small.buttonSize,
-      height: config.small.buttonSize,
-    }),
-    ...(size === 'medium' && {
-      width: config.medium.buttonSize,
-      height: config.medium.buttonSize,
-    }),
-    ...(size === 'large' && {
-      width: config.large.buttonSize,
-      height: config.large.buttonSize,
-    }),
-  }),
+  },
+  button: ({ disabled, size }: { disabled: boolean; size: Size }) => {
+    return {
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: theme.borderRadius.full,
+      opacity: disabled ? 0.5 : 1,
+      ...(size === 'small' && {
+        width: 24,
+        height: 24,
+      }),
+      ...(size === 'medium' && {
+        width: 32,
+        height: 32,
+      }),
+      ...(size === 'large' && {
+        width: 40,
+        height: 40,
+      }),
+    };
+  },
 }));

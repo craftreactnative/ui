@@ -1,6 +1,7 @@
 import React from 'react';
 import { AccessibilityProps, Pressable, View, ViewProps } from 'react-native';
-import { StyleSheet, withUnistyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
+import { Divider } from '../Divider';
 import { Text } from '../Text';
 
 /**
@@ -8,7 +9,7 @@ import { Text } from '../Text';
  */
 export type Props = Pick<ViewProps, 'style'> & {
   /**
-   * Left accessory element. Will be placed before the content.
+   * Left element. Will be placed before the content.
    */
   itemLeft?: React.ReactElement;
   /**
@@ -24,7 +25,7 @@ export type Props = Pick<ViewProps, 'style'> & {
    */
   textBelow?: string;
   /**
-   * Right accessory element. Will be placed after the text.
+   * Right element. Will be placed after the text.
    */
   itemRight?: React.ReactElement;
   /**
@@ -43,7 +44,7 @@ export type Props = Pick<ViewProps, 'style'> & {
 
 type ListItemProps = Props & AccessibilityProps;
 
-const ListItemComponent = ({
+export const ListItem = ({
   itemLeft,
   textAbove,
   text,
@@ -73,21 +74,21 @@ const ListItemComponent = ({
             {itemLeft}
             <View style={styles.itemContent}>
               {textAbove && (
-                <Text variant="body3" color="contentSecondary">
+                <Text variant="body3" color="contentTertiary">
                   {textAbove}
                 </Text>
               )}
               <Text
                 variant="body2"
                 color={
-                  variant === 'danger' ? 'negativeSecondary' : 'contentPrimary'
+                  variant === 'danger' ? 'sentimentNegative' : 'contentPrimary'
                 }
-                style={styles.itemText}
+                style={styles.text}
               >
                 {text}
               </Text>
               {textBelow && (
-                <Text variant="body3" color="contentSecondary">
+                <Text variant="body3" color="contentTertiary">
                   {textBelow}
                 </Text>
               )}
@@ -96,34 +97,29 @@ const ListItemComponent = ({
           </View>
         )}
       </Pressable>
-      {divider && <View style={styles.itemDivider} />}
+      {divider && <Divider />}
     </>
   );
 };
 
-export const ListItem = withUnistyles(ListItemComponent);
-
-const styles = StyleSheet.create(({ colors, spacing }) => ({
+const styles = StyleSheet.create(theme => ({
   itemContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    gap: spacing.small,
+    gap: theme.spacing.small,
   },
   itemContainerPressed: {
-    backgroundColor: colors.surfaceTertiary,
+    backgroundColor: theme.colors.interactiveNeutralPress,
   },
   itemContent: {
     flex: 1,
     flexShrink: 1,
     minWidth: 100,
-    gap: spacing.xxsmall,
+    gap: theme.spacing.xxsmall,
+    paddingVertical: theme.spacing.xxsmall,
   },
-  itemText: {
-    fontWeight: 'bold',
-  },
-  itemDivider: {
-    borderBottomColor: colors.surfaceSecondary,
-    borderBottomWidth: 1,
+  text: {
+    fontWeight: '500',
   },
 }));

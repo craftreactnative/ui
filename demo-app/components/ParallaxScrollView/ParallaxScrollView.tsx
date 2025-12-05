@@ -10,7 +10,7 @@ import Animated, {
   useAnimatedStyle,
   useScrollViewOffset,
 } from 'react-native-reanimated';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 
 const HEADER_HEIGHT = 200;
 
@@ -19,8 +19,7 @@ type Props = PropsWithChildren<{
 }>;
 
 export default function ParallaxScrollView({ children, title }: Props) {
-  const { theme } = useUnistyles();
-  const { theme: currentTheme } = useTheme();
+  const { mode } = useTheme();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
   const headerAnimatedStyle = useAnimatedStyle(() => {
@@ -51,18 +50,10 @@ export default function ParallaxScrollView({ children, title }: Props) {
       scrollIndicatorInsets={{ bottom: 0 }}
       contentContainerStyle={{ paddingBottom: 0 }}
     >
-      <Animated.View
-        style={[
-          styles.header,
-          { backgroundColor: theme.colors.backgroundPrimary },
-          headerAnimatedStyle,
-        ]}
-      >
+      <Animated.View style={[styles.header, headerAnimatedStyle]}>
         <View style={styles.parallaxHeader}>
           <Image
-            source={
-              currentTheme === 'light' ? CraftRNLogoLight : CraftRNLogoDark
-            }
+            source={mode === 'light' ? CraftRNLogoLight : CraftRNLogoDark}
             style={styles.headerLogo}
           />
           <Text variant="heading1">{title}</Text>
@@ -77,6 +68,7 @@ const styles = StyleSheet.create(theme => ({
   header: {
     height: HEADER_HEIGHT,
     overflow: 'hidden',
+    backgroundColor: theme.colors.backgroundElevated,
   },
   parallaxHeader: {
     bottom: theme.spacing.large,
