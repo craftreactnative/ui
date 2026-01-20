@@ -40,7 +40,7 @@ const hitSlop = {
   large: { top: 0, bottom: 0, left: 0, right: 0 },
 } as const;
 
-type BaseProps = {
+export type Props = {
   /**
    * The text content of the button.
    */
@@ -68,13 +68,17 @@ type BaseProps = {
    * Animation configuration for press interactions
    */
   animationConfig?: AnimationConfig;
+  /**
+   * Optional icon to display on the left side of the button text
+   */
+  iconLeft?: React.ReactNode;
 };
 
 /**
  * Props for the Button component.
  * @see AccessibilityProps
  */
-export type Props = BaseProps & AccessibilityProps;
+export type ButtonProps = Props & AccessibilityProps;
 
 export const Button = ({
   children,
@@ -83,8 +87,9 @@ export const Button = ({
   disabled = false,
   variant = 'primary',
   animationConfig,
+  iconLeft,
   ...accessibilityProps
-}: Props) => {
+}: ButtonProps) => {
   const { theme } = useUnistyles();
   const pressProgress = useSharedValue(0);
 
@@ -183,6 +188,9 @@ export const Button = ({
         key={`button-bg-${UnistylesRuntime.themeName}`}
         style={[styles.button({ size, disabled }), backgroundStyle]}
       >
+        {iconLeft && (
+          <Animated.View style={styles.iconLeft}>{iconLeft}</Animated.View>
+        )}
         <Animated.Text
           key={`button-text-${UnistylesRuntime.themeName}`}
           style={[styles.text({ size }), textStyle]}
@@ -197,6 +205,7 @@ export const Button = ({
 const styles = StyleSheet.create(theme => ({
   button: ({ size, disabled }: { size: Size; disabled: boolean }) => {
     return {
+      flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
       opacity: disabled ? 0.5 : 1,
@@ -220,6 +229,9 @@ const styles = StyleSheet.create(theme => ({
         paddingVertical: theme.spacing.medium,
       }),
     };
+  },
+  iconLeft: {
+    marginRight: theme.spacing.xsmall,
   },
   text: ({ size }: { size: Size }) => ({
     textAlign: 'center',
