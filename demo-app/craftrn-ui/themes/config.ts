@@ -102,6 +102,10 @@ const fontSizes = {
     fontSize: 12,
     lineHeight: 15,
   },
+  xxsmall: {
+    fontSize: 10,
+    lineHeight: 12,
+  },
 } as const;
 
 const baseTheme = {
@@ -163,6 +167,10 @@ const baseTheme = {
       ...fontSizes.xsmall,
       fontWeight: '400' as const,
     },
+    body4: {
+      ...fontSizes.xxsmall,
+      fontWeight: '400' as const,
+    }
   },
 } as const;
 
@@ -250,7 +258,7 @@ export const lightTealTheme = {
     contentPrimary: colors.slate990,
     contentSecondary: colors.slate900,
     contentTertiary: colors.slate700,
-    contentAccent: colors.darkTeal800,
+    contentAccent: colors.darkTeal700,
     contentAccentSecondary: colors.darkTeal500,
   },
 } as const;
@@ -298,7 +306,7 @@ export const darkTealTheme = {
     contentPrimary: colors.slate10,
     contentSecondary: colors.slate100,
     contentTertiary: colors.slate300,
-    contentAccent: colors.brightTeal200,
+    contentAccent: colors.brightTeal300,
     contentAccentSecondary: colors.brightTeal400,
   },
 } as const;
@@ -345,7 +353,7 @@ export const lightOrangeTheme = {
     contentPrimary: colors.stone990,
     contentSecondary: colors.stone900,
     contentTertiary: colors.stone700,
-    contentAccent: colors.darkOrange800,
+    contentAccent: colors.darkOrange700,
     contentAccentSecondary: colors.darkOrange500,
   },
 } as const;
@@ -393,7 +401,7 @@ export const darkOrangeTheme = {
     contentPrimary: colors.stone10,
     contentSecondary: colors.stone100,
     contentTertiary: colors.stone300,
-    contentAccent: colors.brightOrange200,
+    contentAccent: colors.brightOrange300,
     contentAccentSecondary: colors.brightOrange400,
   },
 } as const;
