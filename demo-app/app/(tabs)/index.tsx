@@ -70,6 +70,11 @@ export default function ComponentsScreen() {
             href="/components/counter"
           />
           <MenuItem
+            text="Divider"
+            textBelow="Renders a horizontal or vertical line to separate content"
+            href="/components/divider"
+          />
+          <MenuItem
             text="InputOTP"
             textBelow="Renders a text input field to enter a one-time passcode"
             href="/components/input-otp"
@@ -103,6 +108,11 @@ export default function ComponentsScreen() {
             text="Radio"
             textBelow="Renders a radio button"
             href="/components/radio"
+          />
+          <MenuItem
+            text="Skeleton"
+            textBelow="Animated skeleton component for loading states"
+            href="/components/skeleton"
           />
           <MenuItem
             text="Slider"
