@@ -4,7 +4,7 @@ import chalk from "chalk";
 import { Command } from "commander";
 import { addCommand } from "./commands/add";
 import { initCommand } from "./commands/init";
-import { getAvailableComponents } from "./utils/component-manager";
+import { getAvailableComponents, setLatestFlag } from "./utils/component-manager";
 import { ensureProjectRoot } from "./utils/project-detection";
 
 // Function to get version from package.json
@@ -40,6 +40,7 @@ program
       await initCommand({
         skipDeps: options.skipDeps,
       });
+      process.exit(0);
     } catch (error) {
       console.error(
         chalk.red("Error:"),
@@ -54,9 +55,15 @@ program
   .description("Add one or more components to your project")
   .option("--force", "Overwrite existing components")
   .option("--all", "Install all available components")
+  .option("--latest", "Force download latest components from GitHub (bypass cache)")
   .action(async (componentNames: string[], options) => {
     try {
       await ensureProjectRoot();
+      
+      // Pass latest flag to component manager
+      if (options.latest) {
+        setLatestFlag(true);
+      }
 
       if (options.all) {
         // Get all available components when --all flag is used
@@ -74,20 +81,29 @@ program
           )
         );
 
+        let successCount = 0;
         for (const componentName of availableComponents) {
           console.log(chalk.yellow(`\n⏳ Installing ${componentName}...`));
-          await addCommand(componentName, {
+          const success = await addCommand(componentName, {
             componentName,
             force: options.force,
             all: options.all,
           });
+          if (success) {
+            successCount++;
+          }
         }
 
-        console.log(
-          chalk.green(
-            `\n✅ Successfully installed all ${availableComponents.length} component(s)!`
-          )
-        );
+        if (successCount > 0) {
+          console.log(
+            chalk.green(
+              `\n✅ Successfully installed ${successCount} component(s)!`
+            )
+          );
+        } else {
+          console.log(chalk.yellow("\n⚠️  No components were installed"));
+        }
+        process.exit(0);
       } else {
         if (componentNames.length === 0) {
           console.error(
@@ -111,19 +127,29 @@ program
           )
         );
 
+        let successCount = 0;
         for (const componentName of componentNames) {
           console.log(chalk.yellow(`\n⏳ Installing ${componentName}...`));
-          await addCommand(componentName, {
+          const success = await addCommand(componentName, {
             componentName,
             force: options.force,
           });
+          if (success) {
+            successCount++;
+          }
         }
 
-        console.log(
-          chalk.green(
-            `\n✅ Successfully installed all ${componentNames.length} component(s)!`
-          )
-        );
+        if (successCount > 0) {
+          console.log(
+            chalk.green(
+              `\n✅ Successfully installed ${successCount} component(s)!`
+            )
+          );
+          process.exit(0);
+        } else {
+          console.log(chalk.red("\n❌ No components were installed"));
+          process.exit(1);
+        }
       }
     } catch (error) {
       console.error(
@@ -161,6 +187,7 @@ program
           )} to install all components`
         )
       );
+      process.exit(0);
     } catch (error) {
       console.error(
         chalk.red("Error:"),

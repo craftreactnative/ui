@@ -15,7 +15,7 @@ import { determineImportPath } from "../utils/file-system";
 export async function addCommand(
   componentName: string,
   options: Partial<InstallOptions> = {}
-): Promise<void> {
+): Promise<boolean> {
   const targetPath = process.cwd();
 
   // Check if craftrn-ui folder exists, if not, run init
@@ -45,7 +45,7 @@ export async function addCommand(
         available.forEach((comp) => console.log(`  - ${comp}`));
       }
     }
-    return;
+    return false;
   }
 
   spinner.succeed(`Found component ${chalk.green(componentName)}`);
@@ -138,11 +138,13 @@ export async function addCommand(
         )
       );
     }
+    return true;
   } catch (error) {
     loadingSpinner.fail(
       `Failed to install component: ${
         error instanceof Error ? error.message : "Unknown error"
       }`
     );
+    return false;
   }
 }

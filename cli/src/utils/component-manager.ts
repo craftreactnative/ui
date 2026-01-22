@@ -1,14 +1,40 @@
 import * as fs from "fs-extra";
 import * as path from "path";
 import { ComponentInfo } from "../types";
-import { findCliPackageRoot } from "./project-detection";
+import { ensureComponentsDownloaded } from "./github-downloader";
 
-const CLI_PACKAGE_ROOT = findCliPackageRoot();
-const COMPONENTS_SOURCE_PATH = path.join(
-  CLI_PACKAGE_ROOT,
-  "craftrn-ui/components"
-);
-const THEMES_SOURCE_PATH = path.join(CLI_PACKAGE_ROOT, "craftrn-ui/themes");
+interface SourcePaths {
+  componentsPath: string;
+  themesPath: string;
+}
+
+let cachedPaths: SourcePaths | null = null;
+let refreshFlag = false;
+
+/**
+ * Sets the latest flag for component downloads
+ */
+export function setLatestFlag(latest: boolean): void {
+  refreshFlag = latest;
+  if (latest) {
+    cachedPaths = null; // Clear in-memory cache
+  }
+}
+
+/**
+ * Ensures components are downloaded and returns the source paths
+ */
+async function ensureSourcePaths(): Promise<SourcePaths> {
+  if (!cachedPaths || refreshFlag) {
+    const sourcePath = await ensureComponentsDownloaded({ forceLatest: refreshFlag });
+    cachedPaths = {
+      componentsPath: path.join(sourcePath, "components"),
+      themesPath: path.join(sourcePath, "themes"),
+    };
+    refreshFlag = false; // Reset after use
+  }
+  return cachedPaths;
+}
 
 /**
  * Retrieves component information from info.json file
@@ -16,11 +42,8 @@ const THEMES_SOURCE_PATH = path.join(CLI_PACKAGE_ROOT, "craftrn-ui/themes");
 export async function getComponentInfo(
   componentName: string
 ): Promise<ComponentInfo | null> {
-  const infoPath = path.join(
-    COMPONENTS_SOURCE_PATH,
-    componentName,
-    "info.json"
-  );
+  const { componentsPath } = await ensureSourcePaths();
+  const infoPath = path.join(componentsPath, componentName, "info.json");
 
   if (!(await fs.pathExists(infoPath))) {
     return null;
@@ -34,15 +57,16 @@ export async function getComponentInfo(
  * Gets list of all available components by scanning for directories with info.json
  */
 export async function getAvailableComponents(): Promise<string[]> {
-  if (!(await fs.pathExists(COMPONENTS_SOURCE_PATH))) {
+  const { componentsPath } = await ensureSourcePaths();
+  if (!(await fs.pathExists(componentsPath))) {
     return [];
   }
 
-  const dirs = await fs.readdir(COMPONENTS_SOURCE_PATH);
+  const dirs = await fs.readdir(componentsPath);
   const components: string[] = [];
 
   for (const dir of dirs) {
-    const componentPath = path.join(COMPONENTS_SOURCE_PATH, dir);
+    const componentPath = path.join(componentsPath, dir);
     const stat = await fs.stat(componentPath);
 
     if (stat.isDirectory()) {
@@ -94,7 +118,8 @@ export async function copyComponent(
   componentName: string,
   targetPath: string
 ): Promise<void> {
-  const sourcePath = path.join(COMPONENTS_SOURCE_PATH, componentName);
+  const { componentsPath } = await ensureSourcePaths();
+  const sourcePath = path.join(componentsPath, componentName);
   const destPath = path.join(
     targetPath,
     "craftrn-ui",
@@ -116,17 +141,18 @@ export async function copyComponent(
  * Copies all theme files to target location
  */
 export async function copyThemes(targetPath: string): Promise<void> {
+  const { themesPath } = await ensureSourcePaths();
   const destPath = path.join(targetPath, "craftrn-ui", "themes");
 
-  if (!(await fs.pathExists(THEMES_SOURCE_PATH))) {
-    throw new Error(`Themes source not found at: ${THEMES_SOURCE_PATH}
-CLI package root detected as: ${CLI_PACKAGE_ROOT}
-Current working directory: ${process.cwd()}
-Module location (__dirname): ${__dirname}`);
+  if (!(await fs.pathExists(themesPath))) {
+    throw new Error(
+      `Themes source not found at: ${themesPath}\n` +
+        `Current working directory: ${process.cwd()}`
+    );
   }
 
   await fs.ensureDir(path.dirname(destPath));
-  await fs.copy(THEMES_SOURCE_PATH, destPath);
+  await fs.copy(themesPath, destPath);
 }
 
 /**
