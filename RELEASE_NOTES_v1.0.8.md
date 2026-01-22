@@ -1,8 +1,8 @@
 # Release Notes - v1.0.8
 
-## 🚀 Major Refactoring: GitHub-Based Component Distribution
+## 🎯 Improvement: GitHub-Based Component Distribution
 
-This release introduces a significant architectural improvement to how components are distributed, solving a major workflow pain point.
+This release improves how components are distributed, solving a workflow issue.
 
 ## 🎯 Problem Solved
 
@@ -27,11 +27,11 @@ npx @craftreactnative/ui add Button --latest
 ```
 Force download the latest components, bypassing the cache entirely.
 
-## 📦 Package Improvements
+## 📦 Improvements
 
 - **Smaller Package Size**: Removed bundled components from npm package
 - **Faster Builds**: No more component copying step during build
-- **Cleaner Structure**: Simplified build process
+- **Simplified Structure**: Cleaner build process
 
 ## 🔧 Technical Details
 
