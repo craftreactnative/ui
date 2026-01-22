@@ -8,6 +8,7 @@ import React, {
 import {
   AccessibilityInfo,
   AccessibilityProps,
+  Keyboard,
   LayoutChangeEvent,
   Modal,
   TouchableWithoutFeedback,
@@ -29,7 +30,8 @@ import Animated, {
   withTiming,
   WithTimingConfig,
 } from 'react-native-reanimated';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller';
+import { StyleSheet, UnistylesRuntime, useUnistyles } from 'react-native-unistyles';
 
 const animationConfig = {
   sheetOpen: {
@@ -120,10 +122,13 @@ export const BottomSheet = ({
   const [isScreenReaderEnabled, setIsScreenReaderEnabled] = useState(false);
   const { height: windowHeight } = useWindowDimensions();
   const { theme } = useUnistyles();
+  const { height: keyboardHeight, progress: keyboardProgress } =
+    useReanimatedKeyboardAnimation();
   const translateY = useSharedValue(windowHeight);
   const overlayOpacity = useSharedValue(0);
   const startY = useSharedValue(0);
   const gestureActive = useSharedValue(false);
+  const bottomInset = useSharedValue(UnistylesRuntime.insets.bottom);
   const bottomSheetMaxHeight = useMemo(
     () => Math.max(maxHeight ?? 0, windowHeight),
     [maxHeight, windowHeight],
@@ -141,6 +146,15 @@ export const BottomSheet = ({
     });
   }, []);
 
+  const handleCloseComplete = useCallback(() => {
+    Keyboard.dismiss();
+    setShowModal(false);
+    setContentHeight(undefined);
+    if (onClose) {
+      onClose();
+    }
+  }, [onClose]);
+
   useEffect(() => {
     if (contentHeight) {
       translateY.value = visible
@@ -151,16 +165,12 @@ export const BottomSheet = ({
         visible ? animationConfig.sheetClose : animationConfig.sheetClose,
         () => {
           if (!visible) {
-            runOnJS(setShowModal)(false);
-            runOnJS(setContentHeight)(undefined);
-            if (onClose) {
-              runOnJS(onClose)();
-            }
+            runOnJS(handleCloseComplete)();
           }
         },
       );
     }
-  }, [visible, translateY, overlayOpacity, contentHeight, onClose]);
+  }, [visible, translateY, overlayOpacity, contentHeight, handleCloseComplete]);
 
   const closeGestureThreshold = useMemo(() => {
     const currentContentHeight = contentHeight ?? 100;
@@ -210,9 +220,16 @@ export const BottomSheet = ({
       }
     });
 
-  const bottomSheetAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: translateY.value }],
-  }));
+  const bottomSheetAnimatedStyle = useAnimatedStyle(() => {
+    const keyboardOffset = keyboardHeight.value;
+    const insetOffset = keyboardProgress.value * bottomInset.value;
+    const offset = keyboardOffset + insetOffset;
+    return {
+      transform: [
+        { translateY: translateY.value + offset },
+      ],
+    };
+  });
 
   const overlayAnimatedStyle = useAnimatedStyle(() => ({
     opacity: overlayOpacity.value,
@@ -276,19 +293,19 @@ export const BottomSheet = ({
                 )}
                 {React.isValidElement(children)
                   ? React.cloneElement(children, {
-                      style: [
-                        (
-                          children.props as unknown as {
-                            style?: unknown;
-                          }
-                        ).style,
-                        {
-                          paddingTop: showHandleBar
-                            ? theme.spacing.xlarge
-                            : theme.spacing.large,
-                        },
-                      ],
-                    } as Partial<unknown>)
+                    style: [
+                      (
+                        children.props as unknown as {
+                          style?: unknown;
+                        }
+                      ).style,
+                      {
+                        paddingTop: showHandleBar
+                          ? theme.spacing.xlarge
+                          : theme.spacing.large,
+                      },
+                    ],
+                  } as Partial<unknown>)
                   : children}
               </View>
             </Animated.View>

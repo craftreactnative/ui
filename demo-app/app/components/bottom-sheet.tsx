@@ -1,12 +1,13 @@
 import { BottomSheet } from '@/craftrn-ui/components/BottomSheet';
 import { Button } from '@/craftrn-ui/components/Button';
 import { Card } from '@/craftrn-ui/components/Card';
+import { InputText } from '@/craftrn-ui/components/InputText';
 import { ListItem } from '@/craftrn-ui/components/ListItem';
 import { Switch } from '@/craftrn-ui/components/Switch';
 import { Text } from '@/craftrn-ui/components/Text';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { StyleSheet, UnistylesRuntime } from 'react-native-unistyles';
 
 export default function BottomSheetScreen() {
@@ -14,6 +15,8 @@ export default function BottomSheetScreen() {
   const [enableSwipeToClose, setEnableSwipeToClose] = useState(false);
   const [enableOverlayTapToClose, setEnableOverlayTapToClose] = useState(false);
   const [showHandleBar, setShowHandleBar] = useState(false);
+  const [showInputText, setShowInputText] = useState(true);
+  const [textFieldValue, setTextFieldValue] = useState('');
 
   return (
     <>
@@ -68,6 +71,17 @@ export default function BottomSheetScreen() {
                   onValueChange={setShowHandleBar}
                 />
               }
+              divider
+            />
+            <ListItem
+              text="Show Input Text"
+              textBelow="Display input field in the modal"
+              itemRight={
+                <Switch
+                  value={showInputText}
+                  onValueChange={setShowInputText}
+                />
+              }
             />
           </View>
         </Card>
@@ -80,39 +94,46 @@ export default function BottomSheetScreen() {
         enableOverlayTapToClose={enableOverlayTapToClose}
         showHandleBar={showHandleBar}
       >
-        <View style={styles.bottomSheetContent}>
-          <View style={styles.bottomSheetHeading}>
-            <Text variant="heading3">Bottom Sheet Demo</Text>
-            <Text variant="body2">
-              Configure the options above to see how they affect this bottom
-              sheet
-            </Text>
-          </View>
-
-          <Text variant="body2">Current configuration:</Text>
-
-          <View style={styles.configList}>
-            <Text variant="body3">
-              • Swipe to close: {enableSwipeToClose ? 'true' : 'false'}
-            </Text>
-            <Text variant="body3">
-              • Overlay tap to close:{' '}
-              {enableOverlayTapToClose ? 'true' : 'false'}
-            </Text>
-            <Text variant="body3">
-              • Handle bar: {showHandleBar ? 'true' : 'false'}
-            </Text>
-          </View>
-
-          <Text variant="body2">
-            This bottom sheet component provides a smooth way to display
-            additional content that slides up from the bottom of the screen. You
-            can experiment with different configurations using the controls
-            above.
+        <ScrollView
+          style={styles.bottomSheetScrollView}
+          contentContainerStyle={styles.bottomSheetContent}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="interactive"
+        >
+          <Text variant="heading3" style={styles.bottomSheetHeading}>
+            Bottom Sheet Demo
+          </Text>
+          <Text variant="body3">
+            • Swipe to close: {enableSwipeToClose ? 'true' : 'false'}
+          </Text>
+          <Text variant="body3">
+            • Overlay tap to close:{' '}
+            {enableOverlayTapToClose ? 'true' : 'false'}
+          </Text>
+          <Text variant="body3">
+            • Handle bar: {showHandleBar ? 'true' : 'false'}
           </Text>
 
+          {showInputText && (
+            <>
+              <Text variant="body2" style={styles.description}>
+                Test the keyboard behavior by focusing the input field below. The
+                bottom sheet should float above the keyboard.
+              </Text>
+
+              <View style={styles.textFieldSection}>
+                <InputText
+                  label="Enter text here"
+                  value={textFieldValue}
+                  autoFocus
+                  onChangeText={setTextFieldValue}
+                />
+              </View>
+            </>
+          )}
+
           <Button onPress={() => setBottomSheetVisible(false)}>Close</Button>
-        </View>
+        </ScrollView>
       </BottomSheet>
     </>
   );
@@ -150,17 +171,23 @@ const styles = StyleSheet.create(theme => ({
     gap: theme.spacing.medium,
     overflow: 'hidden',
   },
+  bottomSheetScrollView: {
+    flex: 1,
+  },
   bottomSheetContent: {
     paddingHorizontal: theme.spacing.large,
     paddingTop: theme.spacing.small,
-    gap: theme.spacing.large,
-    paddingBottom: UnistylesRuntime.insets.bottom,
+    gap: theme.spacing.medium,
+    paddingBottom: UnistylesRuntime.insets.bottom + theme.spacing.large,
   },
   bottomSheetHeading: {
-    paddingBottom: theme.spacing.large,
+    marginBottom: theme.spacing.xsmall,
   },
-  configList: {
+  description: {
+    marginBottom: theme.spacing.small,
+    color: theme.colors.contentSecondary,
+  },
+  textFieldSection: {
     gap: theme.spacing.small,
-    paddingLeft: theme.spacing.medium,
   },
 }));
