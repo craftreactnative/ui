@@ -1,5 +1,31 @@
 # @craftreactnative/ui
 
+## 1.0.8
+
+### Major Refactor
+
+- [`cbd66fa`](https://github.com/craftreactnative/ui/commit/cbd66fa) Thanks [@alexmngn](https://github.com/alexmngn)! - **Refactor: Download components from GitHub instead of bundling**
+
+  This major refactoring addresses a critical workflow issue where the CLI had to be republished to npm every time components changed, even when the CLI code itself wasn't modified.
+
+  **Key Changes:**
+  - Components are now downloaded from GitHub on first use
+  - Intelligent cache system with 1-day staleness detection (auto-refreshes after 24 hours)
+  - Added `--latest` flag to force download latest components, bypassing cache
+  - Removed `copy-components` build step and `craftrn-ui` from package files
+  - Added `tar` dependency for extracting GitHub tarballs
+  - Improved error handling and user feedback during downloads
+
+  **Benefits:**
+  - ✅ No need to republish CLI when only components change
+  - ✅ Users always get latest components (with smart 1-day cache)
+  - ✅ Smaller CLI package size
+  - ✅ Faster development workflow
+  - ✅ Better offline support (graceful cache fallback)
+
+  **Breaking Changes:**
+  - None - this is a transparent improvement for end users
+
 ## 1.0.6
 
 ### Patch Changes
