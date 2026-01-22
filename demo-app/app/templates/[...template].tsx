@@ -6,8 +6,12 @@ import { StyleSheet } from 'react-native-unistyles';
 
 export default function TemplateScreen() {
   const local = useLocalSearchParams();
+  // Handle catch-all route: template is always an array with catch-all [...template]
+  const templateName = Array.isArray(local.template)
+    ? local.template[0]
+    : (local.template as string);
   const player = useVideoPlayer(
-    `https://www.craftreactnative.com/videos/templates/${local.template}.mp4`,
+    `https://www.craftreactnative.com/videos/templates/${templateName}.mp4`,
     player => {
       player.loop = true;
       player.play();
@@ -17,7 +21,7 @@ export default function TemplateScreen() {
     <>
       <Stack.Screen
         options={{
-          title: `Template ${local.template}`,
+          title: `Template ${templateName}`,
         }}
       />
       <View style={styles.container}>
