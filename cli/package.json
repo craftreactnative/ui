@@ -17,10 +17,21 @@
   },
   "keywords": [
     "react-native",
+    "react-native-ui",
+    "react-native-components",
     "expo",
-    "components",
+    "expo-components",
     "unistyles",
-    "design-system"
+    "design-system",
+    "ui-library",
+    "mobile-ui",
+    "copy-paste",
+    "components",
+    "typescript",
+    "dark-mode",
+    "theming",
+    "mobile-components",
+    "react-native-cli"
   ],
   "author": {
     "name": "alexmngn",
