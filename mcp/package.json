@@ -1,0 +1,24 @@
+{
+  "name": "@craftreactnative/mcp",
+  "version": "0.1.0",
+  "private": false,
+  "description": "MCP server exposing CraftReactNative UI to AI agents",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsup src/server.ts --format cjs --clean --out-dir dist",
+    "start": "node dist/server.js",
+    "dev": "ts-node-esm src/server.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.3",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "@types/node": "^20.10.5",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.5.0"
+  }
+}
+
