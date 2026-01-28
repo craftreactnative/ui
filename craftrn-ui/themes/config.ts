@@ -170,7 +170,7 @@ const baseTheme = {
     body4: {
       ...fontSizes.xxsmall,
       fontWeight: '400' as const,
-    }
+    },
   },
 } as const;
 
@@ -297,11 +297,11 @@ export const darkTealTheme = {
     backgroundNeutral: `${colors.slate200}15`,
     backgroundOverlay: `${colors.slate100}80`,
 
-    borderNeutral: `${colors.slate10}10`,
-    borderNeutralSecondary: `${colors.slate10}30`,
-
     baseLight: colors.slate10,
     baseDark: colors.slate990,
+
+    borderNeutral: `${colors.slate10}10`,
+    borderNeutralSecondary: `${colors.slate10}30`,
 
     contentPrimary: colors.slate10,
     contentSecondary: colors.slate100,
@@ -411,3 +411,4 @@ export type Theme =
   | typeof darkTealTheme
   | typeof lightOrangeTheme
   | typeof darkOrangeTheme;
+

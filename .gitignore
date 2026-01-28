@@ -1,6 +1,6 @@
 node_modules
 /craftrn-templates
 /cli/dist
-/cli/craftrn-ui
+/demo-app/craftrn-ui
 
 .claude
