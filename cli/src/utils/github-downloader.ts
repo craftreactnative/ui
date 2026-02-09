@@ -162,9 +162,7 @@ export async function downloadFromGitHub(
   const cachePath = getCachePath(branch);
   const craftrnUiPath = path.join(cachePath, "demo-app", "craftrn-ui");
 
-  const spinner = options.silent
-    ? null
-    : ora("Checking cache...").start();
+  const spinner = options.silent ? null : ora("Checking cache...").start();
 
   // Check if cache exists and is fresh
   if (await fs.pathExists(craftrnUiPath)) {
@@ -175,7 +173,9 @@ export async function downloadFromGitHub(
       return craftrnUiPath;
     }
     // Cache is stale (older than 1 day), remove it
-    if (spinner) spinner.text = "Cache is outdated (older than 1 day), downloading latest...";
+    if (spinner)
+      spinner.text =
+        "Cache is outdated (older than 1 day), downloading latest...";
     await fs.remove(cachePath);
   }
 
@@ -195,11 +195,25 @@ export async function downloadFromGitHub(
   await tar.extract({ file: tempTarPath, cwd: extractPath });
   await fs.remove(tempTarPath);
 
-  // Move extracted directory to final location
+  // GitHub tarballs unpack to a top-level dir named {repo}-{branch} (e.g. ui-main)
+  const extractedEntries = await fs.readdir(extractPath);
+  let extractedDirName: string | null = null;
+  for (const name of extractedEntries) {
+    const fullPath = path.join(extractPath, name);
+    if ((await fs.stat(fullPath)).isDirectory() && !name.startsWith(".")) {
+      extractedDirName = name;
+      break;
+    }
+  }
+  if (!extractedDirName) {
+    if (spinner) spinner.fail("Failed to extract components");
+    throw new Error("Failed to extract craftrn-ui directory from tarball");
+  }
+
+  // craftrn-ui lives at repo root in the tarball
   const extractedRepoPath = path.join(
     extractPath,
-    `${GITHUB_REPO}-${branch}`,
-    "demo-app",
+    extractedDirName,
     "craftrn-ui"
   );
 
@@ -214,7 +228,7 @@ export async function downloadFromGitHub(
     await fs.remove(finalPath);
   }
   await fs.move(extractedRepoPath, finalPath);
-  await fs.remove(path.join(extractPath, `${GITHUB_REPO}-${branch}`));
+  await fs.remove(path.join(extractPath, extractedDirName));
 
   // Save cache metadata with timestamp
   await saveCacheMetadata(branch);
