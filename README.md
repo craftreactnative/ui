@@ -1,15 +1,14 @@
 # CraftReactNative UI
 
-**Copy-paste React Native components** built for [Unistyles](https://github.com/jpudysz/react-native-unistyles). Own your code, zero dependencies, full control.
+**Copy-paste React Native components** built with [Unistyles](https://github.com/jpudysz/react-native-unistyles). Own your code, full control.
 
-[![GitHub stars](https://img.shields.io/github/stars/craftreactnative/ui?style=social)](https://github.com/craftreactnative/ui)
-[![npm](https://img.shields.io/npm/v/@craftreactnative/ui)](https://www.npmjs.com/package/@craftreactnative/ui)
-[![npm downloads](https://img.shields.io/npm/dm/@craftreactnative/ui)](https://www.npmjs.com/package/@craftreactnative/ui)
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue)](https://www.typescriptlang.org/)
-[![Expo](https://img.shields.io/badge/Expo-000?logo=expo&logoColor=white)](https://docs.expo.dev/)
-[![iOS](https://img.shields.io/badge/iOS-000?logo=apple)](https://developer.apple.com/ios/)
-[![Android](https://img.shields.io/badge/Android-44CD11?logo=android&logoColor=white)](https://developer.android.com/)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue?style=flat-square)](#)
+[![platform - expo](https://img.shields.io/badge/Expo-000?style=flat-square&logo=expo&logoColor=white)](https://docs.expo.dev/)
+[![platform - ios](https://img.shields.io/badge/iOS-000?logo=apple&style=flat-square)](https://developer.apple.com/ios/)
+[![platform - android](https://img.shields.io/badge/Android-44CD11?style=flat-square&logo=android&logoColor=white)](https://developer.android.com/)
+
+> **Note**: This is a community project and is not officially affiliated with the Unistyles team.
 
 ## Why Copy-Paste?
 
@@ -125,21 +124,10 @@ The fastest way to get started is with the CLI tool:
 
 ## Documentation
 
-- [Documentation](https://docs.craftreactnative.com/) - Complete guides and API reference
-- [Component Documentation](https://docs.craftreactnative.com/docs/components/avatar) - Detailed usage guides
-- [Unistyles Documentation](https://www.unistyl.es/) - Learn about the styling library
-
-## Premium Templates
-
-Ready-to-use complete screen implementations built with these components. Save development time with production-ready code that includes dark mode support and follows best practices.
-
-[Browse Templates →](https://craftreactnative.com/templates)
-
-## Community
-
-- [GitHub Discussions](https://github.com/craftreactnative/ui/discussions) - Ask questions and share ideas
-- [Report Issues](https://github.com/craftreactnative/ui/issues) - Found a bug? Let us know!
-- [Feature Requests](https://github.com/craftreactnative/ui/issues/new?template=feature_request.md) - Suggest new components or features
+- [Getting Started](https://docs.craftreactnative.com/docs/guides/getting-started) - Setup guide and usage instructions
+- [Browse Components](https://docs.craftreactnative.com/docs/components/avatar) - Explore all available components
+- [CraftReactNative Templates](https://github.com/craftreactnative/templates) - Full screen templates built with these components
+- [Unistyles Documentation](https://reactnativeunistyles.vercel.app/) - Learn about the styling library
 
 ## Contributing
 
