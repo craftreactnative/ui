@@ -5,10 +5,12 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue?style=flat-square)](#)
 [![platform - expo](https://img.shields.io/badge/Expo-000?style=flat-square&logo=expo&logoColor=white)](https://docs.expo.dev/)
+[![platform - cli](https://img.shields.io/badge/CLI-61DAFB?style=flat-square&logo=react&logoColor=61DAFB&label=React%20Native&labelColor=black)](https://reactnative.dev/docs/getting-started-without-a-framework)
 [![platform - ios](https://img.shields.io/badge/iOS-000?logo=apple&style=flat-square)](https://developer.apple.com/ios/)
 [![platform - android](https://img.shields.io/badge/Android-44CD11?style=flat-square&logo=android&logoColor=white)](https://developer.android.com/)
 
-> **Note**: This is a community project and is not officially affiliated with the Unistyles team.
+> [!NOTE]
+> This is a community project and is not officially affiliated with the Unistyles team.
 
 ## Why Copy-Paste?
 
@@ -39,16 +41,17 @@ CraftReactNative UI provides production-ready React Native components designed s
 
 ## Quick Example
 
+### 1. Initialize your project
 ```bash
-# Initialize your project
 npx @craftreactnative/ui init
-
-# Add components
-npx @craftreactnative/ui add Button Avatar Card
-
-# Start building!
 ```
 
+### 2. Add components
+```bash
+npx @craftreactnative/ui add Button Avatar Card
+```
+
+### 3. Start building!
 ```tsx
 import { Button } from '@/craftrn-ui/components/Button';
 import { View } from 'react-native';
@@ -151,4 +154,7 @@ MIT License - see the [LICENSE](LICENSE) file for details.
   <strong>Built for the React Native community</strong>
   <br />
   <sub>If CraftRN UI helps you build better apps, consider giving it a star</sub>
+  <br />
+  <br />
+  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/craftreactnative/ui">
 </div>
