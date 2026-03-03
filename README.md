@@ -143,7 +143,9 @@ See our [Contributing Guide](CONTRIBUTING.md) for more details.
 
 ## License
 
-MIT License - see the [LICENSE](LICENSE) file for details.
+[MIT License](./LICENSE)
+
+More details: https://www.craftreactnative.com/license
 
 ---
 
