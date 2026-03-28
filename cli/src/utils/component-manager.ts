@@ -1,6 +1,6 @@
 import * as fs from "fs-extra";
 import * as path from "path";
-import { ComponentInfo } from "../types";
+import { ComponentInfo, DEFAULT_COMPONENTS_PATH } from "../types";
 import { ensureComponentsDownloaded } from "./github-downloader";
 
 interface SourcePaths {
@@ -116,16 +116,12 @@ export async function resolveDependencies(
  */
 export async function copyComponent(
   componentName: string,
-  targetPath: string
+  targetPath: string,
+  componentsBasePath: string = DEFAULT_COMPONENTS_PATH
 ): Promise<void> {
   const { componentsPath } = await ensureSourcePaths();
   const sourcePath = path.join(componentsPath, componentName);
-  const destPath = path.join(
-    targetPath,
-    "craftrn-ui",
-    "components",
-    componentName
-  );
+  const destPath = path.join(targetPath, componentsBasePath, componentName);
 
   if (!(await fs.pathExists(sourcePath))) {
     throw new Error(
@@ -147,7 +143,7 @@ export async function copyThemes(targetPath: string): Promise<void> {
   if (!(await fs.pathExists(themesPath))) {
     throw new Error(
       `Themes source not found at: ${themesPath}\n` +
-        `Current working directory: ${process.cwd()}`
+      `Current working directory: ${process.cwd()}`
     );
   }
 

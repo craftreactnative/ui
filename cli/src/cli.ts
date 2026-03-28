@@ -6,6 +6,7 @@ import { addCommand } from "./commands/add";
 import { initCommand } from "./commands/init";
 import { getAvailableComponents, setLatestFlag } from "./utils/component-manager";
 import { ensureProjectRoot } from "./utils/project-detection";
+import { collectUserPreferences } from "./utils/prompts";
 
 // Function to get version from package.json
 function getPackageVersion(): string {
@@ -59,10 +60,16 @@ program
   .action(async (componentNames: string[], options) => {
     try {
       await ensureProjectRoot();
-      
+
       // Pass latest flag to component manager
       if (options.latest) {
         setLatestFlag(true);
+      }
+
+      // ── Interactive prompts (runs once before any installation) ──────────
+      const preferences = await collectUserPreferences();
+      if (!preferences) {
+        process.exit(0);
       }
 
       if (options.all) {
@@ -88,6 +95,9 @@ program
             componentName,
             force: options.force,
             all: options.all,
+            fileSplitMode: preferences.fileSplitMode,
+            componentsPath: preferences.componentsPath,
+            barrelFileMode: preferences.barrelFileMode,
           });
           if (success) {
             successCount++;
@@ -133,6 +143,9 @@ program
           const success = await addCommand(componentName, {
             componentName,
             force: options.force,
+            fileSplitMode: preferences.fileSplitMode,
+            componentsPath: preferences.componentsPath,
+            barrelFileMode: preferences.barrelFileMode,
           });
           if (success) {
             successCount++;
