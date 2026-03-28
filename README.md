@@ -94,6 +94,16 @@ The fastest way to get started is with the CLI tool:
    npx @craftreactnative/ui add --all
    ```
 
+   During `add`, the CLI asks a few setup questions once per run:
+   - component file structure: single file, 3 files, or 4 files
+   - destination path: default `craftrn-ui/components` or a custom project-relative path
+   - index/barrel strategy:
+     - per component (`index.ts` in each component folder)
+     - components folder barrel (single `index.ts` in the components root)
+     - no index files
+
+   This helps match your project conventions without extra flags.
+
 3. **Start building** with fully typed, theme-aware components!
 
 ## Available Components

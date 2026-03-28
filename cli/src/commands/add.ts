@@ -1,22 +1,32 @@
-import * as fs from "fs-extra";
-import * as path from "path";
 import chalk from "chalk";
+import * as fs from "fs-extra";
 import ora from "ora";
-import { InstallOptions } from "../types";
+import * as path from "path";
+import { DEFAULT_COMPONENTS_PATH, InstallOptions } from "../types";
+import { applyBarrelFileMode } from "../utils/barrel-manager";
 import {
-  getComponentInfo,
-  resolveDependencies,
   copyComponent,
   getAvailableComponents,
+  getComponentInfo,
+  resolveDependencies,
 } from "../utils/component-manager";
-import { initCommand } from "./init";
+import { splitComponentFiles } from "../utils/file-splitter";
 import { determineImportPath } from "../utils/file-system";
+import { initCommand } from "./init";
+
+function toPosixPath(value: string): string {
+  return value.replace(/\\+/g, "/").replace(/\/+$/, "");
+}
 
 export async function addCommand(
   componentName: string,
   options: Partial<InstallOptions> = {}
 ): Promise<boolean> {
   const targetPath = process.cwd();
+  const componentsBasePath = toPosixPath(
+    options.componentsPath || DEFAULT_COMPONENTS_PATH
+  );
+  const barrelFileMode = options.barrelFileMode || "component";
 
   // Check if craftrn-ui folder exists, if not, run init
   const craftrnUiPath = path.join(targetPath, "craftrn-ui");
@@ -67,8 +77,7 @@ export async function addCommand(
     for (const dep of dependencies) {
       const componentPath = path.join(
         targetPath,
-        "craftrn-ui",
-        "components",
+        componentsBasePath,
         dep
       );
 
@@ -81,9 +90,17 @@ export async function addCommand(
         continue;
       }
 
-      await copyComponent(dep, targetPath);
+      await copyComponent(dep, targetPath, componentsBasePath);
+
+      if (options.fileSplitMode && options.fileSplitMode !== "none") {
+        const componentDir = path.join(targetPath, componentsBasePath, dep);
+        await splitComponentFiles(componentDir, dep, options.fileSplitMode);
+      }
+
       copySpinner.text = `Copied component ${dep}...`;
     }
+
+    await applyBarrelFileMode(targetPath, componentsBasePath, barrelFileMode);
 
     copySpinner.succeed(
       `Successfully copied ${dependencies.length} component(s)`
@@ -112,10 +129,17 @@ export async function addCommand(
 
     if (entryFile) {
       try {
+        const importTarget =
+          barrelFileMode === "folder"
+            ? `${componentsBasePath}`
+            : barrelFileMode === "none"
+              ? `${componentsBasePath}/${componentName}/${componentName}`
+              : `${componentsBasePath}/${componentName}`;
+
         const componentImportPath = await determineImportPath(
           targetPath,
           entryFile,
-          `craftrn-ui/components/${componentName}`
+          importTarget
         );
         console.log(
           chalk.gray(
@@ -124,17 +148,31 @@ export async function addCommand(
         );
       } catch {
         // Fallback to relative import
+        const fallbackImportPath =
+          barrelFileMode === "folder"
+            ? `./${componentsBasePath}`
+            : barrelFileMode === "none"
+              ? `./${componentsBasePath}/${componentName}/${componentName}`
+              : `./${componentsBasePath}/${componentName}`;
+
         console.log(
           chalk.gray(
-            `import { ${componentName} } from './craftrn-ui/components/${componentName}';`
+            `import { ${componentName} } from '${fallbackImportPath}';`
           )
         );
       }
     } else {
       // Fallback to relative import
+      const fallbackImportPath =
+        barrelFileMode === "folder"
+          ? `./${componentsBasePath}`
+          : barrelFileMode === "none"
+            ? `./${componentsBasePath}/${componentName}/${componentName}`
+            : `./${componentsBasePath}/${componentName}`;
+
       console.log(
         chalk.gray(
-          `import { ${componentName} } from './craftrn-ui/components/${componentName}';`
+          `import { ${componentName} } from '${fallbackImportPath}';`
         )
       );
     }
