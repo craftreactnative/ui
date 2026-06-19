@@ -5,7 +5,7 @@ import { ListItem } from '@/craftrn-ui/components/ListItem';
 import { Switch } from '@/craftrn-ui/components/Switch';
 import { Search } from '@/tetrisly-icons/Search';
 import { Slider } from '@/tetrisly-icons/Slider';
-import { useHeaderHeight } from '@react-navigation/elements';
+import { useHeaderHeight } from "expo-router/react-navigation";
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';

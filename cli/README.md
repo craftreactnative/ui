@@ -119,9 +119,9 @@ your-project/
 
 ## Documentation
 
-- 📚 [Component Documentation](https://docs.craftreactnative.com/)
+- 📚 [Components Documentation](https://docs-craftreactnative.vercel.app/)
+- 💎 [Templates Documentation](https://docs-craftreactnative.vercel.app/docs/templates/ai-conversation)
 - 🎨 [Unistyles Documentation](https://www.unistyl.es/)
-- 💎 [Premium Templates](https://craftreactnative.com/templates)
 
 ## License
 

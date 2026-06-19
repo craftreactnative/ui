@@ -28,7 +28,7 @@ export default function TemplatesLayout() {
       <SafeAreaView edges={['bottom']} style={styles.safeArea}>
         <Button
           onPress={() =>
-            Linking.openURL('https://craftreactnative.com/pricing')
+            Linking.openURL('https://craftreactnative.vercel.app/pricing')
           }
         >
           Get access now

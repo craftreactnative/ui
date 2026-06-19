@@ -3,7 +3,7 @@ import { InputOTP } from '@/craftrn-ui/components/InputOTP';
 import { ListItem } from '@/craftrn-ui/components/ListItem';
 import { Switch } from '@/craftrn-ui/components/Switch';
 import { Text } from '@/craftrn-ui/components/Text';
-import { useHeaderHeight } from '@react-navigation/elements';
+import { useHeaderHeight } from "expo-router/react-navigation";
 import { Stack } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import { ScrollView, TextInput, View } from 'react-native';

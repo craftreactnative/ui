@@ -8,7 +8,8 @@
 [![platform - ios](https://img.shields.io/badge/iOS-000?logo=apple&style=flat-square)](https://developer.apple.com/ios/)
 [![platform - android](https://img.shields.io/badge/Android-44CD11?style=flat-square&logo=android&logoColor=white)](https://developer.android.com/)
 
-> **Note**: This is a community project and is not officially affiliated with the Unistyles team.
+> [!NOTE]
+> This is a community project and is not officially affiliated with the Unistyles team.
 
 ## Why Copy-Paste?
 
@@ -39,32 +40,34 @@ CraftReactNative UI provides production-ready React Native components designed s
 
 ## Quick Example
 
+### 1. Initialize your project
+
 ```bash
-# Initialize your project
 npx @craftreactnative/ui init
-
-# Add components
-npx @craftreactnative/ui add Button Avatar Card
-
-# Start building!
 ```
 
+### 2. Add components
+
+```bash
+npx @craftreactnative/ui add Button Avatar Card
+```
+
+### 3. Start building!
+
 ```tsx
-import { Button } from '@/craftrn-ui/components/Button';
-import { View } from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { Button } from "@/craftrn-ui/components/Button";
+import { View } from "react-native";
+import { StyleSheet, useUnistyles } from "react-native-unistyles";
 
 export function MyScreen() {
   return (
     <View style={styles.container}>
-      <Button onPress={() => console.log('Pressed!')}>
-        Click Me
-      </Button>
+      <Button onPress={() => console.log("Pressed!")}>Click Me</Button>
     </View>
   );
 }
 
-const styles = StyleSheet.create(theme => ({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
     padding: theme.spacing.large,
@@ -75,7 +78,7 @@ const styles = StyleSheet.create(theme => ({
 
 ## Getting Started
 
-Visit the [documentation website](https://docs.craftreactnative.com/) for complete setup instructions and guides.
+Visit the [documentation website](https://docs-craftreactnative.vercel.app/) for complete setup instructions and guides.
 
 The fastest way to get started is with the CLI tool:
 
@@ -120,12 +123,12 @@ The fastest way to get started is with the CLI tool:
 - `Switch` - Toggle switches
 - `Text` - Styled text components
 
-[View all components →](https://docs.craftreactnative.com/)
+[View all components →](https://docs-craftreactnative.vercel.app/)
 
 ## Documentation
 
-- [Getting Started](https://docs.craftreactnative.com/docs/guides/getting-started) - Setup guide and usage instructions
-- [Browse Components](https://docs.craftreactnative.com/docs/components/avatar) - Explore all available components
+- [Getting Started](https://docs-craftreactnative.vercel.app/docs/guides/getting-started) - Setup guide and usage instructions
+- [Browse Components](https://docs-craftreactnative.vercel.app/docs/components/avatar) - Explore all available components
 - [CraftReactNative Templates](https://github.com/craftreactnative/templates) - Full screen templates built with these components
 - [Unistyles Documentation](https://reactnativeunistyles.vercel.app/) - Learn about the styling library
 
@@ -143,7 +146,9 @@ See our [Contributing Guide](CONTRIBUTING.md) for more details.
 
 ## License
 
-MIT License - see the [LICENSE](LICENSE) file for details.
+[MIT License](./LICENSE)
+
+More details: https://craftreactnative.vercel.app/license
 
 ---
 
@@ -151,4 +156,7 @@ MIT License - see the [LICENSE](LICENSE) file for details.
   <strong>Built for the React Native community</strong>
   <br />
   <sub>If CraftRN UI helps you build better apps, consider giving it a star</sub>
+  <br />
+  <br />
+  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/craftreactnative/ui">
 </div>
