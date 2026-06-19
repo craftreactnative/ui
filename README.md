@@ -5,6 +5,7 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue?style=flat-square)](#)
 [![platform - expo](https://img.shields.io/badge/Expo-000?style=flat-square&logo=expo&logoColor=white)](https://docs.expo.dev/)
+[![platform - cli](https://img.shields.io/badge/CLI-61DAFB?style=flat-square&logo=react&logoColor=61DAFB&label=React%20Native&labelColor=black)](https://reactnative.dev/docs/getting-started-without-a-framework)
 [![platform - ios](https://img.shields.io/badge/iOS-000?logo=apple&style=flat-square)](https://developer.apple.com/ios/)
 [![platform - android](https://img.shields.io/badge/Android-44CD11?style=flat-square&logo=android&logoColor=white)](https://developer.android.com/)
 
