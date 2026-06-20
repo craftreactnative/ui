@@ -32,12 +32,8 @@ import staysSearchDark from '@/assets/images/screens/stays-search-dark.png';
 import staysSearchLight from '@/assets/images/screens/stays-search-light.png';
 import staysSelectionDark from '@/assets/images/screens/stays-selection-dark.png';
 import staysSelectionLight from '@/assets/images/screens/stays-selection-light.png';
-import {
-  default as tradingDashboardDark,
-} from '@/assets/images/screens/trading-dashboard-dark.png';
-import {
-  default as tradingDashboardLight,
-} from '@/assets/images/screens/trading-dashboard-light.png';
+import { default as tradingDashboardDark } from '@/assets/images/screens/trading-dashboard-dark.png';
+import { default as tradingDashboardLight } from '@/assets/images/screens/trading-dashboard-light.png';
 import tradingOrderDark from '@/assets/images/screens/trading-order-dark.png';
 import tradingOrderLight from '@/assets/images/screens/trading-order-light.png';
 import tradingTrendsDark from '@/assets/images/screens/trading-trends-dark.png';
@@ -290,7 +286,7 @@ export default function TemplatesScreen() {
               itemRight={<ChevronRight color={theme.colors.contentPrimary} />}
               onPress={() =>
                 WebBrowser.openBrowserAsync(
-                  'https://www.craftreactnative.com/pricing',
+                  'https://craftreactnative.vercel.app/pricing',
                   {
                     controlsColor: theme.colors.interactivePrimary,
                     presentationStyle:

@@ -42,32 +42,33 @@ CraftReactNative UI provides production-ready React Native components designed s
 ## Quick Example
 
 ### 1. Initialize your project
+
 ```bash
 npx @craftreactnative/ui init
 ```
 
 ### 2. Add components
+
 ```bash
 npx @craftreactnative/ui add Button Avatar Card
 ```
 
 ### 3. Start building!
+
 ```tsx
-import { Button } from '@/craftrn-ui/components/Button';
-import { View } from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { Button } from "@/craftrn-ui/components/Button";
+import { View } from "react-native";
+import { StyleSheet, useUnistyles } from "react-native-unistyles";
 
 export function MyScreen() {
   return (
     <View style={styles.container}>
-      <Button onPress={() => console.log('Pressed!')}>
-        Click Me
-      </Button>
+      <Button onPress={() => console.log("Pressed!")}>Click Me</Button>
     </View>
   );
 }
 
-const styles = StyleSheet.create(theme => ({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
     padding: theme.spacing.large,

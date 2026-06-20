@@ -7,7 +7,6 @@
     "icon": "./assets/images/icon.png",
     "scheme": "craftrnui",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.craftreactnative.craftrnui.demoapp",
@@ -22,8 +21,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.craftreactnative.craftrnui.demoapp",
-      "runtimeVersion": "1.0.0",
-      "edgeToEdge": false
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "bundler": "metro",
@@ -43,7 +41,8 @@
       ],
       "expo-video",
       "expo-font",
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-status-bar"
     ],
     "experiments": {
       "typedRoutes": true

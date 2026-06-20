@@ -1,6 +1,5 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import React from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
@@ -11,7 +10,7 @@ export default function TemplateScreen() {
     ? local.template[0]
     : (local.template as string);
   const player = useVideoPlayer(
-    `https://www.craftreactnative.com/videos/templates/${templateName}.mp4`,
+    `https://craftreactnative.vercel.app/videos/templates/${templateName}.mp4`,
     player => {
       player.loop = true;
       player.play();
